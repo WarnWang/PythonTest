@@ -20,7 +20,6 @@ class Strategy:
         self.last_data = None
         self.data_number = None
         self.rsi_period = None
-        self.slow_period = None
         self.hold_volume = 0
         self.total_capital = 0
         self.current_capital = 0
@@ -30,8 +29,7 @@ class Strategy:
         self.close_data = []
         self.hold_volume = 0
         self.data_number = int(self.config.get("Strategy", "MaxDataNumber"))
-        self.rsi_period = int(self.config.get("Strategy", "FastPeriod"))
-        self.slow_period = int(self.config.get("Strategy", "SlowPeriod"))
+        self.rsi_period = int(self.config.get("Strategy", "RsiPeriod"))
         self.current_capital = self.total_capital = float(self.config.get("Risk", "InitialCapital"))
 
     def onMarketDataUpdate(self, market, code, md):
@@ -39,8 +37,8 @@ class Strategy:
         # The following time is not allowed to trade. Only trade from 9:30 am to 12:00 am, and from 13:00 to 16:00
         time_info = md.timestamp.split('_')
         if not (int(time_info[1][:2]) in (range(10, 12) + range(13, 16)) or
-                (time_info[1][:2] == '09' and int(time_info[1][2:]) >= 3000) or
-                time_info[1][:4] == '1600'):
+                    (time_info[1][:2] == '09' and int(time_info[1][2:]) >= 3000) or
+                        time_info[1][:4] == '1600'):
             return
 
         # Open price clear all the data

@@ -7,6 +7,7 @@
 
 import urllib
 import urllib2
+import math
 
 import numpy
 import talib
@@ -50,6 +51,9 @@ class Strategy:
         # How many capital we have
         self.current_capital = None
 
+        # The volume augment factor
+        self.volume_factor = None
+
     # Initialize Strategy
     def init(self):
 
@@ -59,6 +63,7 @@ class Strategy:
 
         # self.end_date = self.config.get("MarketData", "EndDate").replace("-", "")
         self.factor = float(self.config.get("Strategy", "Factor"))
+        self.volume_factor = float(self.config.get("Strategy", "VolumeFactor"))
         self.current_capital = self.total_capital = float(self.config.get("Risk", "InitialCapital"))
         product_code = self.config.get("MarketData", "ProductCode_1")
 
@@ -77,7 +82,7 @@ class Strategy:
         # The following time is not allowed to trade. Only trade from 9:30 am to 12:00 am, and from 13:00 to 16:00
         time_info = md.timestamp.split('_')
         if int(time_info[1][:2]) not in (range(10, 12) + range(13, 16)) or (time_info[1][:2] == '09' and
-                                                                            int(time_info[1][2:]) < 3000):
+                                                                                    int(time_info[1][2:]) < 3000):
             return
 
         # For open price record last day close price
@@ -96,7 +101,12 @@ class Strategy:
             md.lastPrice *= 100
 
         if md.lastPrice + self.factor * standard_dev < mean_average:
-            volume = int(self.total_capital / 10 / md.lastPrice)
+            volume0 = int(self.total_capital / 10 / md.lastPrice)
+            n = round(math.log(1 - self.buy_volume / volume0 * (1 - self.volume_factor), self.volume_factor))
+            volume = volume0 * self.volume_factor ** (n + 1)
+            if md.lastPrice <= self.current_capital < volume * md.lastPrice:
+                volume = self.current_capital / md.lastPrice
+
             if self.current_capital > volume * md.lastPrice:
                 order = cashAlgoAPI.Order(md.timestamp, 'SEHK', code, str(self.cnt), md.askPrice1, volume,
                                           "open", 1, "insert", "market_order", "today")
@@ -166,7 +176,7 @@ class Strategy:
         code = '%s.HK' % code[1:]
         time_info = [("s", code)]
         data = start_date.split('-')
-        time_info.append(("a", "%02d" % (int(data[1])  - 1)))
+        time_info.append(("a", "%02d" % (int(data[1]) - 1)))
         time_info.append(("b", data[2]))
         time_info.append(("c", data[0]))
 
