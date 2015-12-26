@@ -55,11 +55,18 @@ class Strategy:
             rsi_result = talib.RSI(numpy.array(self.close_data), timeperiod=self.rsi_period)[-1]
             if rsi_result < 30 and not self.long_flag:
                 self.long_flag = True
+                self.short_flag = False
             elif self.long_flag and 70 > rsi_result >= 30:
                 self.long_flag = False
                 volume = self.total_capital / 10 / md.lastPrice
-                if volume <= self.current_capital / md.lastPrice:
+                if md.lastPrice * volume > self.current_capital >= md.lastPrice:
+                    volume = self.current_capital / md.lastPrice
+
+                if volume * md.lastPrice <= self.current_capital:
                     self.long_security(md.timestamp, code, md.askPrice1, volume)
+
+            elif self.long_flag and rsi_result >= 70:
+                self.long_flag = False
 
             elif self.hold_volume:
                 if rsi_result > 70 and not self.short_flag:
@@ -69,7 +76,10 @@ class Strategy:
                     self.short_security(md.timestamp, code, md.lastPrice)
 
         if self.hold_volume and md.timestamp.split('_')[1][:4] == '1600':
+            print "Close market at %s, and sell all the belongings" % md.timestamp
             self.short_security(md.timestamp, code, md.lastPrice)
+            self.short_flag = False
+            self.long_flag = False
 
     def long_security(self, timestamp, code, price, volume):
         order = cashAlgoAPI.Order(timestamp, 'SEHK', code, str(self.cnt), price, int(volume),
