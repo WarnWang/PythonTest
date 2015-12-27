@@ -98,7 +98,7 @@ class Strategy:
                 self.close_price.append(self.last_price)
 
             self.mean_average = talib.MA(numpy.array(self.close_price), self.move_average_day)[-1]
-            self.standard_dev = talib.STDDEV(numpy.array(self.close_price))[-1]
+            self.standard_dev = talib.STDDEV(numpy.array(self.close_price), self.move_average_day)[-1]
 
         # in case some bad value
         if md.lastPrice < self.mean_average / 10:

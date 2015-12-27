@@ -13,11 +13,15 @@ import numpy
 import talib
 import pandas as pd
 from pandas.tseries.offsets import BDay
+import statsmodels.tsa.stattools as stat
 
 import cashAlgoAPI
 
 TREND = 'trend'
 MEAN = 'mean'
+
+RSI_SELL_SIGNAL = 65
+RSI_BUY_SIGNAL = 35
 
 
 class Strategy:
@@ -59,14 +63,10 @@ class Strategy:
 
         ###############################################################################################
         # The following parameters are used for RSI strategy and MACD strategy
-        # store the daily rsi value
-        self.rsi = None
-
         # usually 9 for short period 14 for middle period and 22 for long period
         self.rsi_period = 14
 
         # used for restore macd value
-        self.macd = None
         self.macd_fast_period = 12
         self.macd_slow_period = 26
         self.macd_time_signal = 9
@@ -135,6 +135,10 @@ class Strategy:
                                                                                     int(time_info[1][2:]) < 3000):
             return
 
+        # in case some bad value
+        if md.lastPrice < self.move_average / 50:
+            md.lastPrice *= 100
+
         # For open price record last day close price
         if time_info[0] != self.last_date:
             self.last_date = time_info[0]
@@ -143,41 +147,47 @@ class Strategy:
                 self.close_price.pop(0)
                 self.close_price.append(self.last_price)
 
-        mean_average = talib.MA(numpy.array(self.close_price), self.move_average_period)[-1]
-        standard_dev = talib.STDDEV(numpy.array(self.close_price))[-1]
+            data_array = numpy.array(self.close_price)
 
-        # in case some bad value
-        if md.lastPrice < mean_average / 10:
-            md.lastPrice *= 100
+            # Calculate daily technique values
+            macd, macdsignal, mcadhist = talib.MACD(data_array, fastperiod=self.macd_fast_period,
+                                                    slowperiod=self.macd_slow_period,
+                                                    signalperiod=self.macd_time_signal)
+            self.move_average = talib.MA(data_array, timeperiod=self.move_average_period)[-1]
+            self.standard_deviation = talib.STDDEV(data_array, timeperiod=self.move_average_period)[-1]
+            rsi = talib.RSI(data_array, timeperiod=self.rsi_period)[-1]
+            adf_result = stat.adfuller(numpy.array(self.close_price[-self.adf_period:]))
 
-        if md.lastPrice + self.ma_std_factor * standard_dev < mean_average:
-            volume0 = int(self.total_capital / 10 / md.lastPrice)
-            n = round(math.log(1 - self.hold_volume / volume0 * (1 - self.volume_factor), self.volume_factor))
-            volume = volume0 * self.volume_factor ** (n + 1)
-            if md.lastPrice <= self.current_capital < volume * md.lastPrice:
-                volume = self.current_capital / md.lastPrice
+            # Relocate capital every day.
+            total_capital = self.total_capital[TREND] + self.total_capital[MEAN]
+            self.total_capital[TREND] = adf_result[1] * total_capital
+            self.total_capital[MEAN] = total_capital - self.total_capital[TREND]
 
-            if self.current_capital > volume * md.lastPrice:
-                order = cashAlgoAPI.Order(md.timestamp, 'SEHK', code, str(self.cnt), md.askPrice1, volume,
-                                          "open", 1, "insert", "market_order", "today")
+            if self.current_capital[TREND] > self.total_capital[TREND]:
+                difference = self.current_capital[TREND] - self.total_capital[TREND]
+                self.current_capital[TREND] = self.total_capital[TREND]
+                self.current_capital[MEAN] += difference
 
-                self.mgr.insertOrder(order)
-                self.cnt += 1
-                self.hold_volume += volume
-                self.current_capital -= volume * md.askPrice1
-                print "Buy: %s %s" % (volume, self.total_capital)
+            elif self.current_capital[MEAN] > self.total_capital[MEAN]:
+                difference = self.current_capital[MEAN] - self.total_capital[MEAN]
+                self.current_capital[MEAN] = self.total_capital[MEAN]
+                self.current_capital[TREND] += difference
 
-        if int(10 * md.lastPrice) >= int(mean_average * 10) and self.hold_volume:
-            order = cashAlgoAPI.Order(md.timestamp, 'SEHK', code, str(self.cnt), md.bidPrice1, self.hold_volume,
-                                      "open", 2, "insert", "market_order", "today")
+            # Every day trend strategy.
+            if self.hold_volume[TREND] and macd[-1] < macdsignal[-1] and rsi > RSI_SELL_SIGNAL:
+                self.short_securities(TREND, code, md.timestamp, md.bidPrice1)
 
-            self.mgr.insertOrder(order)
-            self.cnt += 1
-            self.current_capital += self.hold_volume * md.bidPrice1
-            self.total_capital = self.current_capital
-            print "Sell: %s %s" % (self.hold_volume, self.total_capital)
-            self.hold_volume = 0
+            if not self.hold_volume[TREND] and macd[-1] > macdsignal[-1] and rsi < RSI_BUY_SIGNAL:
+                self.long_securities(TREND, code, md.timestamp, md.askPrice1)
 
+        # Every day mean strategy
+        if md.lastPrice + self.ma_std_factor * self.standard_deviation < self.move_average:
+            self.long_securities(MEAN, code, md.timestamp, md.askPrice1)
+
+        if int(10 * md.lastPrice) >= int(self.move_average * 10) and self.hold_volume[MEAN]:
+            self.short_securities(MEAN, code, md.timestamp, md.askPrice1)
+
+        # At the end of this period, store the price
         self.last_price = md.lastPrice
 
     def short_securities(self, strategy, code, timestamp, price):
