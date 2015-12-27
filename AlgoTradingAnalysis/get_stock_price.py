@@ -7,6 +7,11 @@
 
 import urllib
 import urllib2
+import pprint
+import pickle
+
+import pandas as pd
+from pandas.tseries.offsets import BDay
 
 DATA_URL = "http://real-chart.finance.yahoo.com/table.csv"
 
@@ -15,8 +20,15 @@ def get(url, data=None):
     if data is not None:
         url_values = urllib.urlencode(data)
         url = "%s?%s" % (url, url_values)
-    req = urllib2.Request(url)
-    response = urllib2.urlopen(req)
+
+    # print url
+    # return '1\n1'
+    try:
+        req = urllib2.Request(url)
+        response = urllib2.urlopen(req)
+    except Exception, err:
+        print url
+        raise Exception(err)
     return response.read()
 
 
@@ -40,6 +52,26 @@ def get_price_data(code, start_date="2014-08-28", end_date="2015-01-01"):
     f.close()
 
 
+def get_close_price(code, end_date="2015-01-01", days=90):
+    end_date_info = [int(i) for i in end_date.split('-')]
+    end_date = pd.datetime(end_date_info[0], end_date_info[1], end_date_info[2])
+    start_date = end_date - BDay(days)
+    time_info = [("s", code),
+                 ("a", "%02d" % (start_date.month - 1)),
+                 ("b", str(start_date.day)),
+                 ("c", str(start_date.year)),
+                 ("d", "%02d" % (end_date.month - 1)),
+                 ("e", str(end_date.day)),
+                 ("f", str(end_date.year)),
+                 ("g", "d"),
+                 ("ignore", ".csv")]
+
+    price_info = get(DATA_URL, time_info).split('\n')[1:-1]
+    price_list = [float(i.split(',')[4]) for i in price_info]
+    price_list = list(reversed(price_list))
+    return price_list
+
+
 def get_given_stock_price():
     stock_file = open('stock_list')
     for i in stock_file:
@@ -60,7 +92,52 @@ def get_a_stock_list(n=None):
     stock_file.close()
 
 
+def prepare_stock_info():
+    stock_info = {}
+    stock_file = open('stock_list')
+    for i in stock_file:
+        # print i
+        stock_info['0%s' % i.strip('\n')] = get_close_price('%s.HK' % i.strip('\n'))
+    stock_file.close()
+    return stock_info
+
+
 if __name__ == "__main__":
     # get_a_stock_list(16)
     # get_given_stock_price(
-    get_price_data("0066.HK")
+    # get_price_data("0066.HK")
+    # price_dict = prepare_stock_info()
+    # pprint.pprint(price_dict)
+    # f = open("pformat_stock_price.txt", "r")
+    # f.write('{')
+    # for i in price_dict:
+    #     write_string = '\"%s\": [%s' % (i, price_dict[i][0])
+    #     for j in price_dict[i][1:]:
+    #         write_string = "%s, %s" % (write_string, j)
+    #
+    #     write_string = "%s],\n" % write_string
+    #
+    #     f.write(write_string)
+    # f.write('}\n')
+    # # f.write(pprint.pformat(price_dict))
+    # f.close()
+    # price_dict = eval(f.read())
+    # f.close()
+
+    # f = open('stock_price', 'w')
+    # pickle.dump(price_dict, f)
+    # f.close()
+    f = open('stock_price')
+    price_dict = pickle.load(f)
+    f.close()
+
+    for i in price_dict:
+        for j, k in enumerate(price_dict[i]):
+            price_dict[i][j] = round(k, 2)
+
+    f = open('stock_price', 'w')
+    pickle.dump(price_dict, f)
+    f.close()
+    f = open("test", 'w')
+    f.write(pprint.pformat(price_dict, width=800))
+    f.close()

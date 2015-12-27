@@ -291,10 +291,9 @@ class Strategy:
                      ("e", str(end_date.day)),
                      ("f", str(end_date.year)),
                      ("g", "d"),
-                     ("ignore", ".csv")
-                     ]
+                     ("ignore", ".csv")]
 
-        price_info = self.get(self.DATA_URL, time_info).split('\n')
+        price_info = self.get(self.DATA_URL, time_info).split('\n')[1:-1]
         price_list = [float(i.split(',')[4]) for i in price_info]
-        price_list = reversed(price_list)
+        price_list = list(reversed(price_list))
         return price_list
