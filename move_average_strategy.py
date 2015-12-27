@@ -54,6 +54,10 @@ class Strategy:
         # The volume augment factor
         self.volume_factor = None
 
+        # the value of every day's new factor.
+        self.mean_average = None
+        self.standard_dev = None
+
     # Initialize Strategy
     def init(self):
 
@@ -93,14 +97,16 @@ class Strategy:
                 self.close_price.pop(0)
                 self.close_price.append(self.last_price)
 
-        mean_average = talib.MA(numpy.array(self.close_price), self.move_average_day)[-1]
-        standard_dev = talib.STDDEV(numpy.array(self.close_price))[-1]
+            self.mean_average = talib.MA(numpy.array(self.close_price), self.move_average_day)[-1]
+            self.standard_dev = talib.STDDEV(numpy.array(self.close_price))[-1]
 
         # in case some bad value
-        if md.lastPrice < mean_average / 10:
+        if md.lastPrice < self.mean_average / 10:
             md.lastPrice *= 100
 
-        if md.lastPrice + self.factor * standard_dev < mean_average:
+        if md.lastPrice + self.factor * self.standard_dev < self.mean_average:
+
+            # Increase the buying volume so that we will buy more at second time.
             volume0 = int(self.total_capital / 10 / md.lastPrice)
             n = round(math.log(1 - self.buy_volume / volume0 * (1 - self.volume_factor), self.volume_factor))
             volume = volume0 * self.volume_factor ** (n + 1)
@@ -108,16 +114,16 @@ class Strategy:
                 volume = self.current_capital / md.lastPrice
 
             if self.current_capital > volume * md.lastPrice:
-                order = cashAlgoAPI.Order(md.timestamp, 'SEHK', code, str(self.cnt), md.askPrice1, volume,
+                order = cashAlgoAPI.Order(md.timestamp, 'SEHK', code, str(self.cnt), md.askPrice1, int(volume),
                                           "open", 1, "insert", "market_order", "today")
 
                 self.mgr.insertOrder(order)
                 self.cnt += 1
-                self.buy_volume += volume
-                self.current_capital -= volume * md.askPrice1
+                self.buy_volume += int(volume)
+                self.current_capital -= int(volume) * md.askPrice1
                 print "Buy: %s %s" % (volume, self.total_capital)
 
-        if int(10 * md.lastPrice) >= int(mean_average * 10) and self.buy_volume:
+        if int(10 * md.lastPrice) >= int(self.mean_average * 10) and self.buy_volume:
             order = cashAlgoAPI.Order(md.timestamp, 'SEHK', code, str(self.cnt), md.bidPrice1, self.buy_volume,
                                       "open", 2, "insert", "market_order", "today")
 
