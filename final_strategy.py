@@ -55,6 +55,7 @@ class Strategy:
 
         # usually 2, the confidential factor.
         self.ma_std_factor = 2
+        self.first_buy_factor = 0.1
 
         ###############################################################################################
         # The following parameters are used for RSI strategy and MACD strategy
@@ -90,6 +91,10 @@ class Strategy:
         # how many volume stocks we have bought
         self.hold_volume = {MEAN: 0,
                             TREND: 0}
+
+        # how many stocks total we have bought
+        self.hold_price = {MEAN: 0,
+                           TREND: 0}
 
     # Initialize Strategy
     def init(self):
@@ -181,22 +186,46 @@ class Strategy:
 
         self.mgr.insertOrder(order)
         self.cnt += 1
-        self.current_capital[strategy] += self.hold_volume[strategy] * price
-        self.total_capital[strategy] = self.current_capital[strategy]
+        sell_capital = self.hold_volume[strategy] * price
+        interest = sell_capital - self.hold_price[strategy]
+        total_capital = self.total_capital[MEAN] + self.total_capital[TREND] + interest
+        current_mean_factor = float(self.total_capital[MEAN]) / (self.total_capital[TREND] + self.total_capital[MEAN])
+        self.total_capital[MEAN] = total_capital * current_mean_factor
+        self.total_capital[TREND] = total_capital * (1 - current_mean_factor)
+        self.current_capital[strategy] += sell_capital
+        if self.current_capital[strategy] > self.total_capital[strategy]:
+            difference = self.current_capital[strategy] - self.total_capital[strategy]
+            other_strategy = MEAN if strategy == TREND else TREND
+            self.current_capital[strategy] -= difference
+            self.current_capital[other_strategy] += difference
+
         print "Sell: %s, current total capital is %s" % (self.hold_volume[strategy], self.total_capital)
         self.hold_volume[strategy] = 0
+        self.hold_price[strategy] = 0
 
-    # TODO: finish this part
     def long_securities(self, strategy, code, timestamp, price):
-        order = cashAlgoAPI.Order(timestamp, 'SEHK', code, str(self.cnt), price, self.hold_volume[strategy],
-                                  "open", 2, "insert", "market_order", "today")
+        if strategy == TREND:
+            volume = int(self.current_capital[strategy] / price)
+        else:
+            volume0 = int(self.total_capital[strategy] * self.first_buy_factor / price)
+            n = round(math.log(1 - self.buy_volume / volume0 * (1 - self.volume_factor), self.volume_factor))
+            volume = int(volume0 * self.volume_factor ** (n + 1))
+            if price <= self.current_capital[MEAN] < volume * price:
+                volume = self.current_capital[MEAN] / price
+            elif self.current_capital[MEAN] < price:
+                print "%s, current money is %s, cannot buy" % (timestamp, self.current_capital[MEAN])
+                volume = 0
 
-        self.mgr.insertOrder(order)
-        self.cnt += 1
-        self.current_capital[strategy] += self.hold_volume[strategy] * price
-        self.total_capital[strategy] = self.current_capital[strategy]
-        print "Sell: %s, current total capital is %s" % (self.hold_volume[strategy], self.total_capital)
-        self.hold_volume[strategy] = 0
+        if volume:
+            order = cashAlgoAPI.Order(timestamp, 'SEHK', code, str(self.cnt), price, volume,
+                                      "open", 1, "insert", "market_order", "today")
+
+            self.mgr.insertOrder(order)
+            self.cnt += 1
+            self.current_capital[strategy] -= volume * price
+            print "Buy: %s, current total capital is %s" % (volume, self.total_capital)
+            self.hold_volume[strategy] += volume
+            self.hold_price[strategy] += volume * price
 
     # Used in OHLC mode.
     def onOHLCFeed(self, of):
