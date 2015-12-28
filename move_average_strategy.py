@@ -78,6 +78,7 @@ class Strategy:
 
         # Get the past price of this stock.
         self.close_price = self.get_price_data(product_code)
+        print self.close_price
         # self.close_price = [float(i) for i in self.config.get("Strategy", "ClosePrice").split(',')]
 
     # Process Market Data. Please use onOHLCFeed() in OHLC mode
@@ -120,7 +121,7 @@ class Strategy:
                 self.mgr.insertOrder(order)
                 self.cnt += 1
                 self.buy_volume += int(volume)
-                self.current_capital -= int(volume) * md.askPrice1
+                # self.current_capital -= int(volume) * md.askPrice1
                 print "Buy: %s %s" % (volume, self.total_capital)
 
         if int(10 * md.lastPrice) >= int(self.mean_average * 10) and self.buy_volume:
@@ -129,9 +130,9 @@ class Strategy:
 
             self.mgr.insertOrder(order)
             self.cnt += 1
-            self.current_capital += self.buy_volume * md.bidPrice1
-            self.total_capital = self.current_capital
-            print "Sell: %s %s" % (self.buy_volume, self.total_capital)
+            # self.current_capital += self.buy_volume * md.bidPrice1
+            # self.total_capital = self.current_capital
+            # print "Sell: %s %s" % (self.buy_volume, self.total_capital)
             self.buy_volume = 0
 
         self.last_price = md.lastPrice
@@ -156,8 +157,15 @@ class Strategy:
 
     # Process Trade
     def onTradeFeed(self, tf):
-        pass
-        # print "Trade feed: %s price: %s, timestamp: %s volume: %s" % (tf.buySell, tf.price, tf.timestamp, tf.volume)
+        # print "buySell: %s, price: %s, timestame: %s, volume: %s, volumeFilled: %s" % (tf.buySell, tf.price,
+        #                                                                                tf.timestamp, tf.volume,
+        #                                                                                tf.volumeFilled)
+        # # print "Trade feed: %s price: %s, timestamp: %s volume: %s" % (tf.buySell, tf.price, tf.timestamp, tf.volume)
+        if tf.buySell == 1:
+            self.current_capital -= tf.volumeFilled * tf.price
+        else:
+            self.current_capital += tf.volumeFilled * tf.price
+            self.total_capital = self.current_capital
 
     # Process Position
     def onPortfolioFeed(self, portfolioFeed):
@@ -178,7 +186,7 @@ class Strategy:
         content = response.read()
         return content
 
-    def get_price_data(self, code, start_date="2014-08-28", end_date="2015-01-01"):
+    def get_price_data(self, code, start_date="2014-08-27", end_date="2014-12-31"):
         code = '%s.HK' % code[1:]
         time_info = [("s", code)]
         data = start_date.split('-')

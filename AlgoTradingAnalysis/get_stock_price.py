@@ -105,7 +105,7 @@ def prepare_stock_info():
 if __name__ == "__main__":
     # get_a_stock_list(16)
     # get_given_stock_price(
-    # get_price_data("0066.HK")
+    get_price_data("0066.HK", start_date='2014-10-09', end_date='2015-03-31')
     # price_dict = prepare_stock_info()
     # pprint.pprint(price_dict)
     # f = open("pformat_stock_price.txt", "r")
@@ -127,17 +127,17 @@ if __name__ == "__main__":
     # f = open('stock_price', 'w')
     # pickle.dump(price_dict, f)
     # f.close()
-    f = open('stock_price')
-    price_dict = pickle.load(f)
-    f.close()
-
-    for i in price_dict:
-        for j, k in enumerate(price_dict[i]):
-            price_dict[i][j] = round(k, 2)
-
-    f = open('stock_price', 'w')
-    pickle.dump(price_dict, f)
-    f.close()
-    f = open("test", 'w')
-    f.write(pprint.pformat(price_dict, width=800))
-    f.close()
+    # f = open('stock_price')
+    # price_dict = pickle.load(f)
+    # f.close()
+    #
+    # for i in price_dict:
+    #     for j, k in enumerate(price_dict[i]):
+    #         price_dict[i][j] = round(k, 2)
+    #
+    # f = open('stock_price', 'w')
+    # pickle.dump(price_dict, f)
+    # f.close()
+    # f = open("test", 'w')
+    # f.write(pprint.pformat(price_dict, width=800))
+    # f.close()

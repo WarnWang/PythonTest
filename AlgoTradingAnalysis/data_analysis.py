@@ -7,11 +7,11 @@
 
 import numpy
 import statsmodels.tsa.stattools as ts
-import get_stock_price
+import pandas as pd
+from pandas.tseries.offsets import BDay
 
 
 class DataAnalysis:
-
     data_file_path = ""
     close_list = []
 
@@ -58,22 +58,29 @@ class DataAnalysis:
                 # print i
                 self.close_list.append(float(i.split(",")[6]))
 
-    def get_adfvalue(self):
-        if not self.close_list:
-            self.load_close_data()
+    def get_adfvalue(self, test_list=None):
+        if not test_list:
+            if not self.close_list:
+                self.load_close_data()
+            test_list = list(reversed(self.close_list))
 
-        x = numpy.array(list(reversed(self.close_list)))
+        x = numpy.array(test_list)
         result = ts.adfuller(x)
         return result
 
+
 if __name__ == "__main__":
-    test = DataAnalysis(r"./data/0388.HK.csv")
+    test = DataAnalysis(r"./data/0066.HK.csv")
     test.load_close_data()
-    print test.close_list
-    str1 = ''
-    test_list = reversed(test.close_list)
-    for i in test_list:
-        str1 = "%s,%s" % (str1, i)
+    # print test.close_list
+    # str1 = ''
+    date_period = 60
 
-    print str1
+    date = pd.datetime(2015, 1, 1)
+    for i in range(len(test.close_list) - date_period):
+        test_list = list(reversed(test.close_list))[i:(i + date_period)]
+        date += BDay(1)
+        # for i in test_list:
+        #     str1 = "%s,%s" % (str1, i)
 
+        print date, test.get_adfvalue(test_list)

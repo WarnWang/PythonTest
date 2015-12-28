@@ -20,8 +20,8 @@ import cashAlgoAPI
 TREND = 'trend'
 MEAN = 'mean'
 
-RSI_SELL_SIGNAL = 65
-RSI_BUY_SIGNAL = 35
+RSI_SELL_SIGNAL = 70
+RSI_BUY_SIGNAL = 50
 
 
 class Strategy:
@@ -174,9 +174,11 @@ class Strategy:
                 self.current_capital[TREND] += difference
 
             # Every day trend strategy.
+            # When macd is below signal, and rsi is greater than 65, this is the point to sell
             if self.hold_volume[TREND] and macd[-1] < macdsignal[-1] and rsi > RSI_SELL_SIGNAL:
                 self.short_securities(TREND, code, md.timestamp, md.bidPrice1)
 
+            # When macd is above signal, and rsi is lower than 35, this is the point to buy
             if not self.hold_volume[TREND] and macd[-1] > macdsignal[-1] and rsi < RSI_BUY_SIGNAL:
                 self.long_securities(TREND, code, md.timestamp, md.askPrice1)
 
@@ -280,7 +282,7 @@ class Strategy:
         return content
 
     def get_price_data(self, code, days=90):
-        end_date = pd.datetime.date(2015, 1, 1)
+        end_date = pd.datetime(2015, 1, 1)
         start_date = end_date - BDay(days)
         code = '%s.HK' % code[1:]
         time_info = [("s", code),
