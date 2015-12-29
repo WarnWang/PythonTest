@@ -41,7 +41,7 @@ class DataAnalysis:
                 # print i
                 self.close_list.append(float(i.split(",")[4]))
 
-        self.close_list = list(reversed(self.close_list))[-40:]
+        self.close_list = list(reversed(self.close_list))
 
     def load_adj_close_data(self, data_path=None):
         self.close_list = []
@@ -83,13 +83,15 @@ class DataAnalysis:
         print numpy.corrcoef(x[:-1], x[1:])[0][1]
         result = stats.ttest_ind(x[:-1], x[1:])
         # print len(test_list)
-        print test_list
+        for i in test_list:
+            print i
+        # print test_list
         return result
 
 
 if __name__ == "__main__":
-    code = '1988.HK'
-    get_stock_price.get_price_data(code)
+    code = '0001.HK'
+    get_stock_price.get_price_data(code, end_date="2015-03-31", start_date="2015-01-04")
     test = DataAnalysis(r"./data/%s.csv" % code)
     test.load_close_data()
     # print test.close_list

@@ -1,9 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# File name: mean_reversion_strategy1
+# File name: ma_rsi_strategy
 # Author: warn
-# Date: 25/12/2015 20:49
+# Date: 29/12/2015 13:32
 
 import urllib
 import urllib2
@@ -11,6 +11,8 @@ import math
 
 import numpy
 import talib
+import pandas as pd
+from pandas.tseries.offsets import BDay
 
 import cashAlgoAPI
 
@@ -37,13 +39,13 @@ class Strategy:
         self.buy_volume = 0
 
         # the days used to calculate the move average
-        self.move_average_day = 0
+        self.move_average_day = 14
 
         # the close price of last days
         self.close_price = None
 
         # usually 2, the confidential factor.
-        self.factor = None
+        self.std_factor = 2
 
         # How many total capital we have in summary
         self.total_capital = None
@@ -52,22 +54,34 @@ class Strategy:
         self.current_capital = None
 
         # The volume augment factor
-        self.volume_factor = None
+        self.volume_factor = 1.0
 
         # the value of every day's new factor.
         self.mean_average = None
         self.standard_dev = None
 
+        self.rsi_period = 6
+        self.rsi_buy_bound = 50
+        self.rsi_sell_bound = 70
+
     # Initialize Strategy
     def init(self):
 
         # Read Parameters
-        if self.config.has_option("Strategy", "MeanAverage"):
-            self.move_average_day = int(self.config.get("Strategy", "MeanAverage"))
+        if self.config.has_option("Strategy", "MeanAveragePeriod"):
+            self.move_average_day = int(self.config.get("Strategy", "MeanAveragePeriod"))
+        if self.config.has_option("Strategy", "StdFactor"):
+            self.std_factor = float(self.config.get("Strategy", "StdFactor"))
+        if self.config.has_option("Strategy", "VolumeFactor"):
+            self.volume_factor = float(self.config.get("Strategy", "VolumeFactor"))
+        if self.config.has_option("Strategy", "RSIPeriod"):
+            self.rsi_period = int(self.config.get("Strategy", "RSIPeriod"))
 
-        # self.end_date = self.config.get("MarketData", "EndDate").replace("-", "")
-        self.factor = float(self.config.get("Strategy", "Factor"))
-        self.volume_factor = float(self.config.get("Strategy", "VolumeFactor"))
+        if self.config.has_option("Strategy", "RSIBuyBound"):
+            self.rsi_buy_bound = int(self.config.get("Strategy", "RSIBuyBound"))
+        if self.config.has_option("Strategy", "RSISellBound"):
+            self.rsi_sell_bound = int(self.config.get("Strategy", "RSISellBound"))
+
         self.current_capital = self.total_capital = float(self.config.get("Risk", "InitialCapital"))
         product_code = self.config.get("MarketData", "ProductCode_1")
 
@@ -77,7 +91,7 @@ class Strategy:
         self.buy_volume = 0
 
         # Get the past price of this stock.
-        self.close_price = self.get_price_data(product_code)
+        self.close_price = self.get_price_data(product_code, end_date=self.config.get("MarketData", "BeginDate"))
         # print self.close_price
         # self.close_price = [float(i) for i in self.config.get("Strategy", "ClosePrice").split(',')]
 
@@ -94,6 +108,7 @@ class Strategy:
             self.last_date = time_info[0]
 
             if self.last_price:
+                print 'date: %s\t%s' % (md.timestamp, self.last_price)
                 self.close_price.pop(0)
                 self.close_price.append(self.last_price)
 
@@ -104,16 +119,15 @@ class Strategy:
         if md.lastPrice < self.mean_average / 10:
             md.lastPrice *= 100
 
-        rsi6 = talib.RSI(numpy.array(self.close_price + [md.lastPrice]), timeperiod=6)[-1]
-        rsi9 = talib.RSI(numpy.array(self.close_price + [md.lastPrice]), timeperiod=9)[-1]
-        rsi14 = talib.RSI(numpy.array(self.close_price + [md.lastPrice]), timeperiod=15)[-1]
-        rsix = talib.RSI(numpy.array(self.close_price + [md.lastPrice]), timeperiod=self.move_average_day)[-1]
+        # rsi6 = talib.RSI(numpy.array(self.close_price + [md.lastPrice]), timeperiod=6)[-1]
+        # rsi9 = talib.RSI(numpy.array(self.close_price + [md.lastPrice]), timeperiod=9)[-1]
+        # rsi14 = talib.RSI(numpy.array(self.close_price + [md.lastPrice]), timeperiod=15)[-1]
+        rsix = talib.RSI(numpy.array(self.close_price + [md.lastPrice]), timeperiod=self.rsi_period)[-1]
 
-        if md.lastPrice + self.factor * self.standard_dev < self.mean_average:
+        if md.lastPrice + self.std_factor * self.standard_dev < self.mean_average and rsix < self.rsi_buy_bound:
 
-            if rsix < 50:
-                print "Buying point appear rsi6: %s, rsi9: %s, rsi14: %s, rsi%s: %s" % (rsi6, rsi9, rsi14,
-                                                                                        self.move_average_day, rsix)
+            # if rsix < 50:
+            # print "Buying point appear rsi%s: %s" % (self.rsi_period, rsix)
 
             # Increase the buying volume so that we will buy more at second time.
             volume0 = int(self.total_capital / 10 / md.lastPrice)
@@ -132,19 +146,17 @@ class Strategy:
                 # self.current_capital -= int(volume) * md.askPrice1
                 # print "Buy: %s %s" % (volume, self.total_capital)
 
-        if int(10 * md.lastPrice) >= int(self.mean_average * 10):
-            if self.buy_volume:
-                print "Selling point appear rsi6: %s, rsi9: %s, rsi14: %s, rsi%s: %s" % (rsi6, rsi9, rsi14,
-                                                                                         self.move_average_day, rsix)
-                order = cashAlgoAPI.Order(md.timestamp, 'SEHK', code, str(self.cnt), md.bidPrice1, self.buy_volume,
-                                          "open", 2, "insert", "market_order", "today")
+        if int(10 * md.lastPrice) >= int(self.mean_average * 10) and self.buy_volume and rsix > self.rsi_sell_bound:
+            # print "Selling point appear rsi%s: %s" % (self.rsi_period, rsix)
+            order = cashAlgoAPI.Order(md.timestamp, 'SEHK', code, str(self.cnt), md.bidPrice1, self.buy_volume,
+                                      "open", 2, "insert", "market_order", "today")
 
-                self.mgr.insertOrder(order)
-                self.cnt += 1
-                # self.current_capital += self.buy_volume * md.bidPrice1
-                # self.total_capital = self.current_capital
-                # print "Sell: %s %s" % (self.buy_volume, self.total_capital)
-                self.buy_volume = 0
+            self.mgr.insertOrder(order)
+            self.cnt += 1
+            # self.current_capital += self.buy_volume * md.bidPrice1
+            # self.total_capital = self.current_capital
+            # print "Sell: %s %s" % (self.buy_volume, self.total_capital)
+            self.buy_volume = 0
 
         self.last_price = md.lastPrice
 
@@ -197,21 +209,23 @@ class Strategy:
         content = response.read()
         return content
 
-    def get_price_data(self, code, start_date="2014-08-27", end_date="2014-12-31"):
+    def get_price_data(self, code, end_date=None, days=90):
+        if end_date is None:
+            end_date = pd.datetime(2014, 12, 31)
+        else:
+            time_info = end_date.split('-')
+            end_date = pd.datetime(int(time_info[0]), int(time_info[1]), int(time_info[2])) - BDay(1)
+        start_date = end_date - BDay(days)
         code = '%s.HK' % code[1:]
-        time_info = [("s", code)]
-        data = start_date.split('-')
-        time_info.append(("a", "%02d" % (int(data[1]) - 1)))
-        time_info.append(("b", data[2]))
-        time_info.append(("c", data[0]))
-
-        data = end_date.split('-')
-        time_info.append(("d", "%02d" % (int(data[1]) - 1)))
-        time_info.append(("e", data[2]))
-        time_info.append(("f", data[0]))
-
-        time_info.append(("g", "d"))
-        time_info.append(("ignore", ".csv"))
+        time_info = [("s", code),
+                     ("a", "%02d" % (start_date.month - 1)),
+                     ("b", str(start_date.day)),
+                     ("c", str(start_date.year)),
+                     ("d", "%02d" % (end_date.month - 1)),
+                     ("e", str(end_date.day)),
+                     ("f", str(end_date.year)),
+                     ("g", "d"),
+                     ("ignore", ".csv")]
 
         price_info = self.get(self.DATA_URL, time_info).split('\n')[1:-1]
         price_list = [float(i.split(',')[4]) for i in price_info]

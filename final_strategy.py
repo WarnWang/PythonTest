@@ -281,8 +281,12 @@ class Strategy:
         content = response.read()
         return content
 
-    def get_price_data(self, code, days=90):
-        end_date = pd.datetime(2015, 1, 1)
+    def get_price_data(self, code, end_date=None, days=90):
+        if end_date is None:
+            end_date = pd.datetime(2014, 12, 31)
+        else:
+            time_info = end_date.split('-')
+            end_date = pd.datetime(int(time_info[0]), int(time_info[1]), int(time_info[2]))
         start_date = end_date - BDay(days)
         code = '%s.HK' % code[1:]
         time_info = [("s", code),
