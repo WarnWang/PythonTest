@@ -49,6 +49,9 @@ class Strategy:
         if len(self.close_data) >= self.data_number:
             self.close_data.pop(0)
 
+        if md.lastPrice < 0.1:
+            md.lastPrice *= 100
+
         self.close_data.append(md.lastPrice)
 
         if len(self.close_data) >= self.rsi_period:
@@ -63,6 +66,8 @@ class Strategy:
                     volume = self.current_capital / md.lastPrice
 
                 if volume * md.lastPrice <= self.current_capital:
+                    # if volume > 1000:
+                    print "current price is %s, current volume is %s" % (md.lastPrice, volume)
                     self.long_security(md.timestamp, code, md.askPrice1, volume)
 
             elif self.long_flag and rsi_result >= 70:
@@ -76,27 +81,28 @@ class Strategy:
                     self.short_security(md.timestamp, code, md.lastPrice)
 
         if self.hold_volume and md.timestamp.split('_')[1][:4] == '1600':
-            print "Close market at %s, and sell all the belongings" % md.timestamp
+            # print "Close market at %s, and sell all the belongings" % md.timestamp
             self.short_security(md.timestamp, code, md.lastPrice)
             self.short_flag = False
             self.long_flag = False
 
     def long_security(self, timestamp, code, price, volume):
+        print 'order counter %s, trade price %s, volume: %s' % (self.cnt, price, volume)
         order = cashAlgoAPI.Order(timestamp, 'SEHK', code, str(self.cnt), price, int(volume),
                                   "open", 1, "insert", "market_order", "today")
         self.mgr.insertOrder(order)
         self.cnt += 1
-        self.hold_volume += int(volume)
-        self.current_capital -= int(volume) * price
+        # self.hold_volume += int(volume)
+        # self.current_capital -= int(volume) * price
 
     def short_security(self, timestamp, code, price):
         order = cashAlgoAPI.Order(timestamp, 'SEHK', code, str(self.cnt), price, self.hold_volume,
                                   "open", 1, "insert", "market_order", "today")
         self.mgr.insertOrder(order)
         self.cnt += 1
-        self.current_capital += self.hold_volume * price
-        self.total_capital = self.current_capital
-        self.hold_volume = 0
+        # self.current_capital += self.hold_volume * price
+        # self.total_capital = self.current_capital
+        # self.hold_volume = 0
 
     def onOHLCFeed(self, of):
         # print "feed price of %s is %s" % (of.productCode, of.close)
@@ -118,7 +124,14 @@ class Strategy:
     # Process Trade
     def onTradeFeed(self, tf):
         # print "Trade feed: %s price: %s, timestamp: %s volume: %s" % (tf.buySell, tf.price, tf.timestamp, tf.volume)
-        pass
+        if tf.buySell == 1:
+            self.current_capital -= tf.volumeFilled * tf.price
+            self.hold_volume += int(tf.volumeFilled)
+
+        else:
+            self.current_capital += tf.volumeFilled * tf.price
+            self.total_capital = self.current_capital
+            self.hold_volume = 0
 
     # Process Position
     def onPortfolioFeed(self, portfolioFeed):

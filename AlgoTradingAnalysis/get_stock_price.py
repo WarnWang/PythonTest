@@ -32,7 +32,7 @@ def get(url, data=None):
     return response.read()
 
 
-def get_price_data(code, start_date="2014-08-28", end_date="2015-01-01"):
+def get_price_data(code, start_date="2014-08-29", end_date="2015-01-01"):
     time_info = [("s", code)]
     data = start_date.split('-')
     time_info.append(("a", "%02d" % (int(data[1]) - 1)))
