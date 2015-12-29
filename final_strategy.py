@@ -131,8 +131,7 @@ class Strategy:
 
         # The following time is not allowed to trade. Only trade from 9:30 am to 12:00 am, and from 13:00 to 16:00
         time_info = md.timestamp.split('_')
-        if int(time_info[1][:2]) not in (range(10, 12) + range(13, 16)) or (time_info[1][:2] == '09' and
-                                                                                    int(time_info[1][2:]) < 3000):
+        if int(time_info[1][:4]) not in (range(930, 1201) + range(1300, 1601)):
             return
 
         # in case some bad value
