@@ -360,9 +360,6 @@ class Strategy:
     # self.mgr: order manager
     # self.config: configuration reader from parameter panel
 
-    # used to get data from finance yahoo
-    DATA_URL = "http://real-chart.finance.yahoo.com/table.csv"
-
     def __init__(self):
 
         # how many orders execute
@@ -407,6 +404,11 @@ class Strategy:
         self.macd_slow_period = 26
         self.macd_signal_period = 9
 
+        self.rsi_sell = 0
+        self.macd_sell = 0
+        self.rsi_buy = 0
+        self.macd_buy = 0
+
     # Initialize Strategy
     def init(self):
 
@@ -434,7 +436,7 @@ class Strategy:
 
         self.current_capital = self.total_capital = float(self.config.get("Risk", "InitialCapital"))
         product_code = self.config.get("MarketData", "ProductCode_1")
-        self.close_price = HISTORY_PRICE[product_code]
+        # self.close_price = HISTORY_PRICE[product_code]
 
     # Process Market Data. Please use onOHLCFeed() in OHLC mode
     def onMarketDataUpdate(self, market, code, md):
@@ -448,36 +450,27 @@ class Strategy:
         if time_info[0] != self.last_date:
             self.last_date = time_info[0]
 
-            if len(self.close_price) > max(self.rsi_period, self.move_average_day) + 1:
+            while len(self.close_price) > max(self.rsi_period, self.move_average_day, self.macd_slow_period) + 1:
                 self.close_price.pop(0)
 
             if self.last_price:
                 # print 'date: %s\t%s' % (md.timestamp, self.last_price)
                 self.close_price.append(self.last_price)
+            if len(self.close_price) >= max(self.rsi_period, self.move_average_day):
+                self.mean_average = talib.MA(numpy.array(self.close_price), self.move_average_day)[-1]
+                self.standard_dev = talib.STDDEV(numpy.array(self.close_price), self.move_average_day)[-1]
 
-            if len(self.close_price) < max(self.rsi_period, self.move_average_day):
-                self.last_price = md.lastPrice
-                return
-
-            self.mean_average = talib.MA(numpy.array(self.close_price), self.move_average_day)[-1]
-            self.standard_dev = talib.STDDEV(numpy.array(self.close_price), self.move_average_day)[-1]
-
-        if len(self.close_price) < max(self.rsi_period, self.move_average_day):
+        if len(self.close_price) < max(self.rsi_period, self.move_average_day, self.macd_slow_period):
             self.last_price = md.lastPrice
             return
 
         rsix = talib.RSI(numpy.array(self.close_price + [md.lastPrice]), timeperiod=self.rsi_period)[-1]
         macd, macdsignal, macdhist = talib.MACD(numpy.array(self.close_price), fastperiod=self.macd_fast_period,
                                                 slowperiod=self.macd_slow_period, signalperiod=self.macd_signal_period)
-        macdDiff1 = macd[-1]
-        macdDiff2 = macd[-1] - macdsignal[-1]
 
-        onSig = 0
-
-        if md.lastPrice + self.std_factor * self.standard_dev < self.mean_average and rsix < self.rsi_buy_bound and macdDiff1 > -0.25:
-            # if rsix < 50:
-            # print "Buying point appear rsi%s: %s;  macdDiff1 = %s; macdDiff2 %s" % (self.rsi_period, rsix, macdDiff1, macdDiff2)
-            # Increase the buying volume so that we will buy more at second time.
+        if (md.lastPrice + self.std_factor * self.standard_dev < self.mean_average and rsix < self.rsi_buy_bound
+            # and macd[-1] > -0.25
+            ) or (macd[-1] > 0 and macd[-1] > macdsignal[-1] - 0.2):
             volume0 = int(self.total_capital / 10 / md.lastPrice)
             n = round(math.log(1 - self.buy_volume / volume0 * (1 - self.volume_factor), self.volume_factor))
             volume = volume0 * self.volume_factor ** (n + 1)
@@ -485,62 +478,19 @@ class Strategy:
                 volume = self.current_capital / md.lastPrice
 
             if self.current_capital > volume * md.lastPrice:
-                order = cashAlgoAPI.Order(md.timestamp, 'SEHK', code, str(self.cnt), md.askPrice1, int(volume),
-                                          "open", 1, "insert", "market_order", "today")
+                self.rsi_buy += 1
+                print "buy by rsi %s, total buy %s" % (self.rsi_buy, self.rsi_buy + self.macd_buy)
+                self.long_security(code, md.timestamp, int(volume), md.askPrice1)
 
-                self.mgr.insertOrder(order)
-                self.cnt += 1
-                self.buy_volume += int(volume)
-                onSig = 1
-                # self.current_capital -= int(volume) * md.askPrice1
-                # print "Buy: %s %s" % (volume, self.total_capital)
-
-        if macdDiff1 > -0 and macdDiff2 > -0.2:
-            # if rsix < 50:
-            # print "Buying point appear rsi%s: %s;  macdDiff1 = %s; macdDiff2 %s" % (self.rsi_period, rsix, macdDiff1, macdDiff2)
-            # Increase the buying volume so that we will buy more at second time.
-            volume0 = int(self.total_capital / 10 / md.lastPrice)
-            n = round(math.log(1 - self.buy_volume / volume0 * (1 - self.volume_factor), self.volume_factor))
-            volume = volume0 * self.volume_factor ** (n + 1)
-            if md.lastPrice <= self.current_capital < volume * md.lastPrice:
-                volume = self.current_capital / md.lastPrice
-
-            if self.current_capital > volume * md.lastPrice:
-                order = cashAlgoAPI.Order(md.timestamp, 'SEHK', code, str(self.cnt), md.askPrice1, int(volume),
-                                          "open", 1, "insert", "market_order", "today")
-
-                self.mgr.insertOrder(order)
-                self.cnt += 1
-                self.buy_volume += int(volume)
-                onSig = 1
-                # self.current_capital -= int(volume) * md.askPrice1
-                # print "Buy: %s %s" % (volume, self.total_capital)
-
-        if int(10 * md.lastPrice) >= int(
-                        self.mean_average * 10) and self.buy_volume and rsix > self.rsi_sell_bound and onSig == 0:
-            # print "Selling point appear rsi%s: %s" % (self.rsi_period, rsix)
-            order = cashAlgoAPI.Order(md.timestamp, 'SEHK', code, str(self.cnt), md.bidPrice1, self.buy_volume,
-                                      "open", 2, "insert", "market_order", "today")
-
-            self.mgr.insertOrder(order)
-            self.cnt += 1
-            # self.current_capital += self.buy_volume * md.bidPrice1
-            # self.total_capital = self.current_capital
-            # print "Sell: %s %s" % (self.buy_volume, self.total_capital)
-            self.buy_volume = 0
-
-        if int(10 * md.lastPrice) >= int(self.mean_average * 10) and self.buy_volume and (
-                        macdDiff1 < 0.2 or macdDiff2 < 0) and onSig == 0:
-            # print "Selling point appear macd: macdDiff1 = %s; macdDiff2 %s" % (macdDiff1, macdDiff2)
-            order = cashAlgoAPI.Order(md.timestamp, 'SEHK', code, str(self.cnt), md.bidPrice1, self.buy_volume,
-                                      "open", 2, "insert", "market_order", "today")
-
-            self.mgr.insertOrder(order)
-            self.cnt += 1
-            # self.current_capital += self.buy_volume * md.bidPrice1
-            # self.total_capital = self.current_capital
-            # print "Sell: %s %s" % (self.buy_volume, self.total_capital)
-            self.buy_volume = 0
+        elif self.buy_volume and int(10 * md.lastPrice) >= int(self.mean_average * 10):
+            if rsix > self.rsi_sell_bound:
+                self.rsi_sell += 1
+                print "sell by rsi %s, total sell %s" % (self.rsi_sell, self.rsi_sell + self.macd_sell)
+                self.short_security(code, md.timestamp, self.buy_volume, md.bidPrice1)
+            elif macd[-1] < 0.2 or macd[-1] < macdsignal[-1]:
+                self.macd_sell += 1
+                print "sell by macd %s, total sell %s" % (self.macd_sell, self.rsi_sell + self.macd_sell)
+                self.short_security(code, md.timestamp, self.buy_volume, md.bidPrice1)
 
         self.last_price = md.lastPrice
 
@@ -564,15 +514,14 @@ class Strategy:
 
     # Process Trade
     def onTradeFeed(self, tf):
-        # print "buySell: %s, price: %s, timestame: %s, volume: %s, volumeFilled: %s" % (tf.buySell, tf.price,
-        #                                                                                tf.timestamp, tf.volume,
-        #                                                                                tf.volumeFilled)
-        # # print "Trade feed: %s price: %s, timestamp: %s volume: %s" % (tf.buySell, tf.price, tf.timestamp, tf.volume)
         if tf.buySell == 1:
             self.current_capital -= tf.volumeFilled * tf.price
+            self.buy_volume += tf.volumeFilled
         else:
             self.current_capital += tf.volumeFilled * tf.price
-            self.total_capital = self.current_capital
+            self.total_capital = self.current_capital if self.current_capital > self.total_capital \
+                else self.total_capital
+            self.buy_volume -= tf.volumeFilled
 
     # Process Position
     def onPortfolioFeed(self, portfolioFeed):
@@ -582,3 +531,15 @@ class Strategy:
     def onPnlperffeed(self, pf):
         # print "dailyPnL: %s" % pf.dailyPnL
         pass
+
+    def long_security(self, code, timestamp, volume, price):
+        order = cashAlgoAPI.Order(timestamp, 'SEHK', code, str(self.cnt), price, int(volume), "open", 1, "insert",
+                                  "market_order", "today")
+        self.mgr.insertOrder(order)
+        self.cnt += 1
+
+    def short_security(self, code, timestamp, volume, price):
+        order = cashAlgoAPI.Order(timestamp, 'SEHK', code, str(self.cnt), price, int(volume), "open", 2, "insert",
+                                  "market_order", "today")
+        self.mgr.insertOrder(order)
+        self.cnt += 1
