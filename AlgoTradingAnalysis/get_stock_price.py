@@ -11,9 +11,11 @@ import pprint
 import pickle
 
 import pandas as pd
+import BeautifulSoup
 from pandas.tseries.offsets import BDay
 
 DATA_URL = "http://real-chart.finance.yahoo.com/table.csv"
+SINA_DATA_URL = "http://stock.finance.sina.com.cn/hkstock/history"
 
 
 def get(url, data=None):
@@ -30,6 +32,14 @@ def get(url, data=None):
         print url
         raise Exception(err)
     return response.read()
+
+
+def post(url, data):
+    data = urllib.urlencode(data)
+    req = urllib2.Request(url)
+    response = urllib2.urlopen(req, data)
+    content = response.read()
+    return content
 
 
 def get_price_data(code, start_date="2014-08-29", end_date="2015-01-01"):
@@ -72,6 +82,15 @@ def get_close_price(code, end_date="2015-01-01", days=90):
     return price_list
 
 
+def get_close_price_from_sina(code, year=2014, season=4):
+    url = "%s/0%s.html" % (SINA_DATA_URL, code)
+    data = {"year": year,
+            "season": season}
+    result = post(url, data)
+    price_list = get_historical_price_from_sina_history(result)
+    return price_list
+
+
 def get_given_stock_price():
     stock_file = open('stock_list')
     for i in stock_file:
@@ -97,18 +116,26 @@ def prepare_stock_info():
     stock_file = open('stock_list')
     for i in stock_file:
         # print i
-        stock_info['0%s' % i.strip('\n')] = get_close_price('%s.HK' % i.strip('\n'))
+        stock_info['0%s' % i.strip('\n')] = get_close_price_from_sina(i.strip('\n'))
     stock_file.close()
     return stock_info
 
 
+def get_historical_price_from_sina_history(html_info):
+    soup = BeautifulSoup.BeautifulSoup(html_info)
+    data = soup.findAll('tr')[1:]
+    price_list = [float(i.findAll('td')[1].text) for i in data]
+    return list(reversed(price_list))
+
+
 if __name__ == "__main__":
+    # get_close_price_from_sina(code="0001")
     # get_a_stock_list(16)
     # get_given_stock_price(
-    get_price_data("0066.HK", start_date='2014-10-09', end_date='2015-03-31')
+    # get_price_data("0066.HK", start_date='2014-10-09', end_date='2015-03-31')
     # price_dict = prepare_stock_info()
     # pprint.pprint(price_dict)
-    # f = open("pformat_stock_price.txt", "r")
+    # f = open("pformat_stock_price.txt", "w")
     # f.write('{')
     # for i in price_dict:
     #     write_string = '\"%s\": [%s' % (i, price_dict[i][0])
@@ -119,7 +146,7 @@ if __name__ == "__main__":
     #
     #     f.write(write_string)
     # f.write('}\n')
-    # # f.write(pprint.pformat(price_dict))
+    # f.write(pprint.pformat(price_dict))
     # f.close()
     # price_dict = eval(f.read())
     # f.close()
@@ -127,9 +154,9 @@ if __name__ == "__main__":
     # f = open('stock_price', 'w')
     # pickle.dump(price_dict, f)
     # f.close()
-    # f = open('stock_price')
-    # price_dict = pickle.load(f)
-    # f.close()
+    f = open('stock_price')
+    price_dict = pickle.load(f)
+    f.close()
     #
     # for i in price_dict:
     #     for j, k in enumerate(price_dict[i]):
@@ -138,6 +165,6 @@ if __name__ == "__main__":
     # f = open('stock_price', 'w')
     # pickle.dump(price_dict, f)
     # f.close()
-    # f = open("test", 'w')
-    # f.write(pprint.pformat(price_dict, width=800))
-    # f.close()
+    f = open("pformat_stock_price.txt", 'w')
+    f.write(pprint.pformat(price_dict, width=800))
+    f.close()

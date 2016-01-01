@@ -1,12 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# File name: ma_rsi_strategy
+# File name: xlx_strategy
 # Author: warn
-# Date: 29/12/2015 13:32
+# Date: 29/12/2015 23:30
 
-import urllib
-import urllib2
+
 import math
 
 import numpy
@@ -20,8 +19,6 @@ class Strategy:
     # self.config: configuration reader from parameter panel
 
     # used to get data from finance yahoo
-    DATA_URL = "http://real-chart.finance.yahoo.com/table.csv"
-
     def __init__(self):
 
         # how many orders execute
@@ -41,6 +38,8 @@ class Strategy:
 
         # the close price of last days
         self.close_price = []
+        # the close price of last days for MACD
+        self.close_price_MACD = []
 
         # usually 2, the confidential factor.
         self.std_factor = 2
@@ -62,6 +61,10 @@ class Strategy:
         self.rsi_buy_bound = 50
         self.rsi_sell_bound = 70
 
+        self.macd_fast_period = 12
+        self.macd_slow_period = 26
+        self.macd_signal_period = 9
+
     # Initialize Strategy
     def init(self):
 
@@ -80,6 +83,13 @@ class Strategy:
         if self.config.has_option("Strategy", "RSISellBound"):
             self.rsi_sell_bound = int(self.config.get("Strategy", "RSISellBound"))
 
+        if self.config.has_option("Strategy", "MACDFastPeriod"):
+            self.macd_fast_period = int(self.config.get("Strategy", "MACDFastPeriod"))
+        if self.config.has_option("Strategy", "MACDSlowPeriod"):
+            self.macd_slow_period = int(self.config.get("Strategy", "MACDSlowPeriod"))
+        if self.config.has_option("Strategy", "MACDSignalPeriod"):
+            self.macd_signal_period = int(self.config.get("Strategy", "MACDSignalPeriod"))
+
         self.current_capital = self.total_capital = float(self.config.get("Risk", "InitialCapital"))
         product_code = self.config.get("MarketData", "ProductCode_1")
 
@@ -87,6 +97,7 @@ class Strategy:
         self.last_price = None
         self.last_date = None
         self.buy_volume = 0
+
 
         # Get the past price of this stock.
         # self.close_price = self.get_price_data(product_code, end_date=self.config.get("MarketData", "BeginDate"))
@@ -107,12 +118,16 @@ class Strategy:
 
             if len(self.close_price) > max(self.rsi_period, self.move_average_day) + 1:
                 self.close_price.pop(0)
-
-            print self.close_price
+            if len(self.close_price_MACD) > max(self.macd_slow_period, self.macd_signal_period,
+                                                self.macd_fast_period) + 1:
+                self.close_price_MACD.pop(0)
+                # print self.close_price_MACD
+            # print self.close_price
 
             if self.last_price:
-                print 'date: %s\t%s' % (md.timestamp, self.last_price)
+                # print 'date: %s\t%s' % (md.timestamp, self.last_price)
                 self.close_price.append(self.last_price)
+                self.close_price_MACD.append(self.last_price)
 
             if len(self.close_price) < max(self.rsi_period, self.move_average_day):
                 self.last_price = md.lastPrice
@@ -125,19 +140,21 @@ class Strategy:
             self.last_price = md.lastPrice
             return
 
-        # in case some bad value
-        if md.lastPrice < self.mean_average / 10:
-            md.lastPrice *= 100
-
         # rsi6 = talib.RSI(numpy.array(self.close_price + [md.lastPrice]), timeperiod=6)[-1]
         # rsi9 = talib.RSI(numpy.array(self.close_price + [md.lastPrice]), timeperiod=9)[-1]
         # rsi14 = talib.RSI(numpy.array(self.close_price + [md.lastPrice]), timeperiod=15)[-1]
         rsix = talib.RSI(numpy.array(self.close_price + [md.lastPrice]), timeperiod=self.rsi_period)[-1]
+        macd, macdsignal, macdhist = talib.MACD(numpy.array(self.close_price_MACD), fastperiod=self.macd_fast_period,
+                                                slowperiod=self.macd_slow_period, signalperiod=self.macd_signal_period)
+        macdDiff1 = macd[-1]
+        macdDiff2 = macd[-1] - macdsignal[-1]
+        # macdDiff1 = 0
+        # macdDiff2 = -0.1
 
-        if md.lastPrice + self.std_factor * self.standard_dev < self.mean_average and rsix < self.rsi_buy_bound:
+        if md.lastPrice + self.std_factor * self.standard_dev < self.mean_average and rsix < self.rsi_buy_bound and \
+                        macdDiff1 > -0.4:
             # if rsix < 50:
-            # print "Buying point appear rsi%s: %s" % (self.rsi_period, rsix)
-
+            # print "Buying point appear rsi%s: %s" % (self.rsi_period, macdDiff1)
             # Increase the buying volume so that we will buy more at second time.
             volume0 = int(self.total_capital / 10 / md.lastPrice)
             n = round(math.log(1 - self.buy_volume / volume0 * (1 - self.volume_factor), self.volume_factor))
@@ -155,8 +172,10 @@ class Strategy:
                 # self.current_capital -= int(volume) * md.askPrice1
                 # print "Buy: %s %s" % (volume, self.total_capital)
 
-        if int(10 * md.lastPrice) >= int(self.mean_average * 10) and self.buy_volume and rsix > self.rsi_sell_bound:
-            # print "Selling point appear rsi%s: %s" % (self.rsi_period, rsix)
+        if int(10 * md.lastPrice) >= int(self.mean_average * 10) and self.buy_volume and (
+                            rsix > self.rsi_sell_bound or macdDiff1 < 0.2 or macdDiff2 < 0):
+            # print "Selling point appear rsi%s: %s %s macd %s %s" % (
+            # self.rsi_period, rsix, self.total_capital, macdDiff1, macdDiff2)
             order = cashAlgoAPI.Order(md.timestamp, 'SEHK', code, str(self.cnt), md.bidPrice1, self.buy_volume,
                                       "open", 2, "insert", "market_order", "today")
 
@@ -166,6 +185,18 @@ class Strategy:
             # self.total_capital = self.current_capital
             # print "Sell: %s %s" % (self.buy_volume, self.total_capital)
             self.buy_volume = 0
+
+        # if int(10 * md.lastPrice) >= int(self.mean_average * 10) and self.buy_volume and macdDiff < 0:
+        #     print "Selling point appear macd%s: %s" % (self.rsi_period, macdDiff)
+        #     order = cashAlgoAPI.Order(md.timestamp, 'SEHK', code, str(self.cnt), md.bidPrice1, self.buy_volume,
+        #                               "open", 2, "insert", "market_order", "today")
+        #
+        #     self.mgr.insertOrder(order)
+        #     self.cnt += 1
+        #     # self.current_capital += self.buy_volume * md.bidPrice1
+        #     # self.total_capital = self.current_capital
+        #     # print "Sell: %s %s" % (self.buy_volume, self.total_capital)
+        #     self.buy_volume = 0
 
         self.last_price = md.lastPrice
 
@@ -192,7 +223,8 @@ class Strategy:
         # print "buySell: %s, price: %s, timestame: %s, volume: %s, volumeFilled: %s" % (tf.buySell, tf.price,
         #                                                                                tf.timestamp, tf.volume,
         #                                                                                tf.volumeFilled)
-        # # print "Trade feed: %s price: %s, timestamp: %s volume: %s" % (tf.buySell, tf.price, tf.timestamp, tf.volume)
+        # print "Trade feed: %s price: %s, timestamp: %s volume: %s" % (
+        #     tf.buySell, tf.price, tf.timestamp, tf.volumeFilled)
         if tf.buySell == 1:
             self.current_capital -= tf.volumeFilled * tf.price
         else:

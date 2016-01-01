@@ -17,12 +17,14 @@ import get_stock_price
 class DataAnalysis:
     data_file_path = ""
     close_list = []
+    time_list = []
 
     def __init__(self, data_path=None):
         self.data_file_path = data_path
 
     def load_close_data(self, data_path=None):
         self.close_list = []
+        self.time_list = []
         if data_path is None and self.data_file_path is None:
             return
 
@@ -40,8 +42,10 @@ class DataAnalysis:
             if i:
                 # print i
                 self.close_list.append(float(i.split(",")[4]))
+                self.time_list.append(i.split(",")[0])
 
         self.close_list = list(reversed(self.close_list))
+        self.time_list = list(reversed(self.time_list))
 
     def load_adj_close_data(self, data_path=None):
         self.close_list = []
@@ -83,8 +87,8 @@ class DataAnalysis:
         print numpy.corrcoef(x[:-1], x[1:])[0][1]
         result = stats.ttest_ind(x[:-1], x[1:])
         # print len(test_list)
-        for i in test_list:
-            print i
+        for i, j in zip(self.time_list, test_list):
+            print "%s\t%s" % (i, j)
         # print test_list
         return result
 
