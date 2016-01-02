@@ -87,8 +87,12 @@ def get_close_price_from_sina(code, year=2014, season=4):
     data = {"year": year,
             "season": season}
     result = post(url, data)
-    price_list = get_historical_price_from_sina_history(result)
-    return price_list
+    close_price_list = get_historical_close_price_from_sina_history(result)
+    high_price_list = get_historical_high_price_from_sina_history(result)
+    low_price_list = get_historical_low_price_from_sina_history(result)
+    return {"close_price": close_price_list,
+            "high_price": high_price_list,
+            "low_price": low_price_list}
 
 
 def get_given_stock_price():
@@ -121,21 +125,35 @@ def prepare_stock_info():
     return stock_info
 
 
-def get_historical_price_from_sina_history(html_info):
+def get_historical_close_price_from_sina_history(html_info):
     soup = BeautifulSoup.BeautifulSoup(html_info)
     data = soup.findAll('tr')[1:]
     price_list = [float(i.findAll('td')[1].text) for i in data]
     return list(reversed(price_list))
 
 
+def get_historical_high_price_from_sina_history(html_info):
+    soup = BeautifulSoup.BeautifulSoup(html_info)
+    data = soup.findAll('tr')[1:]
+    price_list = [float(i.findAll('td')[7].text) for i in data]
+    return list(reversed(price_list))
+
+
+def get_historical_low_price_from_sina_history(html_info):
+    soup = BeautifulSoup.BeautifulSoup(html_info)
+    data = soup.findAll('tr')[1:]
+    price_list = [float(i.findAll('td')[8].text) for i in data]
+    return list(reversed(price_list))
+
+
 if __name__ == "__main__":
-    print get_close_price_from_sina(code="0027", year=2015, season=1)
+    # print get_close_price_from_sina(code="0027", year=2015, season=1)
     # get_a_stock_list(16)
     # get_given_stock_price(
     # get_price_data("0066.HK", start_date='2014-10-09', end_date='2015-03-31')
-    # price_dict = prepare_stock_info()
+    price_dict = prepare_stock_info()
     # pprint.pprint(price_dict)
-    # f = open("pformat_stock_price.txt", "w")
+    f = open("pformat_stock_complete_price.txt", "w")
     # f.write('{')
     # for i in price_dict:
     #     write_string = '\"%s\": [%s' % (i, price_dict[i][0])
@@ -146,8 +164,8 @@ if __name__ == "__main__":
     #
     #     f.write(write_string)
     # f.write('}\n')
-    # f.write(pprint.pformat(price_dict))
-    # f.close()
+    f.write(pprint.pformat(price_dict, width=800))
+    f.close()
     # price_dict = eval(f.read())
     # f.close()
 
@@ -162,9 +180,9 @@ if __name__ == "__main__":
     #     for j, k in enumerate(price_dict[i]):
     #         price_dict[i][j] = round(k, 2)
     #
-    # f = open('stock_price', 'w')
-    # pickle.dump(price_dict, f)
-    # f.close()
+    f = open('complete_stock_price', 'w')
+    pickle.dump(price_dict, f)
+    f.close()
     # f = open("pformat_stock_price.txt", 'w')
     # f.write(pprint.pformat(price_dict, width=800))
     # f.close()

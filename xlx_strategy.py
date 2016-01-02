@@ -9,6 +9,7 @@ import math
 
 import numpy
 import talib
+import statsmodels.tsa.stattools as stat
 
 import cashAlgoAPI
 
@@ -404,10 +405,8 @@ class Strategy:
         self.macd_slow_period = 26
         self.macd_signal_period = 9
 
-        self.rsi_sell = 0
-        self.macd_sell = 0
-        self.rsi_buy = 0
-        self.macd_buy = 0
+        self.adf_period = 60
+        self.adf_pvalue = 0
 
     # Initialize Strategy
     def init(self):
@@ -450,17 +449,20 @@ class Strategy:
         if time_info[0] != self.last_date:
             self.last_date = time_info[0]
 
-            while len(self.close_price) > max(self.rsi_period, self.move_average_day, self.macd_slow_period + 5) + 1:
+            while len(self.close_price) > max(self.rsi_period, self.move_average_day, self.macd_slow_period + 5,
+                                              self.adf_period) + 1:
                 self.close_price.pop(0)
 
-            print len(self.close_price)
+            # print len(self.close_price)
 
             if self.last_price:
                 # print 'date: %s\t%s' % (md.timestamp, self.last_price)
                 self.close_price.append(self.last_price)
             if len(self.close_price) >= max(self.rsi_period, self.move_average_day):
-                self.mean_average = talib.MA(numpy.array(self.close_price), self.move_average_day)[-1]
-                self.standard_dev = talib.STDDEV(numpy.array(self.close_price), self.move_average_day)[-1]
+                close_price = numpy.array(self.close_price)
+                self.mean_average = talib.MA(close_price, self.move_average_day)[-1]
+                self.standard_dev = talib.STDDEV(close_price, self.move_average_day)[-1]
+                self.adf_pvalue = stat.adfuller(close_price)[1]
 
         if len(self.close_price) < max(self.rsi_period - 1, self.move_average_day, self.macd_slow_period):
             self.last_price = md.lastPrice
@@ -471,6 +473,7 @@ class Strategy:
                                                 fastperiod=self.macd_fast_period,
                                                 slowperiod=self.macd_slow_period,
                                                 signalperiod=self.macd_signal_period)
+
         # print "macd: %s, macdsignal: %s, macdhist: %s" % (macd[-1], macdsignal[-1], macdhist[-1])
 
         if md.lastPrice + self.std_factor * self.standard_dev < self.mean_average and (rsix < self.rsi_buy_bound or
@@ -488,8 +491,8 @@ class Strategy:
                 volume = self.current_capital / md.lastPrice
 
             if volume and self.current_capital > volume * md.lastPrice:
-                self.rsi_buy += 1
-                print "buy by rsi %s, total buy %s" % (self.rsi_buy, self.rsi_buy + self.macd_buy)
+                # self.rsi_buy += 1
+                # print "buy by rsi %s, total buy %s" % (self.rsi_buy, self.rsi_buy + self.macd_buy)
                 self.long_security(code, md.timestamp, int(volume), md.askPrice1)
 
         elif macd[-1] > 0 and macd[-1] > macdsignal[-1] - 0.2 and False:
@@ -500,18 +503,18 @@ class Strategy:
                 volume = self.current_capital / md.lastPrice
 
             if self.current_capital > volume * md.lastPrice:
-                self.macd_buy += 1
-                print "buy by macd %s, total buy %s" % (self.macd_buy, self.rsi_buy + self.macd_buy)
+                # self.macd_buy += 1
+                # print "buy by macd %s, total buy %s" % (self.macd_buy, self.rsi_buy + self.macd_buy)
                 self.long_security(code, md.timestamp, int(volume), md.askPrice1)
 
         elif self.buy_volume and int(10 * md.lastPrice) >= int(self.mean_average * 10):
             if rsix > self.rsi_sell_bound and macd[-1] > macdsignal[-1]:
-                self.rsi_sell += 1
-                print "sell by rsi %s, total sell %s" % (self.rsi_sell, self.rsi_sell + self.macd_sell)
+                # self.rsi_sell += 1
+                # print "sell by rsi %s, total sell %s" % (self.rsi_sell, self.rsi_sell + self.macd_sell)
                 self.short_security(code, md.timestamp, self.buy_volume, md.bidPrice1)
             elif (macd[-1] < 0.2 or macd[-1] < macdsignal[-1]) and False:
-                self.macd_sell += 1
-                print "sell by macd %s, total sell %s" % (self.macd_sell, self.rsi_sell + self.macd_sell)
+                # self.macd_sell += 1
+                # print "sell by macd %s, total sell %s" % (self.macd_sell, self.rsi_sell + self.macd_sell)
                 self.short_security(code, md.timestamp, self.buy_volume, md.bidPrice1)
 
         self.last_price = md.lastPrice
