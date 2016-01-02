@@ -5,11 +5,7 @@
 # Author: warn
 # Date: 2/1/2016 14:19
 
-import urllib
-import urllib2
 import math
-import re
-from HTMLParser import HTMLParser
 
 import numpy
 import talib
@@ -22,37 +18,9 @@ HIGH_PRICE = "high_price"
 LOW_PRICE = "low_price"
 
 
-class MyHTMLParser(HTMLParser):
-    def __init__(self):
-        HTMLParser.__init__(self)
-        self._tr_count = 0
-        self._tr_flag = False
-        self.data = []
-
-    def handle_starttag(self, tag, attrs):
-        if tag == "tr":
-            self._tr_count += 1
-            self._tr_flag = True
-
-    def handle_endtag(self, tag):
-        if tag == 'tr':
-            self._tr_flag = False
-
-    def handle_data(self, data):
-        if self._tr_flag:
-            if len(self.data) < self._tr_count:
-                self.data.append([])
-
-            if re.findall(r'[\.\d]+', data):
-                self.data[self._tr_count - 1].append(data)
-
-
 class Strategy:
     # self.mgr: order manager
     # self.config: configuration reader from parameter panel
-
-    # used to get data from finance sina
-    SINA_DATA_URL = "http://stock.finance.sina.com.cn/hkstock/history"
 
     def __init__(self):
 
@@ -77,7 +45,7 @@ class Strategy:
         self.history_price = {}
 
         # usually 2, the confidential factor.
-        self.std_factor = 2
+        self.std_factor = 1.2
 
         # How many total capital we have in summary
         self.total_capital = None
@@ -104,12 +72,12 @@ class Strategy:
     def init(self):
 
         # Read Parameters
-        if self.config.has_option("Strategy", "MeanAveragePeriod"):
-            self.move_average_day = int(self.config.get("Strategy", "MeanAveragePeriod"))
         if self.config.has_option("Strategy", "RSIPeriod"):
             self.rsi_period = int(self.config.get("Strategy", "RSIPeriod"))
         if self.config.has_option("Strategy", "ADXPeriod"):
             self.adx_period = int(self.config.get("Strategy", "ADXPeriod"))
+        if self.config.has_option("Strategy", "STDFactor"):
+            self.std_factor = float(self.config.get("Strategy", "STDFactor"))
 
         self.current_capital = self.total_capital = float(self.config.get("Risk", "InitialCapital"))
         product_code = self.config.get("MarketData", "ProductCode_1")
@@ -160,29 +128,37 @@ class Strategy:
             close_price = numpy.array(self.history_price[CLOSE_PRICE])
             low_price = numpy.array(self.history_price[LOW_PRICE])
             high_price = numpy.array(self.history_price[HIGH_PRICE])
-            self.move_average_day = int(math.ceil(self.half_life(close_price)) * 2)
+            self.move_average_day = int(math.ceil(self.half_life()) * 2)
             self.mean_average = talib.MA(close_price, timeperiod=self.move_average_day)[-1]
             self.standard_dev = talib.STDDEV(close_price, timeperiod=self.move_average_day)[-1]
-            self.rsi = talib.RSI(close_price, timeperiod=self.rsi_period)[-1]
+            self.rsi = talib.RSI(close_price, timeperiod=self.rsi_period)
             adx = talib.ADX(high_price, low_price, close_price, timeperiod=self.adx_period)[-1]
             plus_di = talib.PLUS_DI(high_price, low_price, close_price, timeperiod=self.adx_period)[-1]
             minus_di = talib.MINUS_DI(high_price, low_price, close_price, timeperiod=self.adx_period)[-1]
-            print "adx: %s, ma: %s, std: %s, di+: %s, di-: %s" % (adx, self.mean_average, self.standard_dev, plus_di,
-                                                                  minus_di)
-            print "last_high: %s, last_low: %s, close_price: %s" % (self.history_price[HIGH_PRICE][-1],
-                                                                    self.history_price[LOW_PRICE][-1],
-                                                                    self.history_price[CLOSE_PRICE][-1])
+            print "timestamp: %s, adx: %s, ma: %s, std: %s, di+: %s, di-: %s, rsi: %s" % (time_info[0], adx,
+                                                                                          self.mean_average,
+                                                                                          self.standard_dev,
+                                                                                          plus_di, minus_di,
+                                                                                          self.rsi[-1])
             if adx <= 25:
                 self.volume_factor = 0.9
                 self.buy_factor = 0.5
-                self.rsi_buy_bound = 70
-                self.rsi_sell_bound = 30
+                self.rsi_buy_bound = 50
+                self.rsi_sell_bound = 50
+                if self.rsi[-1] > 30 > self.rsi[-2]:
+                    self.long_security(md.timestamp, code, md.askPrice1)
+                elif self.buy_volume and self.rsi[-1] < 70 < self.rsi[-2]:
+                    self.short_security(md.timestamp, code, md.bidPrice1, self.buy_volume)
 
             elif 25 < adx <= 50:
                 self.volume_factor = 1.2
                 self.buy_factor = 0.3
-                self.rsi_sell_bound = 55
-                self.rsi_buy_bound = 45
+                self.rsi_sell_bound = 60
+                self.rsi_buy_bound = 40
+                if self.rsi[-1] > 30 > self.rsi[-2]:
+                    self.long_security(md.timestamp, code, md.askPrice1)
+                elif self.buy_volume and self.rsi[-1] < 70 < self.rsi[-2]:
+                    self.short_security(md.timestamp, code, md.bidPrice1, self.buy_volume)
 
             elif 50 <= adx < 75:
                 self.volume_factor = 1.5
@@ -209,10 +185,11 @@ class Strategy:
             self.update_daily_price(md.lastPrice)
             return
 
-        if md.lastPrice + self.std_factor * self.standard_dev < self.mean_average and self.rsi < self.rsi_buy_bound:
+        if md.lastPrice + self.std_factor * self.standard_dev < self.mean_average and self.rsi[-1] < self.rsi_buy_bound:
             self.long_security(md.timestamp, code, md.askPrice1)
 
-        if int(10 * md.lastPrice) >= int(self.mean_average * 10) and self.buy_volume and self.rsi > self.rsi_sell_bound:
+        if int(10 * md.lastPrice) >= int(self.mean_average * 10) and self.buy_volume and \
+                        self.rsi[-1] > self.rsi_sell_bound:
             self.short_security(md.timestamp, code, md.bidPrice1, self.buy_volume)
 
         self.update_daily_price(md.lastPrice)
@@ -257,63 +234,6 @@ class Strategy:
         self.last_high = price if price > self.last_high else self.last_high
         self.last_low = price if price < self.last_low else self.last_high
 
-    @staticmethod
-    def post(url, data):
-        data = urllib.urlencode(data)
-        req = urllib2.Request(url)
-        response = urllib2.urlopen(req, data)
-        content = response.read()
-        return content
-
-    def get_history_pric(self, code):
-        url = "%s/%s.html" % (self.SINA_DATA_URL, code)
-        data = {"year": 2014,
-                "season": 4}
-        history_price_page = self.post(url, data)
-        html_parser = MyHTMLParser()
-        html_parser.feed(history_price_page)
-        close_price_list = [float(i[1]) for i in html_parser.data[1:]]
-        high_price_list = [float(i[7]) for i in html_parser.data[1:]]
-        low_price_list = [float(i[8]) for i in html_parser.data[1:]]
-        return {CLOSE_PRICE: close_price_list,
-                HIGH_PRICE: high_price_list,
-                LOW_PRICE: low_price_list}
-
-    @staticmethod
-    def lag(x, n):
-        result = []
-        len_x = len(x)
-        for i in range(n):
-            result.append(0)
-
-        for i in range(len_x - n):
-            result.append(x[i])
-
-        return result
-
-    @staticmethod
-    def ols(y, x):
-        q, r = linalg.qr(x, mode='economic')
-        xpxi = numpy.linalg.lstsq(numpy.dot(r.transpose(), r), numpy.eye(x.size / len(x)))[0]
-        return numpy.dot(xpxi, numpy.dot(x.transpose(), y))
-
-    def half_life(self, price_series):
-        ylag = self.lag(price_series, 1)
-        martix_y = numpy.array(price_series)
-        matrix_ylag = numpy.array(ylag)
-        delta_y = martix_y - matrix_ylag
-        delta_y = delta_y.reshape([len(delta_y), 1])[1:]
-        matrix_ylag = matrix_ylag.reshape([len(matrix_ylag), 1])[1:]
-        x = []
-        for i in matrix_ylag:
-            x.append([i[0], 1])
-
-        matrix_x = numpy.array(x)
-        ols_beta = self.ols(delta_y, matrix_x)
-        hl = -math.log(2) / ols_beta[0]
-
-        return hl[0]
-
     def short_security(self, timestamp, code, price, volume):
         volume = int(volume)
         order = cashAlgoAPI.Order(timestamp, 'SEHK', code, str(self.cnt), price, volume,
@@ -338,6 +258,39 @@ class Strategy:
             self.mgr.insertOrder(order)
             self.cnt += 1
             self.buy_volume += volume
+
+    def half_life(self):
+        price_series = numpy.array(self.history_price[CLOSE_PRICE])
+        ylag = []
+        len_x = len(price_series)
+        for i in range(1):
+            ylag.append(0)
+
+        for i in range(len_x - 1):
+            ylag.append(price_series[i])
+        martix_y = numpy.array(price_series)
+        matrix_ylag = numpy.array(ylag)
+        delta_y = martix_y - matrix_ylag
+        delta_y = delta_y.reshape([len(delta_y), 1])[1:]
+        matrix_ylag = matrix_ylag.reshape([len(matrix_ylag), 1])[1:]
+        x = []
+        for i in matrix_ylag:
+            x.append([i[0], 1])
+
+        matrix_x = numpy.array(x)
+        q, r = linalg.qr(matrix_x, mode='economic')
+        xpxi = numpy.linalg.lstsq(numpy.dot(r.transpose(), r), numpy.eye(matrix_x.size / len(matrix_x)))[0]
+        # print xpxi
+        ols_beta = numpy.dot(xpxi, numpy.dot(matrix_x.transpose(), delta_y))
+        hl = -math.log(2) / ols_beta[0]
+
+        if hl[0] > 10:
+            hl = 10
+        elif hl[0] < 2:
+            hl = 2
+        else:
+            hl = hl[0]
+        return hl
 
 
 HISTORY_PRICE = {'00001': {

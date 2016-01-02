@@ -30,7 +30,13 @@ def ols(y, x):
 
 
 def half_life(price_series):
-    ylag = lag(price_series, 1)
+    ylag = []
+    len_x = len(price_series)
+    for i in range(1):
+        ylag.append(0)
+
+    for i in range(len_x - 1):
+        ylag.append(price_series[i])
     martix_y = numpy.array(price_series)
     matrix_ylag = numpy.array(ylag)
     delta_y = martix_y - matrix_ylag
@@ -41,7 +47,10 @@ def half_life(price_series):
         x.append([i[0], 1])
 
     matrix_x = numpy.array(x)
-    ols_beta = ols(delta_y, matrix_x)
+    q, r = linalg.qr(matrix_x, mode='economic')
+    xpxi = numpy.linalg.lstsq(numpy.dot(r.transpose(), r), numpy.eye(matrix_x.size / len(matrix_x)))[0]
+    # print xpxi
+    ols_beta = numpy.dot(xpxi, numpy.dot(matrix_x.transpose(), delta_y))
     hl = -math.log(2) / ols_beta[0]
 
     return hl[0]
