@@ -129,7 +129,7 @@ def get_historical_price_from_sina_history(html_info):
 
 
 if __name__ == "__main__":
-    # get_close_price_from_sina(code="0001")
+    print get_close_price_from_sina(code="0027", year=2015, season=1)
     # get_a_stock_list(16)
     # get_given_stock_price(
     # get_price_data("0066.HK", start_date='2014-10-09', end_date='2015-03-31')
@@ -154,9 +154,9 @@ if __name__ == "__main__":
     # f = open('stock_price', 'w')
     # pickle.dump(price_dict, f)
     # f.close()
-    f = open('stock_price')
-    price_dict = pickle.load(f)
-    f.close()
+    # f = open('stock_price')
+    # price_dict = pickle.load(f)
+    # f.close()
     #
     # for i in price_dict:
     #     for j, k in enumerate(price_dict[i]):
@@ -165,6 +165,6 @@ if __name__ == "__main__":
     # f = open('stock_price', 'w')
     # pickle.dump(price_dict, f)
     # f.close()
-    f = open("pformat_stock_price.txt", 'w')
-    f.write(pprint.pformat(price_dict, width=800))
-    f.close()
+    # f = open("pformat_stock_price.txt", 'w')
+    # f.write(pprint.pformat(price_dict, width=800))
+    # f.close()

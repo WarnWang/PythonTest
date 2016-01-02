@@ -436,7 +436,7 @@ class Strategy:
 
         self.current_capital = self.total_capital = float(self.config.get("Risk", "InitialCapital"))
         product_code = self.config.get("MarketData", "ProductCode_1")
-        # self.close_price = HISTORY_PRICE[product_code]
+        self.close_price = HISTORY_PRICE[product_code]
 
     # Process Market Data. Please use onOHLCFeed() in OHLC mode
     def onMarketDataUpdate(self, market, code, md):
@@ -450,8 +450,10 @@ class Strategy:
         if time_info[0] != self.last_date:
             self.last_date = time_info[0]
 
-            while len(self.close_price) > max(self.rsi_period, self.move_average_day, self.macd_slow_period) + 1:
+            while len(self.close_price) > max(self.rsi_period, self.move_average_day, self.macd_slow_period + 5) + 1:
                 self.close_price.pop(0)
+
+            print len(self.close_price)
 
             if self.last_price:
                 # print 'date: %s\t%s' % (md.timestamp, self.last_price)
@@ -460,17 +462,37 @@ class Strategy:
                 self.mean_average = talib.MA(numpy.array(self.close_price), self.move_average_day)[-1]
                 self.standard_dev = talib.STDDEV(numpy.array(self.close_price), self.move_average_day)[-1]
 
-        if len(self.close_price) < max(self.rsi_period, self.move_average_day, self.macd_slow_period):
+        if len(self.close_price) < max(self.rsi_period - 1, self.move_average_day, self.macd_slow_period):
             self.last_price = md.lastPrice
             return
 
-        rsix = talib.RSI(numpy.array(self.close_price + [md.lastPrice]), timeperiod=self.rsi_period)[-1]
-        macd, macdsignal, macdhist = talib.MACD(numpy.array(self.close_price), fastperiod=self.macd_fast_period,
-                                                slowperiod=self.macd_slow_period, signalperiod=self.macd_signal_period)
+        rsix = talib.RSI(numpy.array(self.close_price), timeperiod=self.rsi_period)[-1]
+        macd, macdsignal, macdhist = talib.MACD(numpy.array(self.close_price),
+                                                fastperiod=self.macd_fast_period,
+                                                slowperiod=self.macd_slow_period,
+                                                signalperiod=self.macd_signal_period)
+        # print "macd: %s, macdsignal: %s, macdhist: %s" % (macd[-1], macdsignal[-1], macdhist[-1])
 
-        if (md.lastPrice + self.std_factor * self.standard_dev < self.mean_average and rsix < self.rsi_buy_bound
-            # and macd[-1] > -0.25
-            ) or (macd[-1] > 0 and macd[-1] > macdsignal[-1] - 0.2):
+        if md.lastPrice + self.std_factor * self.standard_dev < self.mean_average and (rsix < self.rsi_buy_bound or
+                                                                                               macd[-1] < macdsignal[
+                                                                                               -1]):
+            try:
+                volume0 = int(self.total_capital / 10 / md.lastPrice)
+                n = round(math.log(1 - self.buy_volume / volume0 * (1 - self.volume_factor), self.volume_factor))
+                volume = volume0 * self.volume_factor ** (n + 1)
+            except Exception, error:
+                print "errormsg: %s, %s" % (error, self.buy_volume / volume0 * (1 - self.volume_factor))
+                volume = 0
+
+            if md.lastPrice <= self.current_capital < volume * md.lastPrice:
+                volume = self.current_capital / md.lastPrice
+
+            if volume and self.current_capital > volume * md.lastPrice:
+                self.rsi_buy += 1
+                print "buy by rsi %s, total buy %s" % (self.rsi_buy, self.rsi_buy + self.macd_buy)
+                self.long_security(code, md.timestamp, int(volume), md.askPrice1)
+
+        elif macd[-1] > 0 and macd[-1] > macdsignal[-1] - 0.2 and False:
             volume0 = int(self.total_capital / 10 / md.lastPrice)
             n = round(math.log(1 - self.buy_volume / volume0 * (1 - self.volume_factor), self.volume_factor))
             volume = volume0 * self.volume_factor ** (n + 1)
@@ -478,16 +500,16 @@ class Strategy:
                 volume = self.current_capital / md.lastPrice
 
             if self.current_capital > volume * md.lastPrice:
-                self.rsi_buy += 1
-                print "buy by rsi %s, total buy %s" % (self.rsi_buy, self.rsi_buy + self.macd_buy)
+                self.macd_buy += 1
+                print "buy by macd %s, total buy %s" % (self.macd_buy, self.rsi_buy + self.macd_buy)
                 self.long_security(code, md.timestamp, int(volume), md.askPrice1)
 
         elif self.buy_volume and int(10 * md.lastPrice) >= int(self.mean_average * 10):
-            if rsix > self.rsi_sell_bound:
+            if rsix > self.rsi_sell_bound and macd[-1] > macdsignal[-1]:
                 self.rsi_sell += 1
                 print "sell by rsi %s, total sell %s" % (self.rsi_sell, self.rsi_sell + self.macd_sell)
                 self.short_security(code, md.timestamp, self.buy_volume, md.bidPrice1)
-            elif macd[-1] < 0.2 or macd[-1] < macdsignal[-1]:
+            elif (macd[-1] < 0.2 or macd[-1] < macdsignal[-1]) and False:
                 self.macd_sell += 1
                 print "sell by macd %s, total sell %s" % (self.macd_sell, self.rsi_sell + self.macd_sell)
                 self.short_security(code, md.timestamp, self.buy_volume, md.bidPrice1)
@@ -516,12 +538,10 @@ class Strategy:
     def onTradeFeed(self, tf):
         if tf.buySell == 1:
             self.current_capital -= tf.volumeFilled * tf.price
-            self.buy_volume += tf.volumeFilled
         else:
             self.current_capital += tf.volumeFilled * tf.price
             self.total_capital = self.current_capital if self.current_capital > self.total_capital \
                 else self.total_capital
-            self.buy_volume -= tf.volumeFilled
 
     # Process Position
     def onPortfolioFeed(self, portfolioFeed):
@@ -537,9 +557,11 @@ class Strategy:
                                   "market_order", "today")
         self.mgr.insertOrder(order)
         self.cnt += 1
+        self.buy_volume += int(volume)
 
     def short_security(self, code, timestamp, volume, price):
         order = cashAlgoAPI.Order(timestamp, 'SEHK', code, str(self.cnt), price, int(volume), "open", 2, "insert",
                                   "market_order", "today")
         self.mgr.insertOrder(order)
         self.cnt += 1
+        self.buy_volume -= int(volume)
