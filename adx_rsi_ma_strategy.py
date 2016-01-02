@@ -67,6 +67,7 @@ class Strategy:
         self.rsi = 0
 
         self.adx_period = 14
+        self.daily_buying_times = 10
 
     # Initialize Strategy
     def init(self):
@@ -125,6 +126,7 @@ class Strategy:
                 self.last_price = md.lastPrice
                 return
 
+            # Open stock policy
             close_price = numpy.array(self.history_price[CLOSE_PRICE])
             low_price = numpy.array(self.history_price[LOW_PRICE])
             high_price = numpy.array(self.history_price[HIGH_PRICE])
@@ -135,16 +137,19 @@ class Strategy:
             adx = talib.ADX(high_price, low_price, close_price, timeperiod=self.adx_period)[-1]
             plus_di = talib.PLUS_DI(high_price, low_price, close_price, timeperiod=self.adx_period)[-1]
             minus_di = talib.MINUS_DI(high_price, low_price, close_price, timeperiod=self.adx_period)[-1]
-            print "timestamp: %s, adx: %s, ma: %s, std: %s, di+: %s, di-: %s, rsi: %s" % (time_info[0], adx,
-                                                                                          self.mean_average,
-                                                                                          self.standard_dev,
-                                                                                          plus_di, minus_di,
-                                                                                          self.rsi[-1])
+            macd, macdsignal, macdhist = talib.MACD(close_price, fastperiod=5, slowperiod=35, signalperiod=5)
+
+            print "timestamp: %s, adx: %.2f, ma: %.2f, std: %.2f, di+: %.2f, di-: %.2f" % (time_info[0], adx,
+                                                                                           self.mean_average,
+                                                                                           self.standard_dev,
+                                                                                           plus_di, minus_di)
+            print "ma days: %s, rsi: %.2f" % (self.move_average_day, self.rsi[-1])
             if adx <= 25:
                 self.volume_factor = 0.9
                 self.buy_factor = 0.5
                 self.rsi_buy_bound = 50
                 self.rsi_sell_bound = 50
+                self.daily_buying_times = 4
                 if self.rsi[-1] > 30 > self.rsi[-2]:
                     self.long_security(md.timestamp, code, md.askPrice1)
                 elif self.buy_volume and self.rsi[-1] < 70 < self.rsi[-2]:
@@ -155,6 +160,7 @@ class Strategy:
                 self.buy_factor = 0.3
                 self.rsi_sell_bound = 60
                 self.rsi_buy_bound = 40
+                self.daily_buying_times = 3
                 if self.rsi[-1] > 30 > self.rsi[-2]:
                     self.long_security(md.timestamp, code, md.askPrice1)
                 elif self.buy_volume and self.rsi[-1] < 70 < self.rsi[-2]:
@@ -166,10 +172,12 @@ class Strategy:
                 if plus_di < minus_di:
                     self.rsi_buy_bound = 30
                     self.rsi_sell_bound = 50
+                    self.daily_buying_times = 2
 
                 else:
                     self.rsi_buy_bound = 50
                     self.rsi_sell_bound = 70
+                    self.daily_buying_times = 10
 
             else:
                 self.volume_factor = 2
@@ -177,9 +185,11 @@ class Strategy:
                 if plus_di < minus_di:
                     self.rsi_buy_bound = 20
                     self.rsi_sell_bound = 50
+                    self.daily_buying_times = 1
                 else:
                     self.rsi_buy_bound = 50
                     self.rsi_sell_bound = 80
+                    self.daily_buying_times = 10
 
         if len(self.history_price[HIGH_PRICE]) < max(self.rsi_period, self.move_average_day, self.adx_period):
             self.update_daily_price(md.lastPrice)
@@ -188,8 +198,7 @@ class Strategy:
         if md.lastPrice + self.std_factor * self.standard_dev < self.mean_average and self.rsi[-1] < self.rsi_buy_bound:
             self.long_security(md.timestamp, code, md.askPrice1)
 
-        if int(10 * md.lastPrice) >= int(self.mean_average * 10) and self.buy_volume and \
-                        self.rsi[-1] > self.rsi_sell_bound:
+        if md.lastPrice >= self.mean_average and self.buy_volume and self.rsi[-1] > self.rsi_sell_bound:
             self.short_security(md.timestamp, code, md.bidPrice1, self.buy_volume)
 
         self.update_daily_price(md.lastPrice)
@@ -244,14 +253,19 @@ class Strategy:
         self.buy_volume -= volume
 
     def long_security(self, timestamp, code, price):
+        if not self.daily_buying_times:
+            return
+        else:
+            self.daily_buying_times -= 1
         volume0 = int(self.total_capital * self.buy_factor / price)
         n = round(math.log(1 - self.buy_volume / volume0 * (1 - self.volume_factor), self.volume_factor))
         volume = volume0 * self.volume_factor ** (n + 1)
         if price <= self.current_capital < volume * price:
             volume = self.current_capital / price
 
-        if self.current_capital > volume * price:
-            volume = int(volume)
+        volume = int(volume)
+        if volume and self.current_capital > volume * price:
+            print 'price: %s' % price
             order = cashAlgoAPI.Order(timestamp, 'SEHK', code, str(self.cnt), price, volume,
                                       "open", 1, "insert", "market_order", "today")
 
@@ -260,7 +274,7 @@ class Strategy:
             self.buy_volume += volume
 
     def half_life(self):
-        price_series = numpy.array(self.history_price[CLOSE_PRICE])
+        price_series = numpy.array(self.history_price[CLOSE_PRICE][-20:])
         ylag = []
         len_x = len(price_series)
         for i in range(1):
