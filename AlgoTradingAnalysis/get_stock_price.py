@@ -9,6 +9,8 @@ import urllib
 import urllib2
 import pprint
 import pickle
+import re
+from HTMLParser import HTMLParser
 
 import pandas as pd
 import BeautifulSoup
@@ -146,14 +148,49 @@ def get_historical_low_price_from_sina_history(html_info):
     return list(reversed(price_list))
 
 
+# create a subclass and override the handler methods
+class MyHTMLParser(HTMLParser):
+    def __init__(self):
+        HTMLParser.__init__(self)
+        self._tr_count = 0
+        self._tr_flag = False
+        self.data = []
+
+    def handle_starttag(self, tag, attrs):
+        if tag == "tr":
+            self._tr_count += 1
+            self._tr_flag = True
+
+    def handle_endtag(self, tag):
+        if tag == 'tr':
+            self._tr_flag = False
+
+    def handle_data(self, data):
+        if self._tr_flag:
+            if len(self.data) < self._tr_count:
+                self.data.append([])
+
+            if re.findall(r'[\.\d]+', data):
+                self.data[self._tr_count - 1].append(data)
+
+
+def test_html_parser():
+    my_html_parser = MyHTMLParser()
+    f = open('test.html')
+    my_html_parser.feed(f.read())
+    f.close()
+    print my_html_parser.data
+
+
 if __name__ == "__main__":
+    test_html_parser()
     # print get_close_price_from_sina(code="0027", year=2015, season=1)
     # get_a_stock_list(16)
     # get_given_stock_price(
     # get_price_data("0066.HK", start_date='2014-10-09', end_date='2015-03-31')
-    price_dict = prepare_stock_info()
+    # price_dict = prepare_stock_info()
     # pprint.pprint(price_dict)
-    f = open("pformat_stock_complete_price.txt", "w")
+    # f = open("pformat_stock_complete_price.txt", "w")
     # f.write('{')
     # for i in price_dict:
     #     write_string = '\"%s\": [%s' % (i, price_dict[i][0])
@@ -164,8 +201,8 @@ if __name__ == "__main__":
     #
     #     f.write(write_string)
     # f.write('}\n')
-    f.write(pprint.pformat(price_dict, width=800))
-    f.close()
+    # f.write(pprint.pformat(price_dict, width=800))
+    # f.close()
     # price_dict = eval(f.read())
     # f.close()
 
@@ -180,9 +217,9 @@ if __name__ == "__main__":
     #     for j, k in enumerate(price_dict[i]):
     #         price_dict[i][j] = round(k, 2)
     #
-    f = open('complete_stock_price', 'w')
-    pickle.dump(price_dict, f)
-    f.close()
+    # f = open('complete_stock_price', 'w')
+    # pickle.dump(price_dict, f)
+    # f.close()
     # f = open("pformat_stock_price.txt", 'w')
     # f.write(pprint.pformat(price_dict, width=800))
     # f.close()

@@ -9,7 +9,10 @@ import numpy
 import statsmodels.tsa.stattools as ts
 import pandas as pd
 from pandas.tseries.offsets import BDay
+import pickle
+
 from scipy import stats
+import talib
 
 import get_stock_price
 
@@ -18,6 +21,8 @@ class DataAnalysis:
     data_file_path = ""
     close_list = []
     time_list = []
+    high_list = []
+    low_list = []
 
     def __init__(self, data_path=None):
         self.data_file_path = data_path
@@ -92,17 +97,40 @@ class DataAnalysis:
         # print test_list
         return result
 
+    def load_history_data(self, code):
+        f = open(self.data_file_path)
+        price_dict = pickle.load(f)
+        self.close_list = numpy.array(price_dict[code]['close_price'])
+        self.high_list = numpy.array(price_dict[code]['high_price'])
+        self.low_list = numpy.array(price_dict[code]['low_price'])
+
+    def get_adx_value(self):
+        return talib.ADX(self.high_list, self.low_list, self.close_list, timeperiod=14)
+
+    def get_dmi_plus(self):
+        return talib.PLUS_DM(self.high_list, self.low_list, timeperiod=14)
+
+    def get_dmi_minus(self):
+        return talib.MINUS_DM(self.high_list, self.low_list, timeperiod=14)
+
+    def get_di_plus(self):
+        return talib.PLUS_DI(self.high_list, self.low_list, self.close_list, timeperiod=14)
+
+    def get_di_minus(self):
+        return talib.MINUS_DI(self.high_list, self.low_list, self.close_list, timeperiod=14)
 
 if __name__ == "__main__":
-    code = '0001.HK'
-    get_stock_price.get_price_data(code, end_date="2015-03-31", start_date="2015-01-04")
-    test = DataAnalysis(r"./data/%s.csv" % code)
-    test.load_close_data()
+    code = '00066'
+    # get_stock_price.get_price_data(code, end_date="2015-03-31", start_date="2015-01-04")
+    test = DataAnalysis(r"complete_stock_price")
+    test.load_history_data(code)
     # print test.close_list
     # str1 = ''
-    date_period = 90
-    print test.get_pvalue()
-    print test.get_adfvalue()
+    print test.get_adx_value()[-5:]
+    print test.get_di_minus()[-5:]
+    print test.get_di_plus()[-5:]
+    print test.get_dmi_minus()[-5:]
+    print test.get_dmi_plus()[-5:]
 
     # date = pd.datetime(2015, 1, 1)
     # for i in range(len(test.close_list) - date_period):
