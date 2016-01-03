@@ -122,7 +122,8 @@ def prepare_stock_info():
     stock_file = open('stock_list')
     for i in stock_file:
         # print i
-        stock_info['0%s' % i.strip('\n')] = get_close_price_from_sina(i.strip('\n'))
+        stock_info['0%s' % i.strip('\n')] = get_close_price_from_sina(i.strip('\n'), year=2015, season=1)
+        print "get price of %s ok" % i.strip('\n')
     stock_file.close()
     return stock_info
 
@@ -183,14 +184,14 @@ def test_html_parser():
 
 
 if __name__ == "__main__":
-    test_html_parser()
+    # test_html_parser()
     # print get_close_price_from_sina(code="0027", year=2015, season=1)
     # get_a_stock_list(16)
     # get_given_stock_price(
     # get_price_data("0066.HK", start_date='2014-10-09', end_date='2015-03-31')
-    # price_dict = prepare_stock_info()
+    price_dict = prepare_stock_info()
     # pprint.pprint(price_dict)
-    # f = open("pformat_stock_complete_price.txt", "w")
+    f = open("stock_price_2015_s1.txt", "w")
     # f.write('{')
     # for i in price_dict:
     #     write_string = '\"%s\": [%s' % (i, price_dict[i][0])
@@ -207,8 +208,8 @@ if __name__ == "__main__":
     # f.close()
 
     # f = open('stock_price', 'w')
-    # pickle.dump(price_dict, f)
-    # f.close()
+    pickle.dump(price_dict, f)
+    f.close()
     # f = open('stock_price')
     # price_dict = pickle.load(f)
     # f.close()

@@ -72,14 +72,9 @@ class DataAnalysis:
                 # print i
                 self.close_list.append(float(i.split(",")[6]))
 
-    def get_adfvalue(self, test_list=None):
-        if not test_list:
-            if not self.close_list:
-                self.load_close_data()
-            test_list = self.close_list
+    def get_adfvalue(self):
 
-        x = numpy.array(test_list)
-        result = ts.adfuller(x)
+        result = ts.adfuller(self.close_list)
         return result
 
     def get_pvalue(self, test_list=None):
@@ -91,15 +86,14 @@ class DataAnalysis:
         x = numpy.array(test_list)
         print numpy.corrcoef(x[:-1], x[1:])[0][1]
         result = stats.ttest_ind(x[:-1], x[1:])
-        # print len(test_list)
         for i, j in zip(self.time_list, test_list):
             print "%s\t%s" % (i, j)
-        # print test_list
         return result
 
     def load_history_data(self, code):
         f = open(self.data_file_path)
         price_dict = pickle.load(f)
+        f.close()
         self.close_list = numpy.array(price_dict[code]['close_price'])
         self.high_list = numpy.array(price_dict[code]['high_price'])
         self.low_list = numpy.array(price_dict[code]['low_price'])
@@ -132,25 +126,18 @@ class DataAnalysis:
         return talib.PPO(self.close_list, fastperiod=5, slowperiod=35)
 
 
-if __name__ == "__main__":
-    code = '00066'
-    # get_stock_price.get_price_data(code, end_date="2015-03-31", start_date="2015-01-04")
-    test = DataAnalysis(r"complete_stock_price")
-    test.load_history_data(code)
-    # print test.close_list[-5:]
-    # print test.close_list
-    # str1 = ''
-    print test.get_ppo()
-    # print test.get_di_minus()[-5:]
-    # print test.get_di_plus()[-5:]
-    # print test.get_dmi_minus()[-5:]
-    # print test.get_dmi_plus()[-5:]
+def get_all_adf_value():
+    stock_list = open('stock_list')
+    test = DataAnalysis(r"stock_price_2015_s1.txt")
+    adf_value = open('adf_value.csv', 'w')
+    for i in stock_list:
+        test.load_history_data('0%s' % i.strip('\n'))
+        adf = test.get_adfvalue()
+        adf_value.write('%s, %s, %s\n' % (i.strip('\n'), adf[0], adf[1]))
 
-    # date = pd.datetime(2015, 1, 1)
-    # for i in range(len(test.close_list) - date_period):
-    #     test_list = list(reversed(test.close_list))[i:(i + date_period)]
-    #     date += BDay(1)
-    #     # for i in test_list:
-    #     #     str1 = "%s,%s" % (str1, i)
-    #
-    #     print date, test.get_adfvalue(test_list)
+    stock_list.close()
+    adf_value.close()
+
+
+if __name__ == "__main__":
+    get_all_adf_value()
