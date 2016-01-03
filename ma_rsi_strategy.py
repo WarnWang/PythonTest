@@ -56,6 +56,7 @@ class Strategy:
         self.rsi_period = 6
         self.rsi_buy_bound = 50
         self.rsi_sell_bound = 70
+        self.rsix = 50
 
     # Initialize Strategy
     def init(self):
@@ -105,7 +106,7 @@ class Strategy:
             if len(self.close_price) > max(self.rsi_period, self.move_average_day) + 1:
                 self.close_price.pop(0)
 
-            print self.close_price
+            # print self.close_price
 
             if self.last_price:
                 print 'date: %s\t%s' % (md.timestamp, self.last_price)
@@ -118,20 +119,16 @@ class Strategy:
             self.mean_average = talib.MA(numpy.array(self.close_price), self.move_average_day)[-1]
             self.standard_dev = talib.STDDEV(numpy.array(self.close_price), self.move_average_day)[-1]
 
-        if len(self.close_price) < max(self.rsi_period, self.move_average_day):
+        if len(self.close_price) < max(self.rsi_period, self.move_average_day) and md.lastPrice < 1:
             self.last_price = md.lastPrice
             return
 
-        # in case some bad value
-        if md.lastPrice < self.mean_average / 10:
-            md.lastPrice *= 100
-
+        self.rsix = talib.RSI(numpy.array(self.close_price + [md.lastPrice]), timeperiod=self.rsi_period)[-1]
         # rsi6 = talib.RSI(numpy.array(self.close_price + [md.lastPrice]), timeperiod=6)[-1]
         # rsi9 = talib.RSI(numpy.array(self.close_price + [md.lastPrice]), timeperiod=9)[-1]
         # rsi14 = talib.RSI(numpy.array(self.close_price + [md.lastPrice]), timeperiod=15)[-1]
-        rsix = talib.RSI(numpy.array(self.close_price + [md.lastPrice]), timeperiod=self.rsi_period)[-1]
 
-        if md.lastPrice + self.std_factor * self.standard_dev < self.mean_average and rsix < self.rsi_buy_bound:
+        if md.lastPrice + self.std_factor * self.standard_dev < self.mean_average and self.rsix < self.rsi_buy_bound:
             # if rsix < 50:
             # print "Buying point appear rsi%s: %s" % (self.rsi_period, rsix)
 
@@ -152,7 +149,7 @@ class Strategy:
                 # self.current_capital -= int(volume) * md.askPrice1
                 # print "Buy: %s %s" % (volume, self.total_capital)
 
-        if int(10 * md.lastPrice) >= int(self.mean_average * 10) and self.buy_volume and rsix > self.rsi_sell_bound:
+        if self.buy_volume and md.lastPrice >= self.mean_average and self.rsix > self.rsi_sell_bound:
             # print "Selling point appear rsi%s: %s" % (self.rsi_period, rsix)
             order = cashAlgoAPI.Order(md.timestamp, 'SEHK', code, str(self.cnt), md.bidPrice1, self.buy_volume,
                                       "open", 2, "insert", "market_order", "today")
