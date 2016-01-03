@@ -64,6 +64,8 @@ class Strategy:
         self.rsi_buy_bound = 50
         self.rsi_sell_bound = 70
         self.rsix = 50
+        self.daily_trade_limit = 5
+        self.trade_limit = 5
 
     # Initialize Strategy
     def init(self):
@@ -77,6 +79,8 @@ class Strategy:
             self.volume_factor = float(self.config.get("Strategy", "VolumeFactor"))
         if self.config.has_option("Strategy", "RSIPeriod"):
             self.rsi_period = int(self.config.get("Strategy", "RSIPeriod"))
+        if self.config.has_option("Strategy", "TradeLimit"):
+            self.rsi_period = int(self.config.get("Strategy", "TradeLimit"))
 
         if self.config.has_option("Strategy", "RSIBuyBound"):
             self.rsi_buy_bound = int(self.config.get("Strategy", "RSIBuyBound"))
@@ -124,12 +128,12 @@ class Strategy:
 
             self.mean_average = talib.MA(numpy.array(self.close_price), self.move_average_day)[-1]
             self.standard_dev = talib.STDDEV(numpy.array(self.close_price), self.move_average_day)[-1]
+            self.daily_trade_limit = self.trade_limit
 
         if len(self.close_price) < max(self.rsi_period, self.move_average_day) and md.lastPrice < 1:
-            self.last_price = md.lastPrice
             return
 
-        self.rsix = talib.RSI(numpy.array(self.close_price + [md.lastPrice]), timeperiod=self.rsi_period)[-1]
+        self.rsix = talib.RSI(numpy.array(self.close_price + [md.lastPrice]), timeperiod=self.rsi_period)
 
         if md.lastPrice + self.std_factor * self.standard_dev < self.mean_average:
             self.long_security(md.timestamp, code, md.askPrice1)
@@ -175,6 +179,8 @@ class Strategy:
         pass
 
     def long_security(self, timestamp, code, price):
+        if self.daily_trade_limit <= 1:
+            return
         volume0 = int(self.total_capital / 10 / price)
         n = round(math.log(1 - self.buy_volume / volume0 * (1 - self.volume_factor), self.volume_factor))
         volume = volume0 * self.volume_factor ** (n + 1)
@@ -189,21 +195,31 @@ class Strategy:
             self.cnt += 1
             self.buy_volume += int(volume)
 
-            print "time: %s, price: %s, ma: %.2f, std: %.4f, rsi: %.4f" % (timestamp.split('_')[0], price,
-                                                                           self.mean_average,
-                                                                           self.standard_dev, self.rsix)
-            if self.rsix < self.rsi_buy_bound:
-                self.std_factor = self.mean_average - price
+            print "btime: %s, price: %s, ma: %.2f, std: %.4f, rsi1: %.4f, rsi2: %.4f" % (timestamp.split('_')[0],
+                                                                                         price,
+                                                                                         self.mean_average,
+                                                                                         self.standard_dev,
+                                                                                         self.rsix[-1],
+                                                                                         self.rsix[-2])
+
+            if self.rsix[-1] < self.rsi_buy_bound:
+                self.standard_dev = self.mean_average - price
+            self.daily_trade_limit -= 1
 
     def short_security(self, timestamp, code, price):
-        if self.rsix > self.rsi_sell_bound:
+        if self.daily_trade_limit <= 0 or self.rsix[-1] < 50:
+            return
+        if self.rsix[-1] > self.rsi_sell_bound:
             volume = self.buy_volume if self.buy_volume < 10 else self.buy_volume / 10
         else:
             volume = self.buy_volume
 
-        print "time: %s, price: %s, ma: %.2f, std: %.4f, rsi: %.4f" % (timestamp.split('_')[0], price,
-                                                                       self.mean_average,
-                                                                       self.standard_dev, self.rsix)
+        print "stime: %s, price: %s, ma: %.2f, std: %.4f, rsi1: %.4f, rsi2: %.4f" % (timestamp.split('_')[0],
+                                                                                     price,
+                                                                                     self.mean_average,
+                                                                                     self.standard_dev,
+                                                                                     self.rsix[-1],
+                                                                                     self.rsix[-2])
 
         order = cashAlgoAPI.Order(timestamp, 'SEHK', code, str(self.cnt), price, volume,
                                   "open", 2, "insert", "market_order", "today")
@@ -211,6 +227,7 @@ class Strategy:
         self.mgr.insertOrder(order)
         self.cnt += 1
         self.buy_volume -= volume
+        self.daily_trade_limit -= 1
 
 
 HISTORY_PRICE = {'00001': {
