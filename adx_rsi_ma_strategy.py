@@ -310,7 +310,7 @@ class Strategy:
 
         volume = int(volume)
         if volume and self.current_capital > volume * price:
-            print 'price: %s' % price
+            print 'price: %s, volume: %s, current_capital: %s' % (price, volume, self.current_capital)
             order = cashAlgoAPI.Order(timestamp, 'SEHK', code, str(self.cnt), price, volume,
                                       "open", 1, "insert", "market_order", "today")
 
