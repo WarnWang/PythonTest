@@ -45,7 +45,8 @@ class Strategy:
         self.history_price = {}
 
         # usually 2, the confidential factor.
-        self.std_factor = 1.2
+        self.buy_std_factor = 1.2
+        self.sell_std_factor = 0
 
         # How many total capital we have in summary
         self.total_capital = None
@@ -78,7 +79,7 @@ class Strategy:
         if self.config.has_option("Strategy", "ADXPeriod"):
             self.adx_period = int(self.config.get("Strategy", "ADXPeriod"))
         if self.config.has_option("Strategy", "STDFactor"):
-            self.std_factor = float(self.config.get("Strategy", "STDFactor"))
+            self.buy_std_factor = float(self.config.get("Strategy", "STDFactor"))
 
         self.current_capital = self.total_capital = float(self.config.get("Risk", "InitialCapital"))
         product_code = self.config.get("MarketData", "ProductCode_1")
@@ -135,70 +136,114 @@ class Strategy:
             self.standard_dev = talib.STDDEV(close_price, timeperiod=self.move_average_day)[-1]
             self.rsi = talib.RSI(close_price, timeperiod=self.rsi_period)
             adx = talib.ADX(high_price, low_price, close_price, timeperiod=self.adx_period)[-1]
-            plus_di = talib.PLUS_DI(high_price, low_price, close_price, timeperiod=self.adx_period)[-1]
-            minus_di = talib.MINUS_DI(high_price, low_price, close_price, timeperiod=self.adx_period)[-1]
+            plus_di = talib.PLUS_DI(high_price, low_price, close_price, timeperiod=self.adx_period)
+            minus_di = talib.MINUS_DI(high_price, low_price, close_price, timeperiod=self.adx_period)
             macd, macdsignal, macdhist = talib.MACD(close_price, fastperiod=5, slowperiod=35, signalperiod=5)
 
             print "timestamp: %s, adx: %.2f, ma: %.2f, std: %.2f, di+: %.2f, di-: %.2f" % (time_info[0], adx,
                                                                                            self.mean_average,
                                                                                            self.standard_dev,
-                                                                                           plus_di, minus_di)
-            print "ma days: %s, rsi: %.2f" % (self.move_average_day, self.rsi[-1])
-            if adx <= 25:
-                self.volume_factor = 0.9
-                self.buy_factor = 0.5
+                                                                                           plus_di[-1], minus_di[-1])
+            print "ma days: %s, rsi: %.2f, macd: %.2f, macd hist: %.2f" % (self.move_average_day, self.rsi[-1],
+                                                                           macd[-1], macdhist[-1])
+            print "volicaty: %.2f" % (self.standard_dev / self.mean_average)
+
+            # if self.buy_volume and macdhist[-1] < 0 < macdhist[-2]:
+            #     self.short_security(md.timestamp, code, md.bidPrice1, self.buy_volume)
+
+            if adx <= 20:
+                self.volume_factor = 1.1
+                self.buy_factor = 0.2
                 self.rsi_buy_bound = 50
                 self.rsi_sell_bound = 50
                 self.daily_buying_times = 4
-                if self.rsi[-1] > 30 > self.rsi[-2]:
-                    self.long_security(md.timestamp, code, md.askPrice1)
-                elif self.buy_volume and self.rsi[-1] < 70 < self.rsi[-2]:
-                    self.short_security(md.timestamp, code, md.bidPrice1, self.buy_volume)
+                self.sell_std_factor = 0.2
+                self.buy_std_factor = 1.2
+                if (plus_di[-1] > minus_di[-1] and plus_di[-1] - minus_di[-1] < plus_di[-2] - minus_di[2]) or \
+                                plus_di[-1] < minus_di[-1]:
+                    self.buy_std_factor = 1.5
+                    self.sell_std_factor = 0.1
 
-            elif 25 < adx <= 50:
+            elif 20 < adx <= 50:
                 self.volume_factor = 1.2
-                self.buy_factor = 0.3
-                self.rsi_sell_bound = 60
-                self.rsi_buy_bound = 40
+                self.buy_factor = 0.1
                 self.daily_buying_times = 3
-                if self.rsi[-1] > 30 > self.rsi[-2]:
-                    self.long_security(md.timestamp, code, md.askPrice1)
-                elif self.buy_volume and self.rsi[-1] < 70 < self.rsi[-2]:
-                    self.short_security(md.timestamp, code, md.bidPrice1, self.buy_volume)
+                if plus_di[-1] > minus_di[-1]:
+                    if plus_di[-1] - minus_di[-1] > plus_di[-2] - minus_di[2]:
+                        self.rsi_buy_bound = 50
+                        self.rsi_sell_bound = 70
+                        self.sell_std_factor = 0.2
+                        self.buy_std_factor = 1.2
+                    else:
+                        self.rsi_buy_bound = 40
+                        self.rsi_sell_bound = 70
+                        self.sell_std_factor = 0
+                        self.buy_std_factor = 1.5
+
+                else:
+                    if plus_di[-1] - minus_di[-1] > plus_di[-2] - minus_di[2]:
+                        self.rsi_buy_bound = 40
+                        self.rsi_sell_bound = 60
+                        self.sell_std_factor = 0.2
+                        self.buy_std_factor = 1.2
+                    else:
+                        self.rsi_buy_bound = 30
+                        self.rsi_sell_bound = 50
+                        self.sell_std_factor = 0
+                        self.buy_std_factor = 1.5
 
             elif 50 <= adx < 75:
                 self.volume_factor = 1.5
-                self.buy_factor = 0.2
-                if plus_di < minus_di:
-                    self.rsi_buy_bound = 30
-                    self.rsi_sell_bound = 50
-                    self.daily_buying_times = 2
-
-                else:
+                self.buy_factor = 0.1
+                if plus_di[-1] > minus_di[-1]:
                     self.rsi_buy_bound = 50
                     self.rsi_sell_bound = 70
                     self.daily_buying_times = 10
+                    self.sell_std_factor = 0.5
+                    self.buy_std_factor = 1
+
+                else:
+                    self.rsi_buy_bound = 25
+                    self.rsi_sell_bound = 50
+                    self.daily_buying_times = 2
+                    self.sell_std_factor = 0
+                    self.buy_std_factor = 2.2
 
             else:
                 self.volume_factor = 2
                 self.buy_factor = 0.1
-                if plus_di < minus_di:
-                    self.rsi_buy_bound = 20
-                    self.rsi_sell_bound = 50
-                    self.daily_buying_times = 1
-                else:
+                if plus_di[-1] > minus_di[-1]:
                     self.rsi_buy_bound = 50
                     self.rsi_sell_bound = 80
                     self.daily_buying_times = 10
+                    self.sell_std_factor = 0.5
+                    self.buy_std_factor = 1
+                else:
+                    self.rsi_buy_bound = 20
+                    self.rsi_sell_bound = 50
+                    self.daily_buying_times = 1
+                    self.sell_std_factor = 0
+                    self.buy_std_factor = 2.4
+
+            if self.standard_dev / self.mean_average < 0.02:
+                # self.buy_std_factor += 1
+                self.buy_factor = 0.5
+
+            if self.rsi_sell_bound > self.rsi[-1] > 30 > self.rsi[-2]:
+                self.long_security(md.timestamp, code, md.askPrice1)
+            elif self.buy_volume and self.rsi_buy_bound < self.rsi[-1] < 70 < self.rsi[-2]:
+                self.short_security(md.timestamp, code, md.bidPrice1, self.buy_volume)
 
         if len(self.history_price[HIGH_PRICE]) < max(self.rsi_period, self.move_average_day, self.adx_period):
             self.update_daily_price(md.lastPrice)
             return
 
-        if md.lastPrice + self.std_factor * self.standard_dev < self.mean_average and self.rsi[-1] < self.rsi_buy_bound:
+        if md.lastPrice + self.buy_std_factor * self.standard_dev < self.mean_average and \
+                        self.rsi[-1] < self.rsi_buy_bound:
             self.long_security(md.timestamp, code, md.askPrice1)
 
-        if md.lastPrice >= self.mean_average and self.buy_volume and self.rsi[-1] > self.rsi_sell_bound:
+        elif md.lastPrice >= self.mean_average + self.sell_std_factor * self.standard_dev and self.buy_volume and \
+                        self.rsi[-1] > self.rsi_sell_bound:
             self.short_security(md.timestamp, code, md.bidPrice1, self.buy_volume)
 
         self.update_daily_price(md.lastPrice)

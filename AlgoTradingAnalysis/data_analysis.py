@@ -119,18 +119,29 @@ class DataAnalysis:
     def get_di_minus(self):
         return talib.MINUS_DI(self.high_list, self.low_list, self.close_list, timeperiod=14)
 
+    def get_stoch_rsi(self):
+        return talib.STOCHRSI(self.close_list, timeperiod=14)
+
+    def get_sma_minus_ma(self):
+        return talib.SMA(self.close_list, timeperiod=20) - talib.MA(self.close_list, timeperiod=20)
+
+    def get_tsf(self):
+        return talib.TSF(self.close_list)
+
+
 if __name__ == "__main__":
     code = '00066'
     # get_stock_price.get_price_data(code, end_date="2015-03-31", start_date="2015-01-04")
     test = DataAnalysis(r"complete_stock_price")
     test.load_history_data(code)
+    # print test.close_list[-5:]
     # print test.close_list
     # str1 = ''
     print test.get_adx_value()[-5:]
-    print test.get_di_minus()[-5:]
-    print test.get_di_plus()[-5:]
-    print test.get_dmi_minus()[-5:]
-    print test.get_dmi_plus()[-5:]
+    # print test.get_di_minus()[-5:]
+    # print test.get_di_plus()[-5:]
+    # print test.get_dmi_minus()[-5:]
+    # print test.get_dmi_plus()[-5:]
 
     # date = pd.datetime(2015, 1, 1)
     # for i in range(len(test.close_list) - date_period):
