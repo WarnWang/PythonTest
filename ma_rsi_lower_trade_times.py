@@ -130,7 +130,7 @@ class Strategy:
             self.standard_dev = talib.STDDEV(numpy.array(self.close_price), self.move_average_day)[-1]
             self.daily_trade_limit = self.trade_limit
 
-        if len(self.close_price) < max(self.rsi_period, self.move_average_day) and md.lastPrice < 1:
+        if len(self.close_price) < max(self.rsi_period, self.move_average_day) or md.lastPrice < 1:
             return
 
         self.rsix = talib.RSI(numpy.array(self.close_price + [md.lastPrice]), timeperiod=self.rsi_period)
@@ -204,11 +204,17 @@ class Strategy:
 
             if self.rsix[-1] < self.rsi_buy_bound:
                 self.standard_dev = self.mean_average - price
+
+            standard_dev = talib.STDDEV(numpy.array(self.close_price + [price]),
+                                        timeperiod=self.move_average_day)[-1]
+            if self.rsix[-1] > self.rsi_buy_bound and standard_dev < self.standard_dev:
+                self.standard_dev = standard_dev
             self.daily_trade_limit -= 1
 
     def short_security(self, timestamp, code, price):
         if self.daily_trade_limit <= 0 or self.rsix[-1] < 50:
             return
+
         if self.rsix[-1] > self.rsi_sell_bound:
             volume = self.buy_volume if self.buy_volume < 10 else self.buy_volume / 10
         else:

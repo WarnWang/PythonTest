@@ -86,11 +86,6 @@ class Strategy:
 
         self.close_price = HISTORY_PRICE[product_code]['close_price']
 
-        # Get the past price of this stock.
-        # self.close_price = self.get_price_data(product_code, end_date=self.config.get("MarketData", "BeginDate"))
-        # print self.close_price
-        # self.close_price = [float(i) for i in self.config.get("Strategy", "ClosePrice").split(',')]
-
     # Process Market Data. Please use onOHLCFeed() in OHLC mode
     def onMarketDataUpdate(self, market, code, md):
 
@@ -109,7 +104,6 @@ class Strategy:
             # print self.close_price
 
             if self.last_price:
-                print 'date: %s\t%s' % (md.timestamp, self.last_price)
                 self.close_price.append(self.last_price)
 
             if len(self.close_price) < max(self.rsi_period, self.move_average_day):
@@ -119,46 +113,34 @@ class Strategy:
             self.mean_average = talib.MA(numpy.array(self.close_price), self.move_average_day)[-1]
             self.standard_dev = talib.STDDEV(numpy.array(self.close_price), self.move_average_day)[-1]
 
-        if len(self.close_price) < max(self.rsi_period, self.move_average_day) and md.lastPrice < 1:
-            self.last_price = md.lastPrice
+        if len(self.close_price) < max(self.rsi_period, self.move_average_day) or md.lastPrice < 1:
             return
 
         self.rsix = talib.RSI(numpy.array(self.close_price + [md.lastPrice]), timeperiod=self.rsi_period)[-1]
-        # rsi6 = talib.RSI(numpy.array(self.close_price + [md.lastPrice]), timeperiod=6)[-1]
-        # rsi9 = talib.RSI(numpy.array(self.close_price + [md.lastPrice]), timeperiod=9)[-1]
-        # rsi14 = talib.RSI(numpy.array(self.close_price + [md.lastPrice]), timeperiod=15)[-1]
 
         if md.lastPrice + self.std_factor * self.standard_dev < self.mean_average and self.rsix < self.rsi_buy_bound:
-            # if rsix < 50:
-            # print "Buying point appear rsi%s: %s" % (self.rsi_period, rsix)
-
-            # Increase the buying volume so that we will buy more at second time.
             volume0 = int(self.total_capital / 10 / md.lastPrice)
             n = round(math.log(1 - self.buy_volume / volume0 * (1 - self.volume_factor), self.volume_factor))
             volume = volume0 * self.volume_factor ** (n + 1)
             if md.lastPrice <= self.current_capital < volume * md.lastPrice:
                 volume = self.current_capital / md.lastPrice
 
-            if self.current_capital > volume * md.lastPrice:
+            if int(volume) and self.current_capital > volume * md.lastPrice:
                 order = cashAlgoAPI.Order(md.timestamp, 'SEHK', code, str(self.cnt), md.askPrice1, int(volume),
                                           "open", 1, "insert", "market_order", "today")
 
                 self.mgr.insertOrder(order)
                 self.cnt += 1
+                print "Buy time: %s, price: %s, rsi: %s" % (md.timestamp.split('_')[0], md.bidPrice1, self.rsix)
                 self.buy_volume += int(volume)
-                # self.current_capital -= int(volume) * md.askPrice1
-                # print "Buy: %s %s" % (volume, self.total_capital)
 
         if self.buy_volume and md.lastPrice >= self.mean_average and self.rsix > self.rsi_sell_bound:
-            # print "Selling point appear rsi%s: %s" % (self.rsi_period, rsix)
             order = cashAlgoAPI.Order(md.timestamp, 'SEHK', code, str(self.cnt), md.bidPrice1, self.buy_volume,
                                       "open", 2, "insert", "market_order", "today")
 
             self.mgr.insertOrder(order)
             self.cnt += 1
-            # self.current_capital += self.buy_volume * md.bidPrice1
-            # self.total_capital = self.current_capital
-            # print "Sell: %s %s" % (self.buy_volume, self.total_capital)
+            print "Sell time: %s, price: %s, rsi: %s" % (md.timestamp.split('_')[0], md.bidPrice1, self.rsix)
             self.buy_volume = 0
 
         self.last_price = md.lastPrice

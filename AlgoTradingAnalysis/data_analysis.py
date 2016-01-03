@@ -128,6 +128,9 @@ class DataAnalysis:
     def get_tsf(self):
         return talib.TSF(self.close_list)
 
+    def get_ppo(self):
+        return talib.PPO(self.close_list, fastperiod=5, slowperiod=35)
+
 
 if __name__ == "__main__":
     code = '00066'
@@ -137,7 +140,7 @@ if __name__ == "__main__":
     # print test.close_list[-5:]
     # print test.close_list
     # str1 = ''
-    print test.get_adx_value()[-5:]
+    print test.get_ppo()
     # print test.get_di_minus()[-5:]
     # print test.get_di_plus()[-5:]
     # print test.get_dmi_minus()[-5:]
