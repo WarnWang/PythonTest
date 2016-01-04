@@ -1,9 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# File name: many_stock_marp
+# File name: many_stock_marsi
 # Author: warn
-# Date: 4/1/2016 13:47
+# Date: 4/1/2016 15:46
+
 
 import math
 
@@ -15,7 +16,6 @@ import cashAlgoAPI
 CLOSE_PRICE = "close_price"
 LAST_PRICE = "last_price"
 LAST_DATE = "last_date"
-PPO = "ppo"
 RSI = "rsi"
 MA = 'ma'
 STD = 'std'
@@ -44,11 +44,6 @@ class Strategy:
         self.rsi_buy_bound = 30
         self.rsi_sell_bound = 70
 
-        self.ppo_fast_period = 12
-        self.ppo_slow_period = 26
-        self.ppo_buy_threshold = 0
-        self.ppo_sell_threshold = -0.5
-
         self.volume_factor = 0
 
     # Initialize Strategy
@@ -68,15 +63,6 @@ class Strategy:
         if self.config.has_option("Strategy", "RSISellBound"):
             self.rsi_sell_bound = int(self.config.get("Strategy", "RSISellBound"))
 
-        if self.config.has_option("Strategy", "PPOFastPeriod"):
-            self.ppo_fast_period = int(self.config.get("Strategy", "PPOFastPeriod"))
-        if self.config.has_option("Strategy", "PPOSlowPeriod"):
-            self.ppo_slow_period = int(self.config.get("Strategy", "PPOSlowPeriod"))
-        if self.config.has_option("Strategy", "PPOBuyThreshold"):
-            self.ppo_buy_threshold = float(self.config.get("Strategy", "PPOBuyThreshold"))
-        if self.config.has_option("Strategy", "PPOSellThreshold"):
-            self.ppo_sell_threshold = float(self.config.get("Strategy", "PPOSellThreshold"))
-
         capital = float(self.config.get("Risk", "InitialCapital"))
         i = 1
         while self.config.has_option("MarketData", "ProductCode_%s" % i):
@@ -87,7 +73,6 @@ class Strategy:
                                              HOLD_VOLUME: 0,
                                              TOTAL_CAPITAL: capital,
                                              CURRENT_CAPITAL: capital,
-                                             PPO: None,
                                              MA: None,
                                              STD: None,
                                              }
@@ -110,24 +95,19 @@ class Strategy:
         if time_info[0] != stock_info[LAST_DATE]:
             stock_info[LAST_DATE] = time_info[0]
 
-            if len(stock_info[CLOSE_PRICE]) > max(self.rsi_period, self.ma_period, self.ppo_slow_period) + 1:
+            if len(stock_info[CLOSE_PRICE]) > max(self.rsi_period, self.ma_period) + 1:
                 stock_info[CLOSE_PRICE].pop(0)
 
             if stock_info[LAST_PRICE]:
                 stock_info[CLOSE_PRICE].append(stock_info[LAST_PRICE])
 
-            if len(stock_info[CLOSE_PRICE]) < max(self.rsi_period, self.ma_period, self.ppo_slow_period):
+            if len(stock_info[CLOSE_PRICE]) < max(self.rsi_period, self.ma_period):
                 stock_info[LAST_PRICE] = md.lastPrice
                 self.stock_info[code].update(stock_info)
                 return
 
             stock_info[MA] = talib.MA(numpy.array(stock_info[CLOSE_PRICE]), self.ma_period)[-1]
             stock_info[STD] = talib.STDDEV(numpy.array(stock_info[CLOSE_PRICE]), self.ma_period)[-1]
-            stock_info[PPO] = talib.PPO(numpy.array(stock_info[CLOSE_PRICE]), fastperiod=self.ppo_fast_period,
-                                        slowperiod=self.ppo_slow_period)[-1]
-
-            if stock_info[HOLD_VOLUME] and stock_info[PPO] < self.ppo_sell_threshold:
-                self.short_security(md.timestamp, code, md.bidPrice1)
 
         stock_info[RSI] = talib.RSI(numpy.array(stock_info[CLOSE_PRICE] + [md.lastPrice]),
                                     timeperiod=self.rsi_period)[-1]
@@ -136,8 +116,7 @@ class Strategy:
         else:
             std_factor = 1.2
 
-        if md.askPrice1 + std_factor * stock_info[STD] < stock_info[MA] and \
-                        stock_info[PPO] > self.ppo_buy_threshold:
+        if md.askPrice1 + std_factor * stock_info[STD] < stock_info[MA]:
             self.long_security(md.timestamp, code, md.askPrice1)
 
         elif stock_info[HOLD_VOLUME] and md.bidPrice1 >= stock_info[MA]:
@@ -205,8 +184,7 @@ class Strategy:
 
     def short_security(self, timestamp, code, price):
 
-        if self.stock_info[code][RSI] > self.rsi_sell_bound and False and \
-                        self.stock_info[code][PPO] > self.ppo_sell_threshold:
+        if self.stock_info[code][RSI] > self.rsi_sell_bound:
             volume = self.stock_info[code][HOLD_VOLUME] \
                 if self.stock_info[code][HOLD_VOLUME] < self.stock_info[code][TOTAL_CAPITAL] / price / 10 \
                 else self.stock_info[code][HOLD_VOLUME] / 3

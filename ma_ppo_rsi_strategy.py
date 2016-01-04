@@ -127,7 +127,7 @@ class Strategy:
             self.ppo = talib.PPO(numpy.array(self.close_price), fastperiod=self.ppo_fast_period,
                                  slowperiod=self.ppo_slow_period)
 
-            if self.buy_volume and self.ppo[-1] < -self.ppo_sell_threshold:
+            if self.buy_volume and self.ppo[-1] < self.ppo_sell_threshold:
                 self.short_security(md.timestamp, code, md.bidPrice1)
 
         self.rsix = talib.RSI(numpy.array(self.close_price + [md.lastPrice]), timeperiod=self.rsi_period)
