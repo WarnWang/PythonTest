@@ -32,7 +32,7 @@ class Strategy:
         self.buy_volume = 0
 
         # the days used to calculate the move average
-        self.move_average_day = 14
+        self.ma_period = 14
 
         # the close price of last days
         self.close_price = []
@@ -70,24 +70,22 @@ class Strategy:
     def init(self):
 
         # Read Parameters
-        if self.config.has_option("Strategy", "MeanAveragePeriod"):
-            self.move_average_day = int(self.config.get("Strategy", "MeanAveragePeriod"))
-        if self.config.has_option("Strategy", "StdFactor"):
-            self.std_factor = float(self.config.get("Strategy", "StdFactor"))
+        if self.config.has_option("Strategy", "MAPeriod"):
+            self.ma_period = int(self.config.get("Strategy", "MAPeriod"))
         if self.config.has_option("Strategy", "VolumeFactor"):
             self.volume_factor = float(self.config.get("Strategy", "VolumeFactor"))
+
         if self.config.has_option("Strategy", "RSIPeriod"):
             self.rsi_period = int(self.config.get("Strategy", "RSIPeriod"))
-
         if self.config.has_option("Strategy", "RSIBuyBound"):
             self.rsi_buy_bound = int(self.config.get("Strategy", "RSIBuyBound"))
         if self.config.has_option("Strategy", "RSISellBound"):
             self.rsi_sell_bound = int(self.config.get("Strategy", "RSISellBound"))
 
-        if self.config.has_option("Strategy", "MACDFastPeriod"):
-            self.ppo_fast_period = int(self.config.get("Strategy", "MACDFastPeriod"))
-        if self.config.has_option("Strategy", "MACDSlowPeriod"):
-            self.ppo_slow_peroid = int(self.config.get("Strategy", "MACDSlowPeriod"))
+        if self.config.has_option("Strategy", "PPOFastPeriod"):
+            self.ppo_fast_period = int(self.config.get("Strategy", "PPOFastPeriod"))
+        if self.config.has_option("Strategy", "PPOSlowPeriod"):
+            self.ppo_slow_peroid = int(self.config.get("Strategy", "PPOSlowPeriod"))
         if self.config.has_option("Strategy", "PPOBuyThreshold"):
             self.ppo_buy_threshold = float(self.config.get("Strategy", "PPOBuyThreshold"))
         if self.config.has_option("Strategy", "PPOSellThreshold"):
@@ -114,18 +112,18 @@ class Strategy:
         if time_info[0] != self.last_date:
             self.last_date = time_info[0]
 
-            if len(self.close_price) > max(self.rsi_period, self.move_average_day, self.ppo_slow_peroid) + 1:
+            if len(self.close_price) > max(self.rsi_period, self.ma_period, self.ppo_slow_peroid) + 1:
                 self.close_price.pop(0)
 
             if self.last_price:
                 self.close_price.append(self.last_price)
 
-            if len(self.close_price) < max(self.rsi_period, self.move_average_day):
+            if len(self.close_price) < max(self.rsi_period, self.ma_period):
                 self.last_price = md.lastPrice
                 return
 
-            self.mean_average = talib.MA(numpy.array(self.close_price), self.move_average_day)[-1]
-            self.standard_dev = talib.STDDEV(numpy.array(self.close_price), self.move_average_day)[-1]
+            self.mean_average = talib.MA(numpy.array(self.close_price), self.ma_period)[-1]
+            self.standard_dev = talib.STDDEV(numpy.array(self.close_price), self.ma_period)[-1]
             self.ppo = talib.PPO(numpy.array(self.close_price), fastperiod=self.ppo_fast_period,
                                  slowperiod=self.ppo_slow_peroid)
 
