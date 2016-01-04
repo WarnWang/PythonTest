@@ -146,6 +146,10 @@ class Strategy:
 
         stock_info[LAST_PRICE] = md.lastPrice
         self.stock_info[code].update(stock_info)
+        if time_info[0] == '20150331' and time_info[1][:4] == '1600':
+            self.short_security(md.timestamp, code, md.bidPrice1)
+            print 'code: %s, total: %.2f, current: %.2f' % (code, stock_info[TOTAL_CAPITAL],
+                                                            stock_info[CURRENT_CAPITAL])
 
     # Used in OHLC mode.
     def onOHLCFeed(self, of):
@@ -188,10 +192,10 @@ class Strategy:
         n = round(math.log(1 - self.stock_info[code][HOLD_VOLUME] / volume0 * (1 - self.volume_factor),
                            self.volume_factor))
         volume = int(volume0 * self.volume_factor ** (n + 1))
-        if price <= self.stock_info[code][TOTAL_CAPITAL] < volume * price:
-            volume = int(self.stock_info[code][TOTAL_CAPITAL] / price)
+        if price <= self.stock_info[code][CURRENT_CAPITAL] < volume * price:
+            volume = int(self.stock_info[code][CURRENT_CAPITAL] / price)
 
-        if volume and self.stock_info[code][TOTAL_CAPITAL] > volume * price:
+        if volume and self.stock_info[code][CURRENT_CAPITAL] > volume * price:
             order = cashAlgoAPI.Order(timestamp, 'SEHK', code, str(self.cnt), price, int(volume),
                                       "open", 1, "insert", "market_order", "today")
 

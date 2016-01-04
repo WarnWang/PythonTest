@@ -117,7 +117,7 @@ def get_a_stock_list(n=None):
     stock_file.close()
 
 
-def prepare_stock_info():
+def prepare_stock_info(R):
     stock_info = {}
     stock_file = open('stock_list')
     for i in stock_file:
@@ -223,4 +223,4 @@ if __name__ == "__main__":
     # f = open("pformat_stock_price.txt", 'w')
     # f.write(pprint.pformat(price_dict, width=800))
     # f.close()
-    get_a_stock_list()
+    get_a_stock_list(10)
