@@ -1,9 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# File name: MARP
+# File name: many_stock_marp
 # Author: warn
-# Date: 29/12/2015 13:32
+# Date: 4/1/2016 13:47
 
 import math
 
@@ -11,6 +11,18 @@ import numpy
 import talib
 
 import cashAlgoAPI
+
+CLOSE_PRICE = "close_price"
+LAST_PRICE = "last_price"
+LAST_DATE = "last_date"
+PPO = "ppo"
+RSI = "rsi"
+MA = 'ma'
+STD = 'std'
+HOLD_VOLUME = "buy_volume"
+TOTAL_CAPITAL = "tc"
+CURRENT_CAPITAL = 'cc'
+VOLUME_FACTOR = 'vf'
 
 
 class Strategy:
@@ -23,51 +35,25 @@ class Strategy:
         self.cnt = 0
 
         # Remember the last price of last trading
-        self.last_price = None
-
-        # Used to remark whether this market data is an open date or not.
-        self.last_date = None
-
-        # how many volume stocks we have bought
-        self.buy_volume = 0
+        self.stock_info = {}
 
         # the days used to calculate the move average
         self.ma_period = 14
 
-        # the close price of last days
-        self.close_price = []
-        # the close price of last days for MACD
-        self.close_price_MACD = []
-
-        # usually 2, the confidential factor.
-        self.std_factor = 1.2
-
-        # How many total capital we have in summary
-        self.total_capital = None
-
-        # How many capital we have
-        self.current_capital = None
-
-        # The volume augment factor
-        self.volume_factor = 1.0
-
-        # the value of every day's new factor.
-        self.mean_average = 0
-        self.standard_dev = 0
-
         self.rsi_period = 6
         self.rsi_buy_bound = 30
         self.rsi_sell_bound = 70
-        self.rsix = None
 
         self.ppo_fast_period = 12
         self.ppo_slow_period = 26
-        self.ppo = None
         self.ppo_buy_threshold = 0
         self.ppo_sell_threshold = -0.5
 
+        self.volume_factor = 0
+
     # Initialize Strategy
     def init(self):
+        self.stock_info.clear()
 
         # Read Parameters
         if self.config.has_option("Strategy", "MAPeriod"):
@@ -91,59 +77,75 @@ class Strategy:
         if self.config.has_option("Strategy", "PPOSellThreshold"):
             self.ppo_sell_threshold = float(self.config.get("Strategy", "PPOSellThreshold"))
 
-        self.current_capital = self.total_capital = float(self.config.get("Risk", "InitialCapital"))
+        capital = float(self.config.get("Risk", "InitialCapital"))
         product_code = self.config.get("MarketData", "ProductCode_1")
+        i = 1
+        while self.config.has_option("MarketData", "ProductCode_%s" % i):
+            product_code = self.config.get("MarketData", "ProductCode_%s" % i)
+            self.stock_info[product_code] = {CLOSE_PRICE: HISTORY_PRICE[product_code],
+                                             LAST_DATE: None,
+                                             LAST_PRICE: None,
+                                             HOLD_VOLUME: 0,
+                                             TOTAL_CAPITAL: capital,
+                                             CURRENT_CAPITAL: capital,
+                                             PPO: None,
+                                             MA: None,
+                                             STD: None,
+                                             }
+            i += 1
 
         self.cnt = 0
-        self.last_price = None
-        self.last_date = None
-        self.buy_volume = 0
-        self.close_price = HISTORY_PRICE[product_code]
 
     # Process Market Data. Please use onOHLCFeed() in OHLC mode
     def onMarketDataUpdate(self, market, code, md):
 
+        stock_info = self.stock_info[code]
+
         # The following time is not allowed to trade. Only trade from 9:30 am to 12:00 am, and from 13:00 to 16:00
         time_info = md.timestamp.split('_')
-        if int(time_info[1][:4]) not in (range(930, 1201) + range(1300, 1601)) or md.lastPrice < 1 < self.mean_average:
+        if int(time_info[1][:4]) not in (range(930, 1201) + range(1300, 1601)) or \
+                (stock_info[MA] and md.lastPrice < 1 < stock_info[MA]):
             return
 
         # For open price record last day close price
-        if time_info[0] != self.last_date:
-            self.last_date = time_info[0]
+        if time_info[0] != stock_info[LAST_DATE]:
+            stock_info[LAST_DATE] = time_info[0]
 
-            if len(self.close_price) > max(self.rsi_period, self.ma_period, self.ppo_slow_period) + 1:
-                self.close_price.pop(0)
+            if len(stock_info[CLOSE_PRICE]) > max(self.rsi_period, self.ma_period, self.ppo_slow_period) + 1:
+                stock_info[CLOSE_PRICE].pop(0)
 
-            if self.last_price:
-                self.close_price.append(self.last_price)
+            if stock_info[LAST_PRICE]:
+                stock_info[CLOSE_PRICE].append(stock_info[LAST_PRICE])
 
-            if len(self.close_price) < max(self.rsi_period, self.ma_period):
-                self.last_price = md.lastPrice
+            if len(stock_info[CLOSE_PRICE]) < max(self.rsi_period, self.ma_period):
+                stock_info[LAST_PRICE] = md.lastPrice
+                self.stock_info[code] = stock_info
                 return
 
-            self.mean_average = talib.MA(numpy.array(self.close_price), self.ma_period)[-1]
-            self.standard_dev = talib.STDDEV(numpy.array(self.close_price), self.ma_period)[-1]
-            self.ppo = talib.PPO(numpy.array(self.close_price), fastperiod=self.ppo_fast_period,
-                                 slowperiod=self.ppo_slow_period)
+            stock_info[MA] = talib.MA(numpy.array(stock_info[CLOSE_PRICE]), self.ma_period)[-1]
+            stock_info[STD] = talib.STDDEV(numpy.array(stock_info[CLOSE_PRICE]), self.ma_period)[-1]
+            stock_info[PPO] = talib.PPO(numpy.array(stock_info[CLOSE_PRICE]), fastperiod=self.ppo_fast_period,
+                                        slowperiod=self.ppo_slow_period)[-1]
 
-            if self.buy_volume and self.ppo[-1] < -self.ppo_sell_threshold:
+            if stock_info[HOLD_VOLUME] and stock_info[PPO] < -self.ppo_sell_threshold:
                 self.short_security(md.timestamp, code, md.bidPrice1)
 
-        self.rsix = talib.RSI(numpy.array(self.close_price + [md.lastPrice]), timeperiod=self.rsi_period)
-        if self.rsix[-1] < self.rsi_buy_bound:
-            self.std_factor = 2
+        stock_info[RSI] = talib.RSI(numpy.array(stock_info[CLOSE_PRICE] + [md.lastPrice]),
+                                    timeperiod=self.rsi_period)[-1]
+        if stock_info[RSI] < self.rsi_buy_bound:
+            std_factor = 2
         else:
-            self.std_factor = 1.2
+            std_factor = 1.2
 
-        if (md.askPrice1 + self.std_factor * self.standard_dev < self.mean_average and
-                    self.ppo[-1] > self.ppo_buy_threshold):
+        if md.askPrice1 + std_factor * stock_info[STD] < stock_info[MA] and \
+                        stock_info[PPO] > self.ppo_buy_threshold:
             self.long_security(md.timestamp, code, md.askPrice1)
 
-        elif self.buy_volume and md.bidPrice1 >= self.mean_average:
+        elif stock_info[HOLD_VOLUME] and md.bidPrice1 >= stock_info[MA]:
             self.short_security(md.timestamp, code, md.bidPrice1)
 
-        self.last_price = md.lastPrice
+        stock_info[LAST_PRICE] = md.lastPrice
+        self.stock_info[code].update(stock_info)
 
     # Used in OHLC mode.
     def onOHLCFeed(self, of):
@@ -166,11 +168,11 @@ class Strategy:
     # Process Trade
     def onTradeFeed(self, tf):
         if tf.buySell == 1:
-            self.current_capital -= tf.volumeFilled * tf.price
+            self.stock_info[tf.productCode][CURRENT_CAPITAL] -= tf.volumeFilled * tf.price
         else:
-            self.current_capital += tf.volumeFilled * tf.price
-            if self.buy_volume == 0:
-                self.total_capital = self.current_capital
+            self.stock_info[tf.productCode][CURRENT_CAPITAL] += tf.volumeFilled * tf.price
+            if self.stock_info[tf.productCode][HOLD_VOLUME] == 0:
+                self.stock_info[tf.productCode][TOTAL_CAPITAL] = self.stock_info[tf.productCode][CURRENT_CAPITAL]
 
     # Process Position
     def onPortfolioFeed(self, portfolioFeed):
@@ -182,47 +184,37 @@ class Strategy:
         pass
 
     def long_security(self, timestamp, code, price):
-        volume0 = int(self.total_capital / 10 / price)
-        n = round(math.log(1 - self.buy_volume / volume0 * (1 - self.volume_factor), self.volume_factor))
+        volume0 = int(self.stock_info[code][TOTAL_CAPITAL] / 10 / price)
+        n = round(math.log(1 - self.stock_info[code][HOLD_VOLUME] / volume0 * (1 - self.volume_factor),
+                           self.volume_factor))
         volume = int(volume0 * self.volume_factor ** (n + 1))
-        if price <= self.current_capital < volume * price:
-            volume = int(self.current_capital / price)
+        if price <= self.stock_info[code][TOTAL_CAPITAL] < volume * price:
+            volume = int(self.stock_info[code][TOTAL_CAPITAL] / price)
 
-        if volume and self.current_capital > volume * price:
+        if volume and self.stock_info[code][TOTAL_CAPITAL] > volume * price:
             order = cashAlgoAPI.Order(timestamp, 'SEHK', code, str(self.cnt), price, int(volume),
                                       "open", 1, "insert", "market_order", "today")
 
             self.mgr.insertOrder(order)
             self.cnt += 1
-            self.buy_volume += int(volume)
-
-            print "btime: %s, price: %s, ma: %.2f, std: %.4f, rsi1: %.4f, rsi2: %.4f" % (timestamp.split('_')[0],
-                                                                                         price,
-                                                                                         self.mean_average,
-                                                                                         self.standard_dev,
-                                                                                         self.rsix[-1],
-                                                                                         self.rsix[-2])
+            self.stock_info[code][HOLD_VOLUME] += int(volume)
 
     def short_security(self, timestamp, code, price):
 
-        if self.rsix[-1] > self.rsi_sell_bound and self.ppo[-1] > self.ppo_sell_threshold:
-            volume = self.buy_volume if self.buy_volume < self.total_capital / price / 10 else self.buy_volume / 3
+        if self.stock_info[code][RSI] > self.rsi_sell_bound and \
+                        self.stock_info[code][PPO] > self.ppo_sell_threshold:
+            volume = self.stock_info[code][HOLD_VOLUME] \
+                if self.stock_info[code][HOLD_VOLUME] < self.stock_info[code][TOTAL_CAPITAL] / price / 10 \
+                else self.stock_info[code][HOLD_VOLUME] / 3
         else:
-            volume = self.buy_volume
-
-        print "stime: %s, price: %s, ma: %.2f, std: %.4f, rsi1: %.4f, rsi2: %.4f" % (timestamp.split('_')[0],
-                                                                                     price,
-                                                                                     self.mean_average,
-                                                                                     self.standard_dev,
-                                                                                     self.rsix[-1],
-                                                                                     self.rsix[-2])
+            volume = self.stock_info[code][HOLD_VOLUME]
 
         order = cashAlgoAPI.Order(timestamp, 'SEHK', code, str(self.cnt), price, volume,
                                   "open", 2, "insert", "market_order", "today")
 
         self.mgr.insertOrder(order)
         self.cnt += 1
-        self.buy_volume -= volume
+        self.stock_info[code][HOLD_VOLUME] -= volume
 
 
 HISTORY_PRICE = {

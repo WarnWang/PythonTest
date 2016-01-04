@@ -210,16 +210,17 @@ if __name__ == "__main__":
     # f = open('stock_price', 'w')
     # pickle.dump(price_dict, f)
     # f.close()
-    f = open('complete_stock_price')
-    price_dict = pickle.load(f)
-    f.close()
-    #
-    for i in price_dict:
-        price_dict[i] = price_dict[i]['close_price']
+    # f = open('complete_stock_price')
+    # price_dict = pickle.load(f)
+    # f.close()
+    # #
+    # for i in price_dict:
+    #     price_dict[i] = price_dict[i]['close_price']
     #
     # f = open('complete_stock_price', 'w')
     # pickle.dump(price_dict, f)
     # f.close()
-    f = open("pformat_stock_price.txt", 'w')
-    f.write(pprint.pformat(price_dict, width=800))
-    f.close()
+    # f = open("pformat_stock_price.txt", 'w')
+    # f.write(pprint.pformat(price_dict, width=800))
+    # f.close()
+    get_a_stock_list()
