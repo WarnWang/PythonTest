@@ -7,14 +7,12 @@
 
 import numpy
 import statsmodels.tsa.stattools as ts
-import pandas as pd
-from pandas.tseries.offsets import BDay
 import pickle
 
 from scipy import stats
 import talib
 
-import get_stock_price
+import lag
 
 
 class DataAnalysis:
@@ -125,15 +123,18 @@ class DataAnalysis:
     def get_ppo(self):
         return talib.PPO(self.close_list, fastperiod=5, slowperiod=35)
 
+    def get_half_life(self):
+        return lag.half_life(self.close_list)
+
 
 def get_all_adf_value():
     stock_list = open('stock_list')
     test = DataAnalysis(r"stock_price_2015_s1.txt")
-    adf_value = open('adf_value.csv', 'w')
+    adf_value = open('half_life.csv', 'w')
     for i in stock_list:
         test.load_history_data('0%s' % i.strip('\n'))
-        adf = test.get_adfvalue()
-        adf_value.write('%s, %s, %s\n' % (i.strip('\n'), adf[0], adf[1]))
+        adf = test.get_half_life()
+        adf_value.write('%s, %s\n' % (i.strip('\n'), adf))
 
     stock_list.close()
     adf_value.close()

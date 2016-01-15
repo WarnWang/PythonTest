@@ -104,14 +104,13 @@ def get_given_stock_price():
     stock_file.close()
 
 
-def get_a_stock_list(n=None):
+def get_a_stock_list(m=None):
     stock_file = open('stock_list')
-    if n is None:
-        n = 10
+    n = 10
     for i, j in enumerate(stock_file):
-        if i < n * 5:
+        if i < n * m:
             continue
-        elif i >= 6 * n:
+        elif i >= (m + 1) * n:
             break
         else:
             print "DataSource_%s=SEHK" % (i % n + 1)
@@ -225,4 +224,4 @@ if __name__ == "__main__":
     # f = open("pformat_stock_price.txt", 'w')
     # f.write(pprint.pformat(price_dict, width=800))
     # f.close()
-    get_a_stock_list()
+    get_a_stock_list(0)

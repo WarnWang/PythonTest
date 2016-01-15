@@ -20,6 +20,7 @@ RSI = "rsi"
 MA = 'ma'
 STD = 'std'
 HOLD_VOLUME = "buy_volume"
+ORDER_VOLUME = "buy_order_volume"
 TOTAL_CAPITAL = "tc"
 CURRENT_CAPITAL = 'cc'
 VOLUME_FACTOR = 'vf'
@@ -90,6 +91,7 @@ class Strategy:
                                              PPO: None,
                                              MA: None,
                                              STD: None,
+                                             ORDER_VOLUME: 0,
                                              }
             i += 1
 
@@ -145,11 +147,6 @@ class Strategy:
 
         stock_info[LAST_PRICE] = md.lastPrice
         self.stock_info[code].update(stock_info)
-        if time_info[0] == '20150331' and time_info[1][:4] == '1600':
-            if stock_info[HOLD_VOLUME]:
-                self.short_security(md.timestamp, code, md.bidPrice1)
-            print '%s\t%.2f\t%.2f\t%.2f' % (code, stock_info[TOTAL_CAPITAL], stock_info[CURRENT_CAPITAL],
-                                            stock_info[TOTAL_CAPITAL] - 10000)
 
     # Used in OHLC mode.
     def onOHLCFeed(self, of):
@@ -173,9 +170,12 @@ class Strategy:
     def onTradeFeed(self, tf):
         if tf.buySell == 1:
             self.stock_info[tf.productCode][CURRENT_CAPITAL] -= tf.volumeFilled * tf.price
+            self.stock_info[tf.productCode][ORDER_VOLUME] -= tf.volumeFilled
+            # print "current capital changed"
         else:
             self.stock_info[tf.productCode][CURRENT_CAPITAL] += tf.volumeFilled * tf.price
             if self.stock_info[tf.productCode][HOLD_VOLUME] == 0:
+                self.stock_info[tf.productCode][ORDER_VOLUME] = 0
                 self.stock_info[tf.productCode][TOTAL_CAPITAL] = self.stock_info[tf.productCode][CURRENT_CAPITAL]
 
     # Process Position
@@ -195,23 +195,22 @@ class Strategy:
         if price <= self.stock_info[code][CURRENT_CAPITAL] < volume * price:
             volume = int(self.stock_info[code][CURRENT_CAPITAL] / price)
 
-        if volume and self.stock_info[code][CURRENT_CAPITAL] > volume * price:
+        if volume and self.stock_info[code][CURRENT_CAPITAL] > volume * price and \
+                not self.stock_info[code][ORDER_VOLUME]:
+            # print "order id: %s, current_capital: %s, totoal_capital: %s" % (self.cnt,
+            #                                                                  self.stock_info[code][CURRENT_CAPITAL],
+            #                                                                  self.stock_info[code][TOTAL_CAPITAL])
             order = cashAlgoAPI.Order(timestamp, 'SEHK', code, str(self.cnt), price, int(volume),
                                       "open", 1, "insert", "market_order", "today")
 
             self.mgr.insertOrder(order)
             self.cnt += 1
             self.stock_info[code][HOLD_VOLUME] += int(volume)
+            self.stock_info[code][ORDER_VOLUME] = int(volume)
 
     def short_security(self, timestamp, code, price):
 
-        if self.stock_info[code][RSI] > self.rsi_sell_bound and False and \
-                        self.stock_info[code][PPO] > self.ppo_sell_threshold:
-            volume = self.stock_info[code][HOLD_VOLUME] \
-                if self.stock_info[code][HOLD_VOLUME] < self.stock_info[code][TOTAL_CAPITAL] / price / 10 \
-                else self.stock_info[code][HOLD_VOLUME] / 3
-        else:
-            volume = self.stock_info[code][HOLD_VOLUME]
+        volume = self.stock_info[code][HOLD_VOLUME]
 
         order = cashAlgoAPI.Order(timestamp, 'SEHK', code, str(self.cnt), price, volume,
                                   "open", 2, "insert", "market_order", "today")
