@@ -224,4 +224,4 @@ if __name__ == "__main__":
     # f = open("pformat_stock_price.txt", 'w')
     # f.write(pprint.pformat(price_dict, width=800))
     # f.close()
-    get_a_stock_list(0)
+    get_a_stock_list(1)
