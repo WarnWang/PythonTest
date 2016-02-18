@@ -41,4 +41,6 @@ def heap_sort(s):
 
 
 if __name__ == "__main__":
-    print heap_sort([4, 23, 4, 51, 23, 5, 1])
+    s = [4, 23, 4, 51, 23, 5, 1]
+    print heap_sort(s[:])
+    print s
