@@ -26,4 +26,6 @@ if __name__ == "__main__":
     print evaluation_function_runtime(reverse_tradition_version, 100, string_input)
     print evaluation_function_runtime(reverse_version_1, 100, string_input)
     print evaluation_function_runtime(reverse_version_2, 100, string_input)
-    print evaluation_function_runtime(reverse_version_3, 100, string_input)
+    # print evaluation_function_runtime(reverse_version_3, 100, string_input)
+    # print evaluation_function_runtime(reverse_version_mutable_string, 100, string_input)
+    print evaluation_function_runtime(reverse_version_char_array, 100, string_input)

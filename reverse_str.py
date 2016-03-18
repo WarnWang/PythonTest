@@ -8,6 +8,9 @@
 #
 # The second one is the fastest one ever, besides the first one
 
+from UserString import MutableString
+from array import array
+
 
 def reverse_tradition_version(string_input):
     return "".join(reversed(string_input))
@@ -23,6 +26,11 @@ def reverse_version_1(string_input):
 
 
 def reverse_version_2(string_input):
+    '''
+    Best practice
+    :param string_input: The string need to be reversed
+    :return: A reversed string
+    '''
     new_str = list(string_input)
     start_index = 0
     end_index = len(new_str) - 1
@@ -41,3 +49,21 @@ def reverse_version_3(string_input):
         new_str = "{}{}".format(new_str, string_input[i])
 
     return new_str
+
+
+def reverse_version_mutable_string(string_input):
+    new_str = MutableString()
+    for i in range(len(string_input) - 1, -1, -1):
+        # new_str = "%s%s" % (new_str, string_input[i])
+        new_str += string_input[i]
+
+    return new_str
+
+
+def reverse_version_char_array(string_input):
+    new_str = array('c')
+    for i in range(len(string_input) - 1, -1, -1):
+        # new_str = "%s%s" % (new_str, string_input[i])
+        new_str.fromstring(string_input[i])
+
+    return new_str.tostring()
