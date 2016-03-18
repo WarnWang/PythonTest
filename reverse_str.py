@@ -5,6 +5,8 @@
 # File name: reverse_str
 # Author: Mark Wang
 # Date: 17/3/2016
+#
+# The second one is the fastest one ever, besides the first one
 
 
 def reverse_tradition_version(string_input):
