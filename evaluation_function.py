@@ -22,10 +22,11 @@ def evaluation_function_runtime(evaluate_function, n=100, *args, **kwargs):
 if __name__ == "__main__":
     from reverse_str import *
 
-    string_input = "abcdedfsefsfasfaasdfaeravaewrewatsdfasd" * 1000
-    print evaluation_function_runtime(reverse_tradition_version, 100, string_input)
-    print evaluation_function_runtime(reverse_version_1, 100, string_input)
-    print evaluation_function_runtime(reverse_version_2, 100, string_input)
+    string_input = "abcdedfsefsfasfaasdfaeravaewrewatsdfasd" * 20
+    # print evaluation_function_runtime(reverse_tradition_version, 100, string_input)
+    # print evaluation_function_runtime(reverse_version_1, 100, string_input)
+    # print evaluation_function_runtime(reverse_version_2, 100, string_input)
     # print evaluation_function_runtime(reverse_version_3, 100, string_input)
     # print evaluation_function_runtime(reverse_version_mutable_string, 100, string_input)
-    print evaluation_function_runtime(reverse_version_char_array, 100, string_input)
+    a = evaluation_function_runtime(reverse_version_char_array, 100, string_input)
+    print a + string_input

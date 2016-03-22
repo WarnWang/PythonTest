@@ -6,8 +6,6 @@
 # Author: Mark Wang
 # Date: 19/3/2016
 
-import math
-
 
 def combination(n, k):
     result = 1
@@ -36,4 +34,4 @@ def stair_steps(n):
 if __name__ == "__main__":
     # print combination(2, 0)
     for i in range(1, 11):
-        print stair_steps(i)
+        print i, stair_steps(i)
