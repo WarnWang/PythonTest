@@ -126,6 +126,8 @@ celerybeat-schedule
 # virtualenv
 venv/
 ENV/
+.idea/
+.DS_Store
 
 # Spyder project settings
 .spyderproject
