@@ -24,9 +24,18 @@ def generate_matrix(width, height, minimum=1, maximum=10):
     return np_random.randint(low=minimum, high=maximum, size=[width, height], dtype=int)
 
 
+def prepare_testcase():
+    a = get_large_list(20, 0, 10)
+    b = get_large_list(20, 0, 10)
+    for i in range(5, 35, 3):
+        print a
+        print b
+        print i
+
 if __name__ == '__main__':
     # print get_large_list(length=25000)
-    a = generate_matrix(100, 100, 1, 20)
-    print a.tolist()
+    # a = generate_matrix(100, 100, 1, 20)
+    # print a.tolist()
+    prepare_testcase()
     # import pprint
     # pprint.pprint(a.tolist(), width=500)
