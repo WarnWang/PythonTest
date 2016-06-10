@@ -74,20 +74,42 @@ class board(object):
     def __hash__(self):
         return str(self.board_list).__hash__()
 
+    def __eq__(self, other):
+        if not isinstance(other, board):
+            return False
+        for i, j in zip(self.board_list, other.board_list):
+            if i == 8 and j == 0 or i == 0 and j == 8:
+                continue
+            elif i != j:
+                return False
+
+        return True
+
+    def __str__(self):
+        str_board = map(str, self.board_list)
+        return '{}\n{}\n{}'.format(', '.join(str_board[:3]), ', '.join(str_board[3:6]), ', '.join(str_board[6:9]))
+
 
 def find_possible_result():
     state_list = []
     start_board = board()
     start_state = (start_board.get_heuristic(), start_board, [])
     heapq.heappush(state_list, start_state)
+    explored_set = set()
+    explored_set.add(start_board)
     while state_list:
         frontier = heapq.heappop(state_list)
         possible_moves = frontier[1].get_possible_moves()
         for action in possible_moves:
             new_board = frontier[1].generate_new_state(action)
+            if new_board in explored_set:
+                continue
+            else:
+                explored_set.add(new_board)
             new_path = frontier[2][:]
             new_path.append(action)
-            if new_board.get_heuristic() <= 0.1:
+            if new_board.get_heuristic() <= 1:
+                print len(explored_set)
                 return new_path
             new_state = (len(new_path) + new_board.get_heuristic(), new_board, new_path)
             heapq.heappush(state_list, new_state)
@@ -117,5 +139,36 @@ def find_possible_result_ucs():
             heapq.heappush(state_list, new_state)
 
 
+def find_possible_result_bfs():
+    state_list = []
+    state_board = board()
+    start_state = (state_board, [])
+    explore_state = set()
+    explore_state.add(state_board)
+    state_list.append(start_state)
+    while state_list:
+        frontier = state_list.pop(0)
+        possible_actions = frontier[0].get_possible_moves()
+        for action in possible_actions:
+            new_board = frontier[0].generate_new_state(action)
+            if new_board in explore_state:
+                continue
+            else:
+                explore_state.add(new_board)
+            new_path = frontier[1][:]
+            new_path.append(action)
+            if new_board.get_heuristic() < 1:
+                return new_path
+            new_state = (new_board, new_path)
+            state_list.append(new_state)
+
+
 if __name__ == '__main__':
-    print find_possible_result_ucs()
+    actions = find_possible_result_ucs()
+    i = board()
+    print i
+    for action in actions:
+        print 'actions:', action
+        i = i.generate_new_state(action)
+        print i
+        print
