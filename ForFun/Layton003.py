@@ -17,9 +17,10 @@ RIGHT = 'right'
 class board(object):
     def __init__(self):
         self.board_list = [0, 1, 2, 3, 7, 6, 5, 4, 8]
+        self.zero_element = 4
 
     def get_possible_moves(self):
-        zero_index = self.board_list.index(4)
+        zero_index = self.board_list.index(self.zero_element)
         possible_actions = [UP, DOWN, LEFT, RIGHT]
         if zero_index < 3:
             possible_actions.remove(DOWN)
@@ -51,7 +52,7 @@ class board(object):
         if action not in self.get_possible_moves():
             return self
         else:
-            zero_index = self.board_list.index(4)
+            zero_index = self.board_list.index(self.zero_element)
             new_board = board()
             new_board_list = self.board_list[:]
             if action == UP:
@@ -90,9 +91,10 @@ class board(object):
         return '{}\n{}\n{}'.format(', '.join(str_board[:3]), ', '.join(str_board[3:6]), ', '.join(str_board[6:9]))
 
 
-def find_possible_result():
+def find_possible_result(start_board=None):
     state_list = []
-    start_board = board()
+    if start_board is None:
+        start_board = board()
     start_state = (start_board.get_heuristic(), start_board, [])
     heapq.heappush(state_list, start_state)
     explored_set = set()
@@ -164,7 +166,7 @@ def find_possible_result_bfs():
 
 
 if __name__ == '__main__':
-    actions = find_possible_result_ucs()
+    actions = find_possible_result()
     i = board()
     print i
     for action in actions:
