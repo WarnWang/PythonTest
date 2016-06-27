@@ -7,16 +7,12 @@
 # Date: 25/6/2016
 
 
-s = '''ANN Artificial Neural Network
-MACD Moving average convergence divergence
-SVM Support Vector Machines
-ROC Rate Of Change
-RSI Relative Strength Index
-HIBOR Hang Seng Interbank Offered Rate
-HKD Hong Kong Dollar
-EMH Efficient Market Hypothesis
-HKEX Hong Kong Exchanges and clearing Limited
-PCA Principal Components Analysis'''
+s = '''ME Mean Error
+MSE Mean Square Error
+RMSE Root Mean Square Error
+MAE Mean Absolute Error
+MAPE Absolute Percent Error
+HMSE Heteroscedasticity-adjust Mean Square Error'''
 
 
 def format_first_word(word):
