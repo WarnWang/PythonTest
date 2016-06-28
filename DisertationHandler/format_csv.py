@@ -27,19 +27,18 @@ for x, y, z in os.walk(dir_path):
             wb = openpyxl.Workbook()
         sheet_name = x.split('/')[-1]
         if sheet_name in wb:
-            ws = wb.get_sheet_by_name(name=sheet_name)
-        else:
-            ws = wb.create_sheet(title=sheet_name)
+            ws = wb.remove_sheet(wb.get_sheet_by_name(name=sheet_name))
+        ws = wb.create_sheet(title=sheet_name)
         csv_info = os.path.join(x, 'stock_info.csv')
         csv_reader = open(csv_info)
-        rowIndex = 0
+        rowIndex = 1
+
         for line in csv_reader:
             colIndex = 0
             for info in line.split(','):
-                colIndex += 1
-                cellIndex = "{}{}".format(test_char(rowIndex), colIndex)
-                print cellIndex
+                cellIndex = "{}{}".format(test_char(colIndex), rowIndex)
                 ws[cellIndex] = info
+                colIndex += 1
 
             rowIndex += 1
         csv_reader.close()
