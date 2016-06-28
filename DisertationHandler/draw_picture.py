@@ -15,7 +15,7 @@ data_path = '/Users/warn/PycharmProjects/output_data/'
 
 for path, dirs, files in os.walk(data_path):
     for dir_name in dirs:
-        if 'output_3_1_2010_2014' in dir_name:
+        if 'output3_2012_2015' in dir_name:
             xlsx_path = os.path.join(path, dir_name, 'all_info.xlsx')
             save_path = os.path.join(output_path, ''.join(dir_name.split('_')[1:]))
             print save_path

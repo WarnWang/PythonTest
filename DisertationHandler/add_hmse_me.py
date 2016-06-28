@@ -15,6 +15,8 @@ from util import *
 dir_path = '/Users/warn/PycharmProjects/output_data'
 
 for x, y, z in os.walk(dir_path):
+    if 'output3_2012_2015' not in x:
+        continue
     if 'all_info.xlsx' in z:
         all_info_file = os.path.join(x, 'all_info.xlsx')
         wb = openpyxl.load_workbook(all_info_file)
