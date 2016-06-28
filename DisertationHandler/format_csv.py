@@ -37,6 +37,10 @@ for x, y, z in os.walk(dir_path):
             colIndex = 0
             for info in line.split(','):
                 cellIndex = "{}{}".format(test_char(colIndex), rowIndex)
+                try:
+                    info = float(info)
+                except Exception, err:
+                    print err
                 ws[cellIndex] = info
                 colIndex += 1
 

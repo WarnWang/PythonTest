@@ -25,6 +25,8 @@ for x, y, z in os.walk(dir_path):
             for i in range(2, 12):
                 stock_name = ws['A{}'.format(i)].value
                 predict_result_path = os.path.join(x, sheet_name, stock_name[:4], "predict_result.csv")
+                if not os.path.isfile(predict_result_path):
+                    continue
                 avg = get_avg_from_csv(predict_result_path)
                 ws['I{}'.format(i)] = avg
 
