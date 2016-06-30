@@ -13,11 +13,9 @@ import openpyxl
 
 from ForFun.test_char import test_char
 
-dir_path = '/Users/warn/PycharmProjects/output_data'
+dir_path = '/Users/warn/Documents/Projects/stock_price/SmallAverage'
 
 for x, y, z in os.walk(dir_path):
-    if 'output3_2012_2015' not in x:
-        continue
     if 'stock_info.csv' in z:
         # print x, y, z
         parent_path = os.path.join('/', '/'.join(x.split('/')[:-1]))

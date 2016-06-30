@@ -11,6 +11,7 @@ import os
 import numpy as np
 import openpyxl
 
+from DisertationHandler.util import *
 from ForFun.test_char import test_char
 
 sheet_name_dict = {'Artificial_Neural_Network'.lower(): "ANN",
@@ -19,6 +20,13 @@ sheet_name_dict = {'Artificial_Neural_Network'.lower(): "ANN",
                    'Linear_Regression'.lower(): 'Linear Regression',
                    'Random_Forest'.lower(): 'Random Forest',
                    'Random_SVM'.lower(): 'Random Forest + SVM'}
+
+short_name_dict = {'Artificial_Neural_Network'.lower(): "ANN",
+                   'Artificial_Random'.lower(): 'ANN_RF',
+                   'Linear_Logistic'.lower(): 'LR_LR',
+                   'Linear_Regression'.lower(): 'LR',
+                   'Random_Forest'.lower(): 'RF',
+                   'Random_SVM'.lower(): 'RF_SVM'}
 
 picture_list = ['MSE', 'MAPE', 'MAD', 'RMSE', 'CDC', 'HMSE', 'ME']
 # picture_list = ['MAPE', 'HMSE']
@@ -53,6 +61,40 @@ class PicturePlot(object):
                             i].value
 
         return algorithm_info
+
+    def get_monthly_data(self, start_date='2014-01-06'):
+        import matplotlib.pyplot as plt
+        test_path = self.wb_path.split('/')[:-1]
+        test_path = os.path.join('/', '/'.join(test_path))
+        method_dict = {}
+        ticks = range(1, 13)
+        for path, dirs, files in os.walk(test_path):
+            if "predict_result.csv" in files:
+                fig = plt.figure()
+                method = path.split('/')[-2]
+                symbol = path.split('/')[-1]
+                if method not in method_dict:
+                    method_dict[method] = np.zeros(12)
+                save_path = os.path.join(self.save_path, "{}_{}.png".format(short_name_dict[method.lower()], symbol))
+                mapes = get_monthly_mape(os.path.join(path, "predict_result.csv"), start_date=start_date)
+                method_dict[method] += mapes
+                plt.plot(ticks, mapes)
+                plt.ylabel("MAPE (%)")
+                plt.grid(True)
+                plt.title('Stock {}.HK monthly MAPE method {}'.format(symbol, sheet_name_dict[method.lower()]))
+                plt.savefig(save_path)
+
+                plt.close()
+
+        for method in method_dict:
+            fig = plt.figure()
+            save_path = os.path.join(self.save_path, "{}_AVG_MAPE.png".format(short_name_dict[method.lower()]))
+            plt.plot(ticks, method_dict[method] * 10)
+            plt.ylabel("MAPE (%)")
+            plt.grid(True)
+            plt.title('{} 10 stocks monthly MAPE'.format(sheet_name_dict[method.lower()]))
+            plt.savefig(save_path)
+            plt.close()
 
     def get_picture(self):
         import matplotlib.pyplot as plt
@@ -99,12 +141,19 @@ class PicturePlot(object):
 
 
 if __name__ == '__main__':
-    test = PicturePlot(xlsx_path='/Users/warn/PycharmProjects/output_data/output5_2011_2016/all_info.xlsx',
-                       save_path='/Users/warn/PycharmProjects/Dissertation/Report/graduate-thesis/Figures/Result/20112016')
+    test = PicturePlot(xlsx_path='/Users/warn/PycharmProjects/output_data/output4_2012_2016/all_info.xlsx',
+                       save_path='/Users/warn/Documents/Projects/Dissertation/graduate-thesis/Figures/Result/20122016')
 
-    # test.get_picture()
-    import pprint
+    # test.get_monthly_data(start_date='2015-01-06')
+    test.get_picture()
+    # import pprint
 
     info = test.read_data_from_file()
-    pprint.pprint(info['Random Forest + SVM'], width=150)
-    pprint.pprint(info['Linear Regression + Logistic Regression'], width=150)
+    # pprint.pprint(info['Random Forest + SVM'], width=150)
+    # pprint.pprint(info['Linear Regression + Logistic Regression'], width=150)
+
+    for algorithm in info:
+        mape = 0.0
+        for stock_symbol in info[algorithm]:
+            mape += info[algorithm][stock_symbol]['MAPE']
+        print algorithm, mape / 10
