@@ -13,7 +13,7 @@ import openpyxl
 
 from ForFun.test_char import test_char
 
-dir_path = '/Users/warn/Documents/Projects/stock_price/SmallAverage'
+dir_path = '/Users/warn/Documents/Projects/stock_price/adj_close/output_1_2_2012_2015'
 
 for x, y, z in os.walk(dir_path):
     if 'stock_info.csv' in z:

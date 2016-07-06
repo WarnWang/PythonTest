@@ -13,7 +13,7 @@ import openpyxl
 
 from util import *
 
-dir_path = '/Users/warn/Documents/Projects/stock_price/SmallAverage'
+dir_path = '/Users/warn/Documents/Projects/stock_price/adj_close/output_1_2_2012_2015'
 
 for x, y, z in os.walk(dir_path):
     if 'all_info.xlsx' in z:

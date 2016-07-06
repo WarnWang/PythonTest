@@ -7,6 +7,7 @@
 # Date: 28/6/2016
 
 import os
+import random
 
 import numpy as np
 import openpyxl
@@ -18,35 +19,68 @@ sheet_name_dict = {'Artificial_Neural_Network'.lower(): "ANN",
                    'Artificial_Random'.lower(): 'ANN + Random Forest',
                    'Linear_Logistic'.lower(): 'Linear Regression + Logistic Regression',
                    'Linear_Regression'.lower(): 'Linear Regression',
+                   'Linear_Random'.lower(): 'Linear Regression + Random Forest',
+                   'Random_Logistic'.lower(): 'Random Forest + Logistic Regression',
                    'Random_Forest'.lower(): 'Random Forest',
+                   'Artificial_SVM'.lower(): 'ANN + SVM',
                    'Random_SVM'.lower(): 'Random Forest + SVM'}
 
 short_name_dict = {'Artificial_Neural_Network'.lower(): "ANN",
                    'Artificial_Random'.lower(): 'ANN_RF',
                    'Linear_Logistic'.lower(): 'LR_LR',
                    'Linear_Regression'.lower(): 'LR',
+                   'Linear_Random'.lower(): 'LR_RT',
+                   'Random_Logistic'.lower(): 'RT_LR',
                    'Random_Forest'.lower(): 'RF',
+                   'Artificial_SVM'.lower(): 'ANN_SVM',
                    'Random_SVM'.lower(): 'RF_SVM'}
 
 picture_list = ['MSE', 'MAPE', 'MAD', 'RMSE', 'CDC', 'HMSE', 'ME']
 # picture_list = ['MAPE', 'HMSE']
-tick_list = ['0001.HK', '0002.HK', '0003.HK', '0004.HK', '0005.HK', '0006.HK', '0007.HK', '0008.HK',
-             '0009.HK',
-             '0010.HK']
+
 color_list = ['r', 'b', 'g', 'y', 'orange', 'brown']
 algorithm_list = ['ANN', 'Linear Regression', 'Random Forest', 'ANN + Random Forest',
                   'Linear Regression + Logistic Regression', 'Random Forest + SVM']
 
 
+def find_ith_number(data_list, size):
+    if len(data_list) < size:
+        return min(data_list)
+    tmp = random.choice(data_list)
+    larger = []
+    lower = []
+    equal = 0
+    for data in data_list:
+        if data > tmp:
+            larger.append(data)
+        elif data < tmp:
+            lower.append(data)
+        else:
+            equal += 1
+
+    if len(larger) > size:
+        return find_ith_number(larger, size)
+    elif len(larger) + equal < size:
+        return find_ith_number(lower, size - len(larger) - equal)
+    else:
+        return tmp
+
 class PicturePlot(object):
     def __init__(self, xlsx_path, save_path):
         self.wb_path = xlsx_path
         self.save_path = save_path
+        self.tick_list = []
+        self.tick_size = 10
 
     def read_data_from_file(self):
         wb = openpyxl.load_workbook(self.wb_path, read_only=True)
         algorithm_info = {}
+
         for sheet_name in wb.get_sheet_names():
+            if self.tick_list:
+                add_tick = False
+            else:
+                add_tick = True
             if sheet_name.lower() not in sheet_name_dict:
                 continue
 
@@ -55,10 +89,25 @@ class PicturePlot(object):
             ws = wb.get_sheet_by_name(name=sheet_name)
             for row in ws.rows:
                 if row[0].value.endswith('.HK'):
+                    if add_tick:
+                        self.tick_list.append(row[0].value)
                     algorithm_info[algorithm][row[0].value] = {}
                     for i in range(1, len(row)):
                         algorithm_info[algorithm][row[0].value][ws["{}1".format(test_char(i))].value.strip()] = row[
                             i].value
+
+            if add_tick:
+                cdc_list = []
+                for symbol in algorithm_info[algorithm]:
+                    cdc_list.append(algorithm_info[algorithm][symbol]['CDC'])
+                value = find_ith_number(cdc_list, self.tick_size)
+                index_list = []
+                new_tick_list = []
+                for index in range(0, len(cdc_list)):
+                    if cdc_list[index] > value:
+                        index_list.append(index)
+                        new_tick_list.append(self.tick_list[index])
+                self.tick_list = new_tick_list
 
         return algorithm_info
 
@@ -67,6 +116,7 @@ class PicturePlot(object):
         test_path = self.wb_path.split('/')[:-1]
         test_path = os.path.join('/', '/'.join(test_path))
         method_dict = {}
+        number_dict = {}
         ticks = range(1, 13)
         for path, dirs, files in os.walk(test_path):
             if "predict_result.csv" in files:
@@ -75,9 +125,13 @@ class PicturePlot(object):
                 symbol = path.split('/')[-1]
                 if method not in method_dict:
                     method_dict[method] = np.zeros(12)
+                if method not in number_dict:
+                    number_dict[method] = 0
                 save_path = os.path.join(self.save_path, "{}_{}.png".format(short_name_dict[method.lower()], symbol))
                 mapes = get_monthly_mape(os.path.join(path, "predict_result.csv"), start_date=start_date)
                 method_dict[method] += mapes
+                number_dict[method] += 1
+                mapes = map(lambda x: x * 100, mapes)
                 plt.plot(ticks, mapes)
                 plt.ylabel("MAPE (%)")
                 plt.grid(True)
@@ -89,7 +143,7 @@ class PicturePlot(object):
         for method in method_dict:
             fig = plt.figure()
             save_path = os.path.join(self.save_path, "{}_AVG_MAPE.png".format(short_name_dict[method.lower()]))
-            plt.plot(ticks, method_dict[method] * 10)
+            plt.plot(ticks, method_dict[method] / number_dict[method] * 100)
             plt.ylabel("MAPE (%)")
             plt.grid(True)
             plt.title('{} 10 stocks monthly MAPE'.format(sheet_name_dict[method.lower()]))
@@ -102,11 +156,12 @@ class PicturePlot(object):
         for i, picture in enumerate(picture_list):
             fig = plt.figure(i)
             list_dict = {}
-            new_tick_list = tick_list[:]
-            for algorithm in algorithm_list:
-                list_dict[algorithm] = []
+            new_tick_list = self.tick_list[:]
+            for algorithm in sheet_name_dict.values():
+                if algorithm in info_dict:
+                    list_dict[algorithm] = []
             for symbol in new_tick_list:
-                for algorithm in algorithm_list:
+                for algorithm in list_dict:
                     # if picture in ['HMSE']:
                     #     list_dict[algorithm].append(np.log10(info_dict[algorithm][symbol][picture]))
                     # elif picture == 'MAPE':
@@ -118,7 +173,7 @@ class PicturePlot(object):
             bar_width = 0.12
             index = np.arange(len(new_tick_list))
 
-            for i, algorithm in enumerate(algorithm_list):
+            for i, algorithm in enumerate(list_dict.keys()):
                 plt.bar(index + bar_width * i, list_dict[algorithm], bar_width,
                         alpha=opacity,
                         color=color_list[i],
@@ -136,24 +191,25 @@ class PicturePlot(object):
             cdc = 0.0
             for symbol in info_dict[algorithm]:
                 cdc += info_dict[algorithm][symbol]['CDC']
-            print algorithm, cdc / 10
+            print algorithm, cdc / len(self.tick_list)
         plt.close()
 
 
 if __name__ == '__main__':
-    test = PicturePlot(xlsx_path='/Users/warn/PycharmProjects/output_data/output4_2012_2016/all_info.xlsx',
-                       save_path='/Users/warn/Documents/Projects/Dissertation/graduate-thesis/Figures/Result/20122016')
+    test = PicturePlot(
+        xlsx_path='/Users/warn/Documents/Projects/stock_price/adj_close/output_1_2_2012_2015/all_info.xlsx',
+        save_path='/Users/warn/Documents/Projects/Dissertation/graduate-thesis/Figures/AdjClose/20122015')
 
-    # test.get_monthly_data(start_date='2015-01-06')
-    test.get_picture()
+    test.get_monthly_data(start_date='2014-01-06')
+    # test.get_picture()
     # import pprint
 
-    info = test.read_data_from_file()
+    # info = test.read_data_from_file()
     # pprint.pprint(info['Random Forest + SVM'], width=150)
     # pprint.pprint(info['Linear Regression + Logistic Regression'], width=150)
-
-    for algorithm in info:
-        mape = 0.0
-        for stock_symbol in info[algorithm]:
-            mape += info[algorithm][stock_symbol]['MAPE']
-        print algorithm, mape / 10
+    #
+    # for algorithm in info:
+    #     mape = 0.0
+    #     for stock_symbol in info[algorithm]:
+    #         mape += info[algorithm][stock_symbol]['MAPE']
+    #     print algorithm, mape / 10

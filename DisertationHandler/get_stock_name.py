@@ -6,7 +6,6 @@
 # Author: Mark Wang
 # Date: 30/6/2016
 
-import csv
 import io
 import re
 import urllib
@@ -70,6 +69,10 @@ class StockInformationGen(object):
         if '...' in summary:
             summary = summary.replace('...', '.')
 
+        summary = re.sub(r'&', r'\&', summary)
+
+        summary = re.sub(ur'[^\x00-\x7F]', '\'', summary)
+
         return summary
 
     def get_other_info(self, symbol):
@@ -120,6 +123,29 @@ class StockInformationGen(object):
         with io.open('stock_info.tex', 'w', encoding='utf8') as f:
             f.write(string_info)
 
+    def get_stock_info_list(self):
+        dict_list = []
+        for symbol in self._stock_list:
+            company_name, activities, industry = self.get_other_info(symbol)
+            summary = self.get_summary_info(symbol)
+            dict_list.append({u'Symbol': unicode(symbol),
+                              u'Name': unicode(company_name),
+                              u'Activities': unicode(activities),
+                              u'Industry': unicode(industry),
+                              u'Summary': unicode(summary)})
+
+        headers = [u'Symbol', u'Name', u'Activities', u'Industry', u'Summary']
+        with io.open('stock_info.csv', 'w', encoding='utf8') as f:
+            # with open('stock_info.csv', 'w') as f:
+            f.write(u'\t'.join(headers))
+            f.write(u'\n')
+            for info in dict_list:
+                uni = []
+                for head in headers:
+                    uni.append(info[head])
+                f.write(u'\t'.join(uni))
+                f.write(u'\n')
+
 
 if __name__ == '__main__':
     # file_path = '/Users/warn/Documents/Projects/stock_price/SmallAverage/all_info.xlsx'
@@ -129,11 +155,24 @@ if __name__ == '__main__':
     #     if len(row) > 0 and row[0].value.endswith('.HK'):
     #         stock_symbol = row[0].value
     #         print stock_symbol, get_stock_symbol_name(stock_symbol)
-    with open('symbol_list.csv') as f:
-        reader = csv.DictReader(f)
-        symbol_list = []
-        for line in reader:
-            symbol_list.append(line['Stock Symbol'])
+    # symbol_list = []
+    # with open('symbol_list.csv') as f:
+    #     reader = csv.DictReader(f)
+    #     for line in reader:
+    #         symbol_list.append(line['Stock Symbol'])
 
-        test = StockInformationGen(symbol_list)
-        test.generate_stock_information()
+    symbol_list = ['0001.HK', '0002.HK', '0003.HK', '0004.HK', '0005.HK', '0006.HK', '0008.HK', '0009.HK', '0010.HK',
+                   '0011.HK', '0012.HK', '0013.HK', '0014.HK', '0015.HK', '0016.HK', '0017.HK', '0018.HK', '0019.HK',
+                   '0020.HK', '0023.HK', '0024.HK', '0025.HK', '0027.HK', '0031.HK', '0032.HK', '0034.HK', '0035.HK',
+                   '0038.HK', '0039.HK', '0041.HK', '0042.HK', '0043.HK', '0044.HK', '0045.HK', '0052.HK', '0053.HK',
+                   '0054.HK', '0056.HK', '0057.HK', '0062.HK', '0064.HK', '0065.HK', '0066.HK', '0088.HK', '0120.HK',
+                   '0168.HK', '0268.HK', '0291.HK', '0455.HK', '0471.HK', '0546.HK', '0577.HK', '0688.HK', '0700.HK',
+                   '0737.HK', '0745.HK', '0777.HK', '0845.HK', '0872.HK', '0888.HK', '1051.HK', '1112.HK', '1117.HK',
+                   '1123.HK', '1181.HK', '1230.HK', '1251.HK', '1314.HK', '1361.HK', '1613.HK', '1918.HK', '2005.HK',
+                   '2362.HK', '2383.HK', '2789.HK', '3777.HK', '6823.HK', '8050.HK', '8123.HK']
+
+    test = StockInformationGen(symbol_list)
+    # s = test.get_summary_info('0745.HK')
+    # print s
+    # print re.sub(ur'[^\x00-\x7F]', '\'', s)
+    test.generate_stock_information()
