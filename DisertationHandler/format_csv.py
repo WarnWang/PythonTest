@@ -41,7 +41,7 @@ for path, dirs, files in os.walk(dir_path):
         ws['F1'] = 'CDC'
         ws['G1'] = 'HMSE'
         ws['H1'] = 'ME'
-        ws['I1'] = 'Average Price'
+        ws['I1'] = 'AVG.'
         rowIndex = 2
 
         for line in csv_reader:

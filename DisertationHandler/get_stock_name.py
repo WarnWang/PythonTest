@@ -54,7 +54,7 @@ class StockInformationGen(object):
         code = r'''\section{%s}
 \textbf{Symbol in Yahoo Finance}: %s\\
 \textbf{Principal Activities}: %s\\
-\textbf{Industry Classification}: %s
+\textbf{Industry Classification}: %s\\
 \textbf{Summary}: %s''' % (company_name, symbol, activities, industry, summary)
         return code
 
