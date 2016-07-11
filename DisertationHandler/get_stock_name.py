@@ -55,8 +55,7 @@ class StockInformationGen(object):
 \textbf{Symbol in Yahoo Finance}: %s\\
 \textbf{Principal Activities}: %s\\
 \textbf{Industry Classification}: %s
-\paragraph{Summary}
-%s''' % (company_name, symbol, activities, industry, summary)
+\textbf{Summary}: %s''' % (company_name, symbol, activities, industry, summary)
         return code
 
     def get_summary_info(self, symbol):

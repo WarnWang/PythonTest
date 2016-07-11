@@ -18,5 +18,5 @@ def test_char(row_index):
 
 
 if __name__ == "__main__":
-    for i in range(676, 767):
+    for i in range(0, 10):
         print test_char(i)

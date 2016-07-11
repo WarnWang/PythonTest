@@ -28,7 +28,7 @@ def get_pvalue(test_list):
     bestlag -= startlag
     xdall = lagmat(xdiff[:, None], bestlag, trim='both', original='in')
     nobs = xdall.shape[0]
-    xdall[:, 0] = x[-nobs - 1:-1]  # replace 0 xdiff with level of x
+    xdall[:, 0] = x[-nobs - 1:-1]  # replace 0 xdiff with level of path
     xdshort = xdiff[-nobs:]
     usedlag = bestlag
     resols = OLS(xdshort, add_constant(xdall[:, :usedlag + 1], prepend=True, has_constant='skip')).fit()
