@@ -118,11 +118,14 @@ class PicturePlot(object):
         method_dict = {}
         number_dict = {}
         ticks = range(1, 13)
+        jump_set = {'0845.HK', '0872.HK', '1181.HK', '1230.HK', '1314.HK', '3777.HK', '8050.HK'}
         for path, dirs, files in os.walk(test_path):
             if "predict_result.csv" in files:
                 fig = plt.figure()
                 method = path.split('/')[-2]
                 symbol = path.split('/')[-1]
+                if '{}.HK'.format(symbol) in jump_set:
+                    continue
                 if method not in method_dict:
                     method_dict[method] = np.zeros(12)
                 if method not in number_dict:
@@ -146,7 +149,7 @@ class PicturePlot(object):
             plt.plot(ticks, method_dict[method] / number_dict[method] * 100)
             plt.ylabel("MAPE (%)")
             plt.grid(True)
-            plt.title('{} 10 stocks monthly MAPE'.format(sheet_name_dict[method.lower()]))
+            plt.title('{} {} stocks monthly MAPE'.format(sheet_name_dict[method.lower()], number_dict[method]))
             plt.savefig(save_path)
             plt.close()
 
@@ -189,7 +192,7 @@ class PicturePlot(object):
 
         for algorithm in info_dict:
             cdc = 0.0
-            for symbol in info_dict[algorithm]:
+            for symbol in self.tick_list:
                 cdc += info_dict[algorithm][symbol]['CDC']
             print algorithm, cdc / len(self.tick_list)
         plt.close()
@@ -197,10 +200,10 @@ class PicturePlot(object):
 
 if __name__ == '__main__':
     test = PicturePlot(
-        xlsx_path='/Users/warn/Documents/Projects/stock_price/adj_close/output_1_2_2012_2015/all_info.xlsx',
-        save_path='/Users/warn/Documents/Projects/Dissertation/graduate-thesis/Figures/AdjClose/20122015')
+        xlsx_path='/Users/warn/Documents/Projects/stock_price/adj_close/output_1_2_2013_2016/all_info.xlsx',
+        save_path='/Users/warn/Documents/Projects/Dissertation/graduate-thesis/Figures/AdjClose/20132016/Monthly')
 
-    test.get_monthly_data(start_date='2014-01-06')
+    test.get_monthly_data(start_date='2015-01-06')
     # test.get_picture()
     # import pprint
 

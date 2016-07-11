@@ -16,6 +16,8 @@ data_path = '/Users/warn/Documents/Projects/stock_price/adj_close'
 
 for path, dirs, files in os.walk(data_path):
     for dir_name in dirs:
+        if dir_name != 'output_1_2_2013_2016':
+            continue
         xlsx_path = os.path.join(path, dir_name, 'all_info.xlsx')
         if os.path.isfile(xlsx_path):
             years = re.findall(r'\d{4}', dir_name)
