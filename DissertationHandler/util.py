@@ -9,6 +9,8 @@
 import csv
 import datetime
 
+import numpy as np
+
 
 def get_hmse_from_csv(csv_file):
     hmse = 0.0
@@ -71,30 +73,85 @@ def next_month(date_info):
         return datetime.datetime(year=date_info.year, month=date_info.month + 1, day=date_info.day)
 
 
-def get_monthly_mape(file_path, start_date):
-    if isinstance(start_date, str):
-        start_date = str2datetime(start_date)
+def get_cdc(data_list):
+    today_array = np.array(data_list[:-1])
+    tomorrow_array = np.array(data_list[1:])
+    predict_diff = tomorrow_array[:, 1] - today_array[:, 0]
+    origin_diff = tomorrow_array[:, 0] - today_array[:, 0]
+    result = predict_diff * origin_diff
+    return len(result[result > 0]) / float(len(origin_diff))
+
+
+def get_monthly_mape(file_path):
+    start_date = None
     mapes = []
     print file_path
     with open(file_path) as file:
         csv_dict = csv.DictReader(file)
-        end_date = next_month(start_date)
+        end_date = None
         month_data = []
+        month_num = 0
         for line in csv_dict:
             price_date = str2datetime(line['date'])
-            if price_date <= start_date:
-                continue
-            if price_date <= end_date:
+            if start_date is None:
+                start_date = price_date
+                end_date = next_month(start_date)
+
+            if price_date <= end_date or month_num == 11:
                 month_data.append((float(line['origin']), float(line['predict'])))
             else:
                 mapes.append(sum(map(lambda (o, p): abs(o - p) / o, month_data)) / len(month_data))
-                month_data = []
                 end_date = next_month(end_date)
+                month_num += 1
 
         mapes.append(sum(map(lambda (o, p): abs(o - p) / o, month_data)) / len(month_data))
 
     return mapes
 
+
+def get_monthly_cdc(file_path):
+    start_date = None
+    cdcs = []
+    print file_path
+    with open(file_path) as file:
+        csv_dict = csv.DictReader(file)
+        month_data = []
+        end_date = None
+        month_num = 0
+        for line in csv_dict:
+            price_date = str2datetime(line['date'])
+            if start_date is None:
+                start_date = price_date
+                end_date = next_month(start_date)
+
+            if price_date <= end_date or month_num == 11:
+                month_data.append((float(line['origin']), float(line['predict'])))
+            else:
+                cdcs.append(get_cdc(month_data))
+                end_date = next_month(end_date)
+                month_num += 1
+
+        cdcs.append(get_cdc(month_data))
+
+    return cdcs
+
+
+def get_new_name(method_name):
+    method_list = method_name.split('_')
+    name_dict = {'linear': 'Linear Regression',
+                 'logistic': "Logistic Regression",
+                 'random': "Random Forest",
+                 'artificial': "ANN",
+                 'svm': "SVM",
+                 }
+    if method_list[0].lower() not in name_dict:
+        return method_name
+
+    new_name = name_dict[method_list[0].lower()]
+    if method_list[-1].lower() in name_dict:
+        new_name = '{} + {}'.format(new_name, name_dict[method_list[-1].lower()])
+
+    return new_name
 
 if __name__ == '__main__':
     s = '''0431.HK G CHINA FIN

@@ -1,0 +1,2792 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>恒生指數 Hang Seng Index - Index constituents- ET Net</title>
+    <meta name="keywords"
+          content="Stock 免費即時股票報價 免費報價  股票 股權 股價 期貨  港股 即時報價  期指 上市公司 股息 股票報價 債券 即時股票報價  即時股票報價 股票分析 股票交易 基金股票 創業板 圖表分析 股票入門 移動平均線 新股上市 板块  技術指標  free real time stock quote hong kong, free stock quote, Real time quote, ETF, dividend, IPO, stock market, Stock Quote, technical analysis, macd, rsi, ipo prospectus">
+    <meta name="viewport" content="width=1024; maximum-scale=1;"/>
+    <link rel="image_src" href="http://www.etnet.com.hk/www/eng/common/images/etnet_logo_fb.jpg"/>
+    <style type="text/css">
+@charset "utf-8";
+
+/* General CSS */
+body{margin:0px; background:#f6f6f6; font-family:Arial, Helvetica, sans-serif; font-size:13px; line-height:130%;}
+a{color:#000; text-decoration:none;}
+a:hover{color:#666;}
+p{margin:5px;}
+div{position:relative;}
+table{font-size:12px;}
+
+
+#DivMaster{width:990px; margin:auto;}
+
+
+/* Header */
+#DivHeader{width:988px; border-top:0px;}
+#DivSiteLink{width:988px; height:24px; background:url(/www/eng/common/images/navbg01.gif) repeat-x; line-height:24px; font-size:12px; word-spacing:4px;}
+#DivSiteLinkLeft{width:300px; height:24px; position:absolute; left:10px; top:0px;}
+#DivSiteLinkRight{width:500px; height:24px; position:absolute; left:480px; top:0px; text-align:right;}
+#DivIQBtn{width:66px; height:19px; position:absolute; top:0px; left:714px; z-index:3;}
+#DivIQMenu{width:66px; background:#414141; border-left:1px solid #999; border-right:1px solid #999; -moz-box-shadow:0px 0px 5px 0px rgba(0,0,0,0.5); -webkit-box-shadow:0px 0px 5px 0px rgba(0,0,0,0.5); box-shadow:0px 0px 5px 0px rgba(0,0,0,0.5); position:absolute; top:24px; display:none;}
+#DivIQMenu div{width:60px; padding-left:6px; border-bottom:1px solid #999; font-size:12px; line-height:200%;}
+#DivChannelMenu{width:988px; height:70px; background:#FFF;}
+/*#DivChannelMenua{width:135px; position:absolute; top:0px; left:0px; overflow:hidden;}
+#DivChannelMenub{width:200px; position:absolute; top:19px; left:135px;}
+#DivChannelMenuc{width:630px; position:absolute; top:49px; left:342px; word-spacing:20px; text-align:right; font-weight:bold;}*/
+/* 20th Ann. Year */
+#DivChannelMenua{width:74px; height:65px; position:absolute; top:12px; left:10px; background:url(/www/eng/common/images/etnet_toplogo.png) no-repeat; cursor:pointer; overflow: hidden;}
+#DivChannelMenub{width:200px; position:absolute; top:19px; left:95px;}
+#DivChannelMenuc{width:590px; position:absolute; top:49px; left:371px; word-spacing:10px; text-align:right; font-weight:bold;}
+@media only screen and (-webkit-min-device-pixel-ratio : 2), only screen and (min-device-pixel-ratio : 2) { 
+	#DivChannelMenua{background:url(/www/eng/common/images/etnet_toplogo.png); background-size:74px;}
+}
+/* 20th Ann. Year */
+#DivChannelMenubText{color:#000; font-weight:bold; word-spacing:4px; font-size:12px; height:20px; line-height:20px;}
+#DivChannelMenubText a{/*color:#999;*/ font-weight:normal;}
+#DivChannelMenubText a:hover{color:#000;}
+#DivColorBar{width:988px; height:2px; font-size:1px;}
+#DivGlobalSearch{width:198px; height:22px;}
+#DivGlobalSearchField{width:170px; height:16px; position:absolute; top:3px; left:3px;}
+#DivGlobalSearchField input{border:0px; outline:none; width:170px; height:16px; font-size:12px; line-height:16px; font-family:Arial, Helvetica, sans-serif; background:rgba(0,0,0,0); }
+#DivGlobalSubmit{width:16px; height:16px; position:absolute; top:3px; left:176px;}
+.inputnormal{border:1px solid #a9a9a9; box-shadow:inset 0 0 3px #999; -webkit-box-shadow:inset 0 0 3px #999; -moz-box-shadow:inset 0 0 3px #999;}
+.inputfocus{border: 1px solid #ef5656; -moz-box-shadow: 0 0 7px #ef5656; -webkit-box-shadow: 0 0 7px #ef5656; -o-box-shadow: 0 0 7px #ef5656; box-shadow: 0 0 7px #ef5656;}
+
+#ChannelMenuBar{width:988px; height:44px; position:relative; background:url(/www/eng/common/images/submenbg.gif);}
+.SubmenuHightlight{ -moz-box-shadow:0px 0px 5px 0px rgba(0,0,0,0.5); -webkit-box-shadow:0px 0px 5px 0px rgba(0,0,0,0.5); box-shadow:0px 0px 5px 0px rgba(0,0,0,0.5);}
+#SubMenuContainer{width:988px; height:44px; position:relative; float:left; clear:both;}
+#ChannelIco{width:135px; height:44px; position:absolute; top:0px; left:0px;}
+#SubMenuBar{width:853px; height:44px; position:absolute; top:0px; left:135px; font-size:15px;}
+.SubMenuBlock{float:left;}
+.SubMenuBlock div{padding:0 2px 0 5px; height:25px; padding-top:15px; float:left; *display:inline;}
+
+.futurered {}
+.recordhigh {color:red}
+.hotsector {color:red}
+
+/* Content */
+#DivContent{float:left; *margin-bottom:15px;}
+#DivLeft{width:655px; float:left;} /* Left + Middle columns of the page, for all HOMEPAGE only */
+#DivRight{width:320px; float:left; margin-left:15px;} /* Right column of the page, for all HOMEPAGE only */
+#DivContentLeft{width:673px; float:left;} /* Left columns of the page, for all CONTENT pages */
+#DivContentRight{width:302px; float:left; margin-left:15px;} /* Right column of the page, for all CONTENT pages */
+.DivLeftGrid{width:655px; float:left; clear:both;} /* For grouping blocks into 1 single block inside #DivLeft */
+.DivLeftGridA{width:210px; float:left;} /* Left Grid of #DivLeft */
+.DivLeftGridB{width:430px; float:right;} /* Right Grid of #DivLeft */
+.DivLeftGridC1{width:320px; float:left;} /* Left Grid of #DivLeftGrid */
+.DivLeftGridC2{width:320px; float:right;} /* Right Grid of #DivLeftGrid */
+.DivLeftGridCLeft{width:134px; padding:6px; float:left;} /* left Grid of #DivLeftGridC1 or #DivLeftGridC2*/
+.DivLeftGridCRight{width:134px; padding:6px; float:right;} /* right Grid of #DivLeftGridC1 or #DivLeftGridC2*/
+.DivBoxStyleA{width:208px; margin-bottom:15px; float:left; clear:both; *display:inline;} /* Block with 208px width */
+.DivBoxStyleB{width:428px; margin-bottom:15px; float:left; clear:both; *display:inline;} /* Block with 428px width */
+.DivBoxStyleC{width:318px; margin-bottom:15px; float:left; clear:both; *display:inline; *margin-right:-3px;} /* Block with 318px width */
+.DivBoxStyleD{width:653px; margin-bottom:15px; float:left; clear:both; *display:inline;} /* Block with 653px width */
+.DivBoxStyleE{width:300px; margin-bottom:15px; float:left; clear:both; *display:inline;} /* Block with 298px width */
+.DivContentBox{margin:8px; margin-bottom:0px; padding-bottom:9px; float:left; clear:both; *display:inline;}
+.ContentAWidth{width:192px;}
+.ContentBWidth{width:412px;}
+.ContentCWidth{width:302px;}
+.ContentDWidth{width:637px;}
+.ContentEWidth{width:284px;}
+
+.DivArticleBox{width:671px; margin-bottom:15px; float:left; clear:both;}
+.DivArticleBox p{margin:10px;}
+.DivArticleHdrImg{width:671px; height:80px; overflow:hidden; text-align:center; border-bottom:1px solid #e2e2e2; margin-bottom:5px;}
+.DivArticleList{width:651px; clear:both; margin:5px 10px 5px 10px;}
+.DivArticleContent{width:655px; margin:5px 8px 5px 8px; font-size:15px; float:left; clear:both; *display:inline; *padding-bottom:15px; line-height:160%}
+.DivArticlePagination{text-align:right; word-spacing:8px; margin-top:20px;}
+.DivFigureBox{width:671px; margin-bottom:15px; float:left; clear:both;}
+.DivFigureContent{width:667px; margin:5px 2px 5px 2px; float:left; clear:both; *display:inline; *padding-bottom:15px;}
+/* Block Templates */
+.DivTemplateA{padding:4px 0 4px 0;}
+.DivTemplateAHdr{padding:6px; margin-right:8px; color:#FFF; font-weight:bold; float:left;}
+.DivTemplateAContent{word-spacing:3px; line-height:160%; margin-top:4px; float:left;}
+.DivTemplateB{width:318px; height:27px; border-bottom:1px solid #e2e2e2; float:left; clear:both;}
+.DivTemplateBHdr{height:23px; padding:2px 10px 0 10px; border-bottom:2px solid #666; line-height:25px; font-weight:bold; float:left; clear:both;}
+.DivTemplateBMore{height:25px; padding:2px 10px 0 10px; line-height:25px; float:right;}
+.headerlist{padding:5px 0 5px 0; }
+.columnist{width:100%; float:left; clear:both; font-size:12px; *margin-right:-3px;}
+.columnistImg{width:100px; height:67px; margin:0 3px 0 6px; border:1px solid #CCC; float:left; *margin-left:3px;}
+.columnistHeaderB{float:left; width:299px; *margin-right:-3px;}
+.columnistHeaderC{float:left; width:189px; *margin-right:-3px;}
+.featurelist{width:135px;}
+.featurelist img{border:1px solid #CCC;}
+.storylist{width:300px; clear:both;}
+.storylist img{border:1px solid #CCC;}
+.votinglist{width:300px; clear:both;}
+.votinglist table{font-size:13px;}
+.hotArticlelist{width:300px; clear:both;}
+.hotArticle table{font-size:13px;}
+
+/*social container*/
+#SocialContainer{height:36px; list-style:none; margin:0px; padding:0px; clear:both; display:block;}
+#SocialContainer li{width:50px; height:36px; border-right:1px solid #e8e8e8; display:inline-block; *display:inline; *zoom:1; background-image:url(/www/eng/common/images/common.png); background-repeat:no-repeat; cursor:pointer; vertical-align:top;}
+#SocialContainer li.LikeCount{border-left:1px solid #e8e8e8; text-align:center; line-height:36px; background-image:none; cursor:default; width:auto; padding:0px 15px;}
+#SocialContainer li.FB{background-position:-412px -3516px;}
+#SocialContainer li.FB:hover{background-position:-412px -3561px;}
+#SocialContainer li.Weibo{background-position:-462px -3516px;}
+#SocialContainer li.Weibo:hover{background-position:-462px -3561px;}
+#SocialContainer li.Google{background-position:-512px -3516px;}
+#SocialContainer li.Google:hover{background-position:-512px -3561px;}
+#SocialContainer li.MailFriend{background-position:-562px -3516px;}
+#SocialContainer li.MailFriend:hover{background-position:-562px -3561px;}
+
+/*Section Menu */
+#SectionMenu{width:100%; margin-bottom:15px; font-size:13px; line-height:180%;}
+#SectionMenu a{display:inline-block;}
+
+
+/* Voting **same as existing style**  */
+.financeTag{background:#D3BAEC; padding: 5px 5px 1px 5px; width: 26px; height: 19px;}
+.hotTag{background: #A9D4EF; padding: 5px 5px 1px 5px; width: 26px; height: 19px;}
+
+
+/* Hot Article List  **same as existing style**   */
+.NewsRankNum{color:white; background-color:#D52A2A; text-decoration:none; width:18px; height:15px;}
+
+
+/* Tab */
+.Tab{height:28px; width:100%; font-size:12px; background:url(/www/eng/common/images/tab1.gif); line-height:28px; float:left; clear:both;}
+.Tab div{height:28px; padding:0 10px 0 10px; border-right:1px solid #e2e2e2; float:left;}
+.TabActive{background:url(/www/eng/common/images/tab2.gif); font-weight:bold;}
+
+/* ADUI */
+.ADUIunchange, a.ADUIunchange{color:#999; font-weight:bold;}
+.ADUInoturnover, a.ADUInoturnover{color:#666; font-weight:bold;}
+.ADUIBarup{background-color:#006600;font-size:10px;}
+.ADUIBardown{background-color:#cc0033; font-size:10px;}
+.ADUIBarunchange{background-color:#999;font-size:10px;}
+.ADUIBarnoturnover{background-color:#666;font-size:10px;}
+
+/* Others */
+.dotLine{border-bottom:1px dotted #e2e2e2;}
+.dotLineVerticle{background:url(/www/eng/common/images/vdot.gif) repeat-y center;}
+.bottomLine{border-bottom:1px solid #e2e2e2;}
+.more{margin:9px 9px 0 0;}
+.down,a.down{color:#F00; font-weight:bold;}
+.up,a.up{color:#339900; font-weight:bold;}
+.unchange, a.unchange{color:#000; font-weight:bold;}
+.HeaderTxt,a.HeaderTxt{font-size:16px; font-weight:bold;}
+.boldTxt{font-weight:bold;}
+.whiteTxt,a.whiteTxt{color:#FFF;}
+a.whiteTxt:hover{color:#ececec;}
+.greyTxt,a.greyTxt{color:#666; font-size:12px;}
+.remark,a.remark{color:#666; font-size:11px;}
+a.greyTxt:hover, a.remark:hover{color:#999;}
+.date{color:#666; font-size:10px;}
+.ArticleHdr,a.ArticleHdr{font-size:19px; font-weight:bold;}
+.shadow{border:1px solid #e2e2e2; background:#FFF; -moz-box-shadow:0px 0px 5px 0px rgba(0,0,0,0.1); -webkit-box-shadow:0px 0px 5px 0px rgba(0,0,0,0.1); box-shadow:0px 0px 5px 0px rgba(0,0,0,0.1);}
+.figureTable{width:100%;}
+.figureTable td{padding:4px 2px 4px 2px;}
+.oddRow{background:#FFF;}
+.evenRow{background:#F2F2F2;}
+.bottomWLine{border-bottom:1px solid #FFF;}
+
+/* Footer */
+#DivFooter{clear:both;}
+#DivDisclaimer{width:988px; clear:both; border-top:1px solid #d0cdcd;}
+#DivDisclaimerBlock{width:988px; background:#f2f1f1; border-top:1px solid #FFF; font-size:12px;}
+#DivDisclaimerChild1{padding:20px 0 0 30px; font-size:11px;}
+#DivDisclaimerChild2a{width:500px; height:22px; padding-left:30px; line-height:22px; float:left;}
+#DivDisclaimerChild2b{width:428px; padding-right:30px; height:22px; line-height:22px; word-spacing:3px; float:left; background:#d1cfcf; text-align:right}
+#DivDisclaimerChild3{width:928px; padding:10px 30px 10px 30px; font-size:10px; line-height:100%; color:#666; text-align:justify; clear:both;}
+
+
+/* Footer Sitemap */
+#DivBottomSite{width:988px; height:380px; background:url(/www/eng/common/images/sitebg.gif); overflow:hidden;}
+#DivBottomSitePointer{width:24px; height:10px; position:absolute; top:36px; left:63px; z-index:10; background:url(/www/eng/common/images/site_pointer.gif); font-size:1px;}
+#DivBottomSiteBlock{position:absolute; top:0px;}
+.SiteContainer{width:988px; height:380px; position:absolute; top:0px;}
+.SiteButton{width:43px; height:43px; position:absolute; top:2px; left:0px;}
+.SiteChannelHdr{position:absolute; top:0px; left:50px;}
+.SiteContent{width:938px; height:310px; position:absolute; top:58px; left:25px; line-height:160%;}
+.SiteContainer a{color:#666;}
+.SiteContainer a:hover{color:#333;}
+.SiteChannelName,a.SiteChannelName{color:#000; font-weight:bold;}
+
+
+/* Top Pulldown Sitemap */
+#DivTopContainer{width:990px; height:380px; position:absolute; top:-393px; left:0px; clear:both; z-index:999;}
+#DivTopSite{width:988px; height:380px; background:url(/www/eng/common/images/sitebg.gif); overflow:hidden;}
+#DivTopSitePointer{width:24px; height:10px; position:absolute; top:36px; left:63px; z-index:10; background:url(/www/eng/common/images/site_pointer.gif); font-size:1px;}
+#DivTopSiteBlock{position:absolute; top:0px;}
+#DivTopSiteLine{width:988px; height:2px; font-size:1px; background:#c9252c;}
+#DivTopSiteBtn{width:200px; height:30px; background:#c9252c; border-radius:0 0 6px 6px; position:absolute; top:382px; left:395px; -moz-box-shadow:0px 3px 3px 0px  rgba(0,0,0,0.5); -webkit-box-shadow:0px 3px 3px 0px rgba(0,0,0,0.5); box-shadow:0px 3px 3px 0px rgba(0,0,0,0.5);}
+#DivTopSiteBtn div{width:200px; height:20px; line-height:20px; position:absolute; top:10px; left:0px; font-weight:bold; text-align:center;}
+
+
+/* ADs */
+#DivTopBanner{width:990px; padding:15px 0 15px 0; text-align:center;}
+.DivHorizontalBanner{width:653px; margin-bottom:15px; clear:both; text-align:center;}
+#DivLeftBanner{width:208px; margin-bottom:15px; float:left; clear:both;} /* For 208x60 Banner */
+.DivLargeBtnHome{width:300px; margin:0 10px 15px 10px; background:#FFF; padding:0px; float:left; clear:both; line-height:0; *display:inline;} /* For 300x200 Banner at all HOMEPAGE */
+.DivLargeBtnContent{width:300px; margin:0 1px 15px 1px; background:#FFF; padding:0px; float:left; clear:both; line-height:0; *display:inline;} /* For 300x200 Banner at all HOMEPAGE */
+.DivTextAd{width:100%; text-align:center; margin-bottom:15px; clear:both;}
+.DivTextAd a{color:#2e3192;}
+.DivTextAd a:hover{color:#0099ff;}
+
+.googleAD01{width:621px; padding:0px 0 0px 0; margin:25px; clear:both;}
+.googleAD02{width:621px; padding:10px 0 10px 0; margin:25px; clear:both;}
+
+
+/* Auto Complete */
+.ac_results{padding:0px;border:1px solid black;background-color:white;overflow:hidden;z-index:99999;filter:Alpha(opacity=90);BORDER-RIGHT:#fff 2pt outset;BORDER-BOTTOM:#fff 2pt outset;}
+.ac_results ul{list-style-position:outside;list-style:none;padding:0px;margin-top:20px;margin-bottom:0px;}
+.ac_results li{margin:0px;padding:0px 0px;cursor:hand;display:block;font-size:12px;line-height:15px;overflow:hidden;vertical-align:bottom;}
+.ac_loading{background-image:url(/www/eng/common/images/autocomplete_spinner.gif);background-position:right center;background-repeat:no-repeat;}
+.ac_odd{background-color:#eee;}
+.ac_over{background-color:#999999;color:white;}
+.TabActives {
+	border-right: #d3d4d6 1px solid; padding-right: 10px; border-top: #d3d4d6 1px solid; padding-left: 10px; float: left; 
+	padding-bottom: 2px; border-left: #ffffff 1px solid; padding-top: 2px; border-bottom: #ffffff 1px solid; height: 14px; 
+	background-color: #ffffff; width: 138px; text-align: center; cursor: default;
+}
+.TabNormals {
+	border-right: #d3d4d6 1px solid; padding-right: 10px; border-top: #d3d4d6 1px solid; padding-left: 10px; float: left; 
+	padding-bottom: 2px; border-left: #eff0f0 1px solid; padding-top: 2px; border-bottom: #d3d4d6 1px solid; height: 14px; 
+	background-color: #eff0f0; width: 138px; text-align: center; cursor: pointer;
+}
+
+
+/* IPO Box */
+.IPO{ height:25px;clear:both;}
+.IPO div{margin-right:20px; float:left;}
+.IPO a{font-weight:bold; font-size:15px;}
+
+
+/* Old Class */
+.GeneralDIV {width:100%; clear:both;}
+.BackgroundGrey2 {background-color:#f2f3f3;}
+.BackgroundDot {background-image:url(/www/eng/common/images/table_dot.gif); background-repeat:repeat-x; height:9px; width:100%;}
+.TextBold, a.TextBold {font-weight:bold;}
+.Content, a.Content {font-size:12px; color:#05449A; text-decoration:none; line-height: 140%;}
+a.Content:hover {color:#0099FF;}
+.ContentBig, a.ContentBig {font-size:13px; color:#05449A; text-decoration:none; line-height: 140%;}
+a.ContentBig:hover {color:#0099FF;}
+.ContentURL, a.ContentURL {font-family:Arial; font-size:12px; color:#05449A; text-decoration:none;}
+a.ContentURL:hover {color:#0099FF;}
+.Input {font-family:Arial; font-size:12px; color:#000000;}
+.Input:disabled{background-color:#dedede; border:2px solid #dedede; color:#999;}
+.Button {font-size:12px; color:#000000;}
+.RowGrey {background-color:#eff0f0; font-size:12px; color:#000000;}
+.TableGrid {width:100%; height:8px;}
+.Quoteup {color:#FF0000; font-size:34px; font-weight:bold;}
+.Quotedown {color:#339900; font-size:34px; font-weight:bold;}
+.Quoteunchange {color:#000000; font-size:34px; font-weight:bold;}
+.Content_15p, a.Content_15p {font-size:15px; color:#0000FF; text-decoration:none; line-height: 140%;}
+a.Content_15p:hover {color:#0099FF;}
+
+/* Quote Name */
+#QuoteName{width:673px; float:left; clear:both; margin:5px 0 5px 0; *display:inline; *margin-right:-3px;}
+#QuoteName div{height:25px; float:left;}
+#QuoteNameA{width:413px; font-size:20px; font-weight:bold; line-height:25px;}
+#QuoteNameB{width:200px; text-align:right; line-height:130%;}
+#QuoteNameC{width:60px; text-align:right;}
+#QuoteNameD{width:260px; text-align:right; line-height:25px;}
+#QuoteNameE{width:260px; font-size:20px; font-weight:bold; line-height:25px;}
+#QuoteCodeA{width:60px; font-size:20px; font-weight:bold; line-height:25px;}@charset "utf-8";
+body{-webkit-text-size-adjust:none;}
+
+/* Channel Color */
+.ThemeColor, a.ThemeColor{color:#00a1bd;}
+a.ThemeColor:hover{color:#00bfff;}
+/* Channel Background Color */
+.ThemeBgColor{background-color:#00a1bd;}
+
+/* Header */
+.TableHeaderActive {font-size:12px; color:#0099FF; text-decoration:none;}
+a.TableHeaderActive {text-decoration:underline;}
+.TabActiveHdr, a.TabActiveHdr {font-weight:bold; color:#00a1bd; text-decoration:none;}
+.TableHeader {font-family:PMingLiu; font-size:12px; color:#666666; text-decoration:none;}
+a.TableHeader {text-decoration:underline;}
+a.TableHeader:hover {color:#333333;}
+
+/* Content */
+/*.StkBarup {background-image:url(/www/eng/stocks/images/bar-red.gif); font-size:10px; color:#FFFFFF;}
+.StkBardown {background-image:url(/www/eng/stocks/images/bar-green.gif); font-size:10px; color:#FFFFFF;}
+.StkBarunchange {background-image:url(/www/eng/stocks/images/bar-grey.gif); font-size:10px; color:#FFFFFF;}*/
+.SubMenuTabOuter {width:100%; text-align:center; border:#FFFFFF solid 1px; padding:3px; background-color:#eff0f0;}
+.SubMenuTabInter {margin-left:auto; margin-right:auto;}
+.QuoteCode {font-family:Arial; height:30px; font-size:20px; font-weight:bold; vertical-align:middle;}
+.QuoteName {font-family:PMingLiu; height:30px; font-size:20px; font-weight:bold; vertical-align:middle;}
+.QuoteChange {font-size:16px; font-weight:bold;}
+
+.StkIPOChartBorder {position:relative; float:left; width:380px; height:383px; border-top:5px solid #00a1bd; border-bottom:5px solid #00a1bd; border-right:5px solid #00a1bd; float:left; background-color:#FFFFFF;}
+.StkIPOSpace {position:relative; float:left; background-image:url(/www/eng/stocks/images/ipo_btnspace.gif); width:283px; height:3px;}
+.StkIPOBg {position:relative; float:left; width:282px; height:74px; border-left:1px solid #FFFFFF; background-image:url(/www/eng/stocks/images/ipo_btnbg.gif);}
+.StkIPOBgActive {position:relative; float:left; width:282px; height:85px; border-left:1px solid #000000; background-image:url(/www/eng/stocks/images/ipo_btnvbg.gif);}
+.TabActiveHdr, a.TabActiveHdr {font-weight:bold; color:#00a1bd; text-decoration:none;}
+
+/* from waiman*/
+.StkSpBg{background:#e9f2f2;}
+
+.StkRatio{width:95%; height:16px; margin:1px 0 1px 0;}
+.StkRatio td{padding:0; line-height:16px; color:#FFF;}
+.StkBarup{background-color:#006600;font-size:10px;}
+.StkBardown{background-color:#cc0033; font-size:10px;}
+.StkBarunchange{background-color:#999;font-size:10px;}
+
+.StkIndexesTop{width:667px; float:left; clear:both;}
+.StkIndexesTop div{float:left;}
+.StkIndexesLeft{width:325px; margin:10px; *display:inline; border:1px solid #fff;}
+.StkIndexesright{width:290px; padding:10px; *display:inline;}
+.StkIndexesName{padding:5px; margin-top:5px; font-size:16px; font-weight:bold; line-height:28px;}
+.StkIndexesNorminal{line-height:52px; text-align:center; font-size:36px; width:325px;}
+.StkIndexesChange{line-height:22px; width:325px; float:left; clear:both;}
+.StkIndexesChange div{float:left; width:150px; margin-left:12px; *display:inline;}
+.StkIndexesOther{width:325px; float:left; clear:both;}
+.StkIndexesOther div{float:left; width:142px; padding:10px; *display:inline; word-spacing:10px;}
+.StkIndexesArrow{margin-top:-16px; *margin-top:0; margin-right:3px;}
+
+.StkIndexesLeftNoChart{width:645px; margin:10px; *display:inline; border:1px solid #fff;}
+.StkIndexesNameNoChart{padding:5px; margin-top:5px; font-size:16px; font-weight:bold; line-height:28px;}
+.StkIndexesNorminalNoChart{line-height:52px; text-align:center; font-size:36px; width:645px;}
+.StkIndexesChangeNoChart{line-height:22px; width:645px; float:left; clear:both;}
+.StkIndexesChangeNoChart div{float:left; width:300px; margin-left:12px;*display:inline;}
+.StkIndexesOtherNoChart{width:645px; float:left; text-align:center; border-top:1px solid #fff;}
+.StkIndexesOtherNoChart div{float:left; width:302px; padding:10px; word-spacing:10px; text-align:center;}
+.StkIndexesArrowNoChart{margin-top:-16px; *margin-top:0; margin-right:3px;}
+
+#StkIndustryBlock{width:661px; margin:5px; float:left; clear:both; background:url(/www/eng/common/images/vline.gif) repeat-y center; *display:inline;}
+.StkIndustryRow{width:661px; float:left; clear:both; *display:inline;}
+.StkIndustryChild{width:300px; margin:15px; float:left; *display:inline; *margin-bottom:0px;}
+.StkIndustryNews{font-size:12px; padding:8px 0 8px 0; float:left; clear:both; *display:inline; width:300px;}
+.StkIndustryNewsDate{float:left; width:40px; *display:inline;}
+.StkIndustryNewsHdr{float:left; width:260px; *display:inline;}
+
+.StkDatabaseNews{font-size:12px; padding:8px 5px 8px 5px; float:left; clear:both; *display:inline; width:218px;}
+.StkDatabaseNewsDate{float:left; width:40px; *display:inline;}
+.StkDatabaseNewsHdr{float:left; width:178px; *display:inline;}
+
+.StkHomePortfolioTab1{width:104px; height:28px; background:url(../images/stkhome_tab_1.gif); text-align:center; line-height:28px; font-size:12px; font-weight:bold; float:left;}
+.StkHomePortfolioTab2{width:104px; height:28px; background:url(../images/stkhome_tab_2.gif); text-align:center; line-height:28px; font-size:12px; float:left;}
+.StkHomePortfolioArrow{margin-top:2px; *margin-top:3px;}
+
+.StkGoldBubble{width:60px; height:60px; background:url(/www/eng/stocks/images/goldbubble.jpg);}
+.StkGoldBubble table{font-size:16px; font-weight:bold; line-height:105%;}
+
+.StkHomeIPO{ height:25px;clear:both;}
+.StkHomeIPO div{margin-right:20px; float:left;}
+.StkHomeIPO a{font-weight:bold; font-size:15px;}
+
+#StkHomeRank{width:643px; margin:5px; float:left; clear:both; background:url(../../common/images/vline.gif) repeat-y center; *display:inline;}
+.StkHomeRankRow{width:643px; float:left; clear:both;}
+.StkHomeRankChild{width:301px; margin:15px 10px 15px 10px; float:left; *display:inline;}
+
+.StkRankingIco{width:14px; height:14px; line-height:14px; font-size:10px; color:#FFF; text-align:center;}
+.StkRank1{background:#f7941d;}
+.StkRank2{background:#636466;}
+.StkRank3{background:#808285;}
+.StkRank4{background:#9d9fa2;}
+.StkRank5{background:#bcbec0;}
+
+.StkPENumber { font-size:15px; font-weight:bold; color:#006699; text-decoration:none;}
+
+.StkMouseOver {background-color:#dff9fd; font-size:12px;}
+
+/* Coming IPO, Existing Style */
+#calendar_month{text-align:center; background-color:#00A1BD; color:white; border-width:1px 1px 0px 0px; border-style:solid; border-color:white;}
+#calendar_weekofday{text-align:center; background-color:#92BE37; color:white; border-width:1px 1px 0px 0px; border-style:solid; border-color:white;}
+#calendar_monthofday{text-align:center; background-color:#F7C004; color:black; border-width:1px 1px 0px 0px; border-style:solid; border-color:white;}
+/* edited */
+.cell_border{border-style:solid; line-height:0; *line-height:normal;}
+/* */
+.normalcell_bordercolor{border-color: #EDEDED #EDEDED #EDEDED #EDEDED;}
+.normalcell_borderwidth{border-width:1px 0px 0px 1px;}
+.lastcell_borderwidth{border-width:1px 1px 0px 1px;}
+.firstday_bordercolor{border-color: #EDEDED #EDEDED #EDEDED #A3A3A3;}
+.StkTableGreenBorder{background-color:#E9F2F2;}
+
+ /*IPO Calculator, Please UPDATE Style*/
+.cashTabNormal{width:141px; height:37px; background:url(images/cashtab_normal.jpg); text-align:center; float:left; }
+.cashTabSelected{width:141px; height:37px; background:url(images/cashtab_selected.jpg); text-align:center; float:left; font-size:13px; font-weight:bold; line-height:37px; }
+.marginTabNormal{width:141px; height:37px; background:url(images/margintab_normal.jpg); text-align:center; float:left;}
+.marginTabSelected{width:141px; height:37px; background:url(images/margintab_selected.jpg); text-align:center; float:left; font-size:13px; font-weight:bold; line-height:37px; }
+.tabNormal, a.tabNormal{font-size:13px; color:#666; line-height:37px; }
+.CalBg{width:258px; background:#E9F2F2; clear:both; padding:12px;}
+.timeline{width:282px; height:64px; background:url(images/timeline.jpg); }
+.dateBubble{width:70px; height:32px; position:relative; font-size:12px; text-align:center; background:url(images/datebubble.jpg) no-repeat; line-height:28px; }
+.timelineDate{width:54px; height:20px; float:left; font-size:12px; text-align:center; line-height:20px; margin-top:2px; }
+.timelineContainer{width:168px; height:18px; float:left; margin:4px 2px 0 4px; }
+.timelineBar01{height:18px; background:url(images/ipo_bar_01.jpg) repeat-x; float:left; }
+.timelineBar02{height:18px; background:url(images/ipo_bar_02.jpg) repeat-x; float:left; }
+.timelineBar03{height:18px; background:url(images/ipo_bar_03.jpg) repeat-x; float:left; }
+.timelineSpacing{height:18px; float:left; }
+.timeCaption{width:262px; padding:10px; clear:both; font-size:13px; background:url(images/timeline_bg.jpg) repeat-y; line-height:150%; }
+.timelineBottom {background:url(images/timeline_bottom.jpg) no-repeat; width:282px; height:6px; clear:both; }
+.marginBox{width:246px; border:1px solid #D7BF88; background-color:#F8FBFB; padding:5px; }
+.marginSubCol01{background-color:#E5F2C1; }
+.marginSubCol02{background-color: #CAE2E7; }
+.ipoInput {height:14px;}
+.ipoColumnBlock{width:314px; margin:5px 10px 5px 10px; float:left; *margin:3px;}
+.ipoColumn{width:314px; margin-bottom:5px; *display:inline; float:left; clear:both;}
+.ipoColumnHdr{margin-top:20px;}
+#today_date, #ipo_timeline_listdate, #ipo_timeline_appstart{font-size:13px;}
+
+/* New Table Style: Quote War and CBBC */
+.WarrantRowHighlight{background-color: #FFD07D;}
+.WarrantWarRowOdd {background: #FFF2DF;}
+.WarrantWarRowEven {background: #FFF9EF;}
+.WarrantBackgroundrelated{background-color: #FFEA7D;}
+.WarrantRemark_in {font-size: 8px; background-color: #FFF2DF; text-decoration: none; border: 1px solid #CCC;}
+.WarrantRemark_at {font-size: 8px; background-color: #FFD07D; text-decoration: none; border: 1px solid #CCC;}
+.WarrantRemark_out {font-size: 8px; background-color: white; text-decoration: none; border: 1px solid #CCC;}
+
+/* New CSS for Stock Index Bar */
+#StkQuoteIndexes{width:667px; padding:2px; border:1px solid #9dc9d3; float:left; clear:both;}
+#StkQuoteIndexes div{float:left; padding:2px; text-align:center; line-height:150%; word-spacing:2px;}
+#StkQuoteIndexes .HSI{width:128px; border-right:1px solid #e2e2e2;}
+#StkQuoteIndexes .Futures{width:156px; border-right:1px solid #e2e2e2;}
+#StkQuoteIndexes .CEI{width:128px; border-right:1px solid #e2e2e2;}
+#StkQuoteIndexes .Turnover{width:68px; border-right:1px solid #e2e2e2;}
+#StkQuoteIndexes .SSGroup{background:#e6f0f6; padding:0px; *margin-right:-3px;}
+#StkQuoteIndexes .SSE{width:110px;}
+#StkQuoteIndexes .SSET{width:48px;}
+#StkQuoteIndexes .Nominal{font-size:15px;}
+
+/* New CSS for Stock Submenu 2 */
+#StkQuoteNav{width:671px; float:left; clear:both;}
+#StkQuoteNav table td{padding:8px 2px; background:#f7f7f8; border-bottom:4px solid #e2e2e2; text-align:center; border-left:1px solid #e2e2e2; border-collapse:collapse;}
+#StkQuoteNav .Active{font-weight:bold; color:#00a1bd; background:#FFF; border-bottom:4px solid #FFF; }
+#StkQuoteNav a{color:#333;}
+#StkQuoteNav a:hover{color:#999;}
+
+#StkQuoteName{width:673px; float:left; clear:both; margin:5px 0 5px 0; *display:inline; *margin-right:-3px;}
+#StkQuoteName div{height:25px; float:left;}
+#StkQuoteNameA{width:450px; font-size:20px; font-weight:bold; line-height:25px;}
+#StkQuoteNameB{width:150px; text-align:right; line-height:130%;}
+#StkQuoteNameC{width:60px; text-align:right;}
+#StkQuoteNameD{width:270px; text-align:right; line-height:25px;}
+
+.StkQuoteFigure{width:669px; margin:1px; float:left; clear:both; *display:inline;*margin-right:-3px;}
+.StkQuoteFigureLeft{width:236px; float:left; height:126px; background:#dbf4f7; border:1px solid #FFF; border-bottom:0; padding:3px; padding-bottom:0;}
+.StkQuoteFigureRight{width:425px; height:130px; float:left;}
+.StkQuoteFigureRight table td{background:#dbf4f7; border-top:1px solid #FFF; border-right:1px solid #FFF;}
+.StkQuoteFigureArrow{margin-top:-16px; *margin-top:0; margin-right:3px;}
+.StkQuoteFigureNorHdr{width:236px; height:30px; line-height:30px;}
+.StkQuoteFigureNorminal{width:236px;height:40px; line-height:40px; text-align:center; font-size:36px;}
+.StkQuoteFigureChange{width:236px;height:20px; line-height:20px; text-align:center;}
+
+.StkQuotePortfolioTab{height:18px; padding-top:7px; width:150px; margin-top:11px; font-size:12px; *margin-top:8px; background:url(../images/portfolio_controller.jpg) no-repeat; line-height:18px; text-align:center;}
+.StkQuotePortfolioBar{height:30px; width:649px; padding:3px 10px 3px 10px; margin:1px; float:left; clear:both; *display:inline; background:url(../images/portfolio_bg.gif);}
+.StkQuotePortfilioTD{border-right:1px solid #D6D6D6; padding:0 8px 0 8px;}
+
+.StkQuoteChartLeft{width:285px; margin:3px 0 0 5px; float:left; *display:inline;}
+.StkQuoteChartLeftTab{width:285px; float:left; margin:5px 0 5px 0;}
+.StkQuoteChartLeftTab div{height:30px; margin:0 2px 0 2px; padding:0 5px 0 5px; float:left; line-height:20px;}
+.StkQuoteChartLeftTabSelect{background:url(../images/index_tab_active.gif) center no-repeat; color:#FFF;}
+.StkQuoteChartRight{width:360px; margin:3px 3px 3px 5px; float:left; *display:inline;}
+.StkQuoteChartRight table td{padding:7px 1px 7px 1px;}
+.StkQuoteRelated{width:360px; float:left; clear:both; background:#e9f2f2;}
+.StkQuoteRelatedGrid{width:160px; padding:5px; float:left; line-height:150%; *display:inline;}
+.StkQuoteRatio{width:160px; margin-bottom:2px; float:left; clear:both; *display:inline;}
+.StkQuoteRatio div{width:80px; float:left; *display:inline;}
+.StkQuoteRatio div table{width:95%; height:16px; margin:2px 0 2px 0;}
+.StkQuoteRatio div table td{padding:0; line-height:16px;}
+.WarrantBarOrange{background-color:#F90; font-size:10px;}
+.WarrantBarBlue{background-color:#39F;font-size:10px;}
+
+.StkBarYellow{background-image:url(../images/bar-yellow.gif); font-size:10px; color:black; line-height:10px; }
+
+/* Voting Style (should be added/modified in common.css)*/
+.DivVoting4{height:25px; line-height:25px; float:left;}
+
+.ETFSubHder, a.ETFSubHder {font-size: 13px; color: #B00000; font-weight: bold;}
+.ETFTextBold, a.ETFTextBold {font-size: 13px; color: black; font-weight: bold;}
+
+.StkEngActiveTabTxt {font-size: 16px; color: white; font-weight: bold;}
+
+/*SCB banner*/
+#SCBTopMaster{width:990px; height:100px; clear:both; background:url(http://www.etnet.com.hk/ad2013/SCB/201203/sponsor_quote/top_bg.gif) repeat-x #002e44; position:relative; line-height:normal;}
+#SCBTopHdrDiv{width:170px; height:42px; position:absolute; top:32px; left:0px;}
+#SCBTopLogoDiv{width:200px; height:84px; position:absolute; top:16px; left:790px;}
+#SCBTopLogoDiv a{color:#73d9ff; text-decoration:none;}
+.SCBTopGeneralFonts{font-size:12px; font-weight:bold; color:#73d9ff; text-align:center;}
+#SCBTopContentDiv{width:619px; height:70px; position:absolute; left:170px; top:20px; overflow:hidden; border-left:1px solid #73d9ff; float:left;}
+.SCBTopContentBox{width:153px; height:70px; float:left;}
+.SCBTopStockNameBox{width:153px; height:32px; position:relative;}
+.SCBTopStockNum{position:absolute; top:0px; left:8px; width:80px; height:32px; font-size:28px;}
+.SCBTopStockNum a{color:#FFF; text-decoration:none;}
+.SCBTopStockName{position:absolute; top:8px; left:88px; width:65px; height:22px; font-size:16px;}
+.SCBTopStockName a{color:#FFF; text-decoration:none;}
+.SCBTopStockInfo{width:137px; height:28px; line-height:16px; font-size:12px; color:#FFF; padding:0 8px 0 8px;}
+.SCBTopBlueTxt{color:#73d9ff;}
+.SCBTopBlueLine{border-right:1px solid #73d9ff;}
+.SCBTopIconBox{width:154px; height:70px; text-align:center; float:left;}
+.SCBTopIconBox img{padding-top:10px;}
+
+#SCBLRGMaster{width:300px; height:400px; clear:both; background:url(http://www.etnet.com.hk/ad2013/SCB/201203/sponsor_quote/large_bg.gif) repeat-x #002e44; position:relative; line-height:normal;}
+#SCBLRGLogoDiv{width:126px; height:76px; position:absolute; top:9px; left:0px;}
+#SCBLRGHdrDiv{width:174px; height:42px; position:absolute; top:28px; left:126px;}
+.SCBLRGGeneralFonts{font-size:12px; font-weight:bold; color:#73d9ff; text-align:center;}
+#SCBLRGFooterDiv{width:300px; height:40px; line-height:40px; text-align:center; position:absolute; top:360px; left:0px;}
+#SCBLRGFooterDiv a{color:#73d9ff; text-decoration:none;}
+#SCBLRGContentDiv{width:300px; height:260px; position:absolute; left:0px; top:95px; overflow:hidden; float:left;}
+.SCBLRGContentBox{width:250px; height:64px; margin:0 25px 0 25px;}
+.SCBLRGStockNameBox{width:250px; height:33px; font-size:20px; color:#FFF; position:relative;}
+.SCBLRGCodeNum{font-size:30px; position:absolute; top:3px; left:5px; width:90px; height:30px;}
+.SCBLRGCodeNum a{color:#FFF; text-decoration:none;}
+.SCBLRGCodeName{font-size:22px; position:absolute; top:8px; left:95px; width:150px; height:22px;}
+.SCBLRGCodeName a{color:#FFF; text-decoration:none}
+.SCBLRGStockInfo{width:240px; height:20px; line-height:16px; font-size:12px; color:#FFF; padding:2px 5px 9px 5px; word-spacing:15px;}
+.SCBLRGBlueTxt{color:#73d9ff;}
+.SCBLRGBlueLine{border-bottom:1px solid #73d9ff;}
+.SCBLRGIconBox{width:300px; height:64px; text-align:center;}
+.SCBLRGIconBox img{padding-top:10px;}
+
+.FuturesJump{width:671px; height:32px;}
+.FuturesJump div{height:24px; margin:4px 10px 4px 10px; *margin:4px 6px 4px 6px; line-height:24px;}
+.FutureQuoteBg{width:671px; float:left; clear:both; background:url(../images/future_quoteline.gif) repeat-y;}
+.FutureQuoteBox{width:211px; margin:6px; float:left; *margin-right:6px; *display:inline;}
+.FutureQuoteOpenBlock{width:201px; height:118px; background:url(../images/future_quote_open.gif) repeat-x; border-top:2px solid #1eaec3; padding:0 5px 5px 5px; float:left;}
+.FutureQuoteOpenName{height:24px; background:#1eaec3; color:#FFF; font-weight:bold; line-height:24px; float:left; padding:0 5px 0 5px;}
+.FutureQuoteOpenName a, .FutureQuoteOpenName a:hover{color:#FFF; text-decoration:none;}
+.FutureQuoteIco{height:24px; width:51px; float:right;}
+.FutureQuoteCloseBlock{width:201px; height:118px; background:url(../images/future_quote_close.gif) repeat-x; border-top:2px solid #8b8b8b; padding:0 5px 5px 5px; float:left;}
+.FutureQuoteCloseName{height:24px; background:#8b8b8b; color:#FFF; font-weight:bold; line-height:24px; float:left; padding:0 5px 0 5px;}
+.FutureQuoteCloseName a, .FutureQuoteOpenName a:hover{color:#FFF; text-decoration:none;}
+.FutureQuotePrice{width:191px; padding:10px 5px 5px 5px; *padding:10px 5px 0 5px; float:left; clear:both; font-size:32px;}
+.FutureQuoteChange{width:191px; padding:5px 5px 10px 5px; float:left; clear:both; font-size:16px; font-weight:bold;}
+.FutureFigure{width:201px; margin:0 5px 5px 5px; font-size:13px;}
+
+.StkHomeBarChart{width:200px; margin:0 4px 0 4px; height:80px; clear:both; background:url(../images/mk_chartbg.jpg) no-repeat bottom; position:relative;}
+.StkHomeBarChart div{position:absolute;}
+.StkHomeBarChartBox{top:5px; left:107px; width:86px; height:70px; overflow:hidden;}
+.StkHomeBarChartBox div{width:20px; height:70px;}
+.StkHomeBarChartTxt{top:10px; left:5px; width:120px; font-size:12px;}
+.StkHomeChart2{width:200px; height:100px; margin:4px; background:url(../images/mk_chartbg2.jpg) no-repeat bottom; position:relative;}
+.StkHomeChart2BoxTxt{position:absolute; left:165px; top:0px; width:35px; height:100px; font-size:9px; color:#333;}
+.StkHomeChart2BoxTxt div{position:absolute;}
+.StkHomeChart2Bar{position:absolute; left:0px; top:0px; width:165px; height:100px;}
+.StkHomeChart2BarGrid{position:absolute; height:100px; width:22px;}
+.StkHomeChart2BarGrid table{font-size:9px; line-height:9px; color:#333; text-align:center;}
+.StkHomeChart2BarColorA{width:22px; background:#0090ae; font-size:0px; line-height:0px;}
+.StkHomeChart2BarColorB{width:22px; background:#fc6f02; font-size:0px; line-height:0px;}
+.StkHomeChart2BarColorC{width:22px; background:#ffc300; font-size:0px; line-height:0px;}
+
+/* New CSS for Quote Common */
+#StkSimpleRow{width:655px; padding:3px 8px; background:#FFF; float:left; clear:both; position:relative ;*margin-right:-3px}
+#StkBg{width:671px; background:url(../images/stockbg.gif) repeat-y 290px 0px; float:left; clear:both; *margin-right:-3px;}
+#StkQuoteSearch{width:100px; height:30px; margin:3px 0px; float:left;}
+#StkQuoteSearch input{width:58px; height:28px; font-size:16px; line-height:28px; margin:0 5px; outline:none; border:0px; float:left; background:rgba(0,0,0,0);}
+#StkQuoteSearch .Submit{width:30px; height:30px; float:right; cursor:pointer; background:url(../images/quotesubmit.gif);}
+#StkQuoteRefresh{width:32px; height:32px; float:left; margin:3px 5px; background:url(../images/quoterefresh.gif); cursor:pointer; float:left;}
+#StkQuoteHeader{height:38px; line-height:38px; font-size:20px; font-weight:bold; margin-right:5px; float:left;}
+#StkQuoteIndustry{height:38px; width:264px; float:right; overflow:hidden;}
+#StkQuoteIndustry table{width:264px; height:38px;}
+#StkQuoteIndustry .barOuter{line-height:0px; width:104px; height:20px; border:1px solid #dbdbdb; border-radius:12px; margin-top:8px;}
+#StkQuoteIndustry .barInner{width:100px; height:16px; border-radius:10px; margin:2px; overflow:hidden;}
+#StkQuoteIndustry .barInner div{height:16px; font-size:9px; line-height:16px; color:#FFF; text-align:center; float:left;}
+#StkQuoteIndustry .name a{text-align:center; padding:0px 5px; font-size:11px; line-height:11px; font-size:10px\9; _font-size:9px; *line-height:12px; display:block;}:root #StkQuoteIndustry .name a{font-size:11px;}
+#StkQuoteIndustry .dividend, .dividend a{color:#FF9900; text-align:center; font-size:12px; width:80px;}
+#StkQuoteIndustry .dividend a:hover{color:#ff0000;}
+#StkQuoteIndustry .suspended{color:#FF0000; text-align:center; font-size:12px; width:80px;}
+
+.StkTable{width:100%; border-spacing:0px; border-collapse:collapse;}
+.StkTable td{height:25px; border-bottom:1px solid #e2e2e2; font-size:15px; padding:0px 6px;}
+.StkTable .Label{color:#666; font-size:13px;}
+:root .StkTable td{padding:0px 4px \0/IE9; }
+@media screen and (-ms-high-contrast: active),(-ms-high-contrast: none){.StkTable td{padding:0px 4px;}}
+.RT{background:url(../images/realtime.gif) -7px -7px; width:26px; height:15px; display:inline-block; vertical-align:baseline; margin-left:4px;}
+.Listinfo{width:14px; height:14px; display:inline-block; vertical-align:baseline; margin:2px 0px 0px 2px; font-size:11px; line-height:14px; color:#FFF; background:#00a1bd; text-align:center; cursor:pointer;}
+.Listinfo a{color:#FFF;}
+.StkBubble{width:180px; height:180px; background:url(../images/bubble.png) no-repeat; position:absolute; top:0px; left:0px; z-index:99; display:none; font-size:12px; padding:15px;}
+.StkBubble div{display:table-cell; vertical-align:middle; height:160px; width:160px; color:#FFF;}
+
+
+#StkList{width:380px; float:left; clear:both; background:url(../images/stockbg.gif) repeat-y 189px 0px; }
+#StkList ul{width:380px; list-style:none; padding:0px; margin:0px; float:left;}
+#StkList li{height:20px; line-height:20px; margin:0px; padding:0px; float:left; display:inline-block; border-bottom:1px solid #e2e2e2;}
+#StkList .name{width:105px; padding-left:2px; font-size:12px; color:#666;}
+#StkList .value{width:80px; padding-right:3px; font-size:12px; color:#000; text-align:right;}
+#StkList .remark{font-size:8px; position:relative; top:-4px;}
+#StkList .highlight{background-color:#f6f6f6;}
+
+#StkDividend{width:364px; padding:5px 8px; float:left; clear:both; border-bottom:1px solid #e2e2e2;}
+#StkDividend .Title{width:300px; height:20px; line-height:20px; float:left; font-size:15px; margin-bottom:6px;}
+#StkDividend .More{width:15px; height:11px; float:right;}
+#StkDividend .Text{width:364px; clear:both; font-size:12px;}
+
+.StkAH{width:364px; padding:5px 8px; height:41px; float:left; clear:both; border-bottom:1px solid #e2e2e2;}
+.StkAH .Name{width:190px; height:20px; line-height:20px; float:left; font-size:15px;}
+.StkAH .Premium{width:174px; height:20px; line-height:20px; float:right; font-size:13px; text-align:right;}
+.StkAH .Price{width:364px; height:20px; line-height:20px; clear:both; font-size:13px; word-spacing:3px;}
+.StkAH .Price span{padding-left:15px; display:inline-block; font-weight:bold;}
+.StkAH .Price .up1{padding-left:15px; background:url(../../common/images/arrow_up1_M.gif) 0px 3px no-repeat; color:#FF0000;}
+.StkAH .Price .up2{padding-left:15px; background:url(../../common/images/arrow_up2_M.gif) 0px 3px no-repeat; color:#009900;}
+.StkAH .Price .down1{padding-left:15px; background:url(../../common/images/arrow_down1_M.gif) 0px 3px no-repeat; color:#009900;}
+.StkAH .Price .down2{padding-left:15px; background:url(../../common/images/arrow_down2_M.gif) 0px 3px no-repeat; color:#FF0000;}
+
+#StkTrans{width:274px; padding:5px 8px; float:left; clear:both;}
+#StkTrans .Title{width:234px; height:30px; line-height:30px; float:left; font-size:15px;}
+#StkTrans .More{width:15px; height:11px; line-height:30px; float:right;}
+#StkTrans .ColorBox{width:11px; height:11px; display:inline-block; vertical-align:top; margin:2px 1px 0px 0px; font-size:0px;}
+@media screen and (-ms-high-contrast: active),(-ms-high-contrast: none){#StkTrans .ColorBox{margin-top:3px;}}
+#StkTrans .Pink{background:#e1aac8;}
+#StkTrans .Blue{background:#6496f0;}
+#StkTrans .BidAM{background:#c8f0fa;}
+#StkTrans .BidPM{background:#7fc5de;}
+#StkTrans .AskAM{background:#ffcade;}
+#StkTrans .AskPM{background:#e1acc9;}
+#StkTrans .Text{width:270px; clear:both; font-size:11px; font-size:10px\9; _font-size:9px; color:#666; word-spacing:10px; padding:5px 0px;}
+#StkTrans .Chart{width:274px; font-size:11px; margin-top:5px;}
+#StkTrans ul{list-style:none; padding:0px; margin:0px; float:left; clear:both; width:274px;}
+#StkTrans li{height:12px; line-height:12px; margin:5px 0px; _margin:8px 0px; float:left; display:inline-block;}
+#StkTrans .Legend{width:45px; border-right:1px solid #545454; text-align:right; margin:0px 2px 0px 0px; padding:5px; _padding:8px 5px;}
+#StkTrans .RedFont{color:#e63264;}
+#StkTrans .BlueFont{color:#00418c;}
+#StkTrans .Num{margin-left:5px;}
+#StkTrans #Overview{width:268px; margin:2px 0px 15px 0px; float:left; clear:both;}
+#StkTrans #Overview ul{width:268px; list-style:none; padding:0px; margin:2px 0px; float:none; clear:both; display:block;}
+#StkTrans #Overview li{height:18px; line-height:18px; font-size:11px; font-size:10px\9; _font-size:9px; font-weight:normal; margin:1px 0px; *margin:0; padding:0px; float:left; display:inline-block; text-align:center;}
+#StkTrans #Overview .Title{width:30px;}
+#StkTrans #Overview .Bar{width:220px; margin:0px 5px;}
+#StkTrans #Overview li div{float:left; font-size:10px; height:16px; line-height:16px; display:inline-block; border:1px solid #FFF; border-width:1px 0px; *margin-right:-1px;}
+
+#StkWC{width:364px; height:62px; padding:5px 8px; float:left; clear:both; border-bottom:1px solid #e2e2e2;}
+#StkWC .Box{width:182px; height:40px; margin-top:3px; float:left; font-size:15px;}
+#StkWC .Box div{height:16px; float:left; font-size:10px; margin-top:2px; text-align:center; line-height:16px; min-width:10px;}
+#StkWC .Orange{background:#ff9900;}
+#StkWC .Blue{background:#3399ff;}
+#StkWC .ColorBox{width:11px; height:11px; display:inline-block; vertical-align:top; margin:2px 2px 0px 0px; font-size:0px; }
+@media screen and (-ms-high-contrast: active),(-ms-high-contrast: none){#StkWC .ColorBox{margin-top:3px;}}
+#StkWC .Text{width:364px; clear:both; font-size:11px; font-size:10px\9; _font-size:9px; word-spacing:10px; color:#666;}
+
+#StkSlider{width:0px; position:absolute; top:0px; left:135px; background:#FFF; z-index:100; display:none; border:2px solid #8051a2; overflow:hidden;}
+
+#StkSliderNav{width:131px; height:38px; border-top:1px solid #FFF; position:relative; background-color:#FFF; background-image:-webkit-linear-gradient(top, #dedede, #FFFFFF); background-image:-moz-linear-gradient(top, #dedede, #FFFFFF); background-image:-ms-linear-gradient(top, #dedede, #FFFFFF); background-image:-o-linear-gradient(top, #dedede, #FFFFFF); background-image:linear-gradient(to bottom, #dedede, #FFFFFF); filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#dedede', endColorstr='#FFFFFF');}
+#StkSlider #BigTag{width:11px; height:36px; position:absolute; top:-1px; left:120px; background:url(../images/rs_bigtag.gif); z-index:10;}
+#StkSliderNav div{position:absolute; top:0px; line-height:120%; padding:2px 0px; color:#999999; border-bottom:3px solid #e9e9e9; height:31px;}
+#StkSliderNav #SlideTabA{width:55px; left:0px; text-align:center; z-index:2; border-right:1px solid #c6c6c6;}
+#StkSliderNav #SlideTabB{width:75px; left:56px; text-align:center; z-index:2;}
+#StkSliderNav div.Active{color:#ff6600; font-weight:bold; height:34px; border-bottom:0px }
+#StkSliderNav a{color:#999999;}
+#StkSlider{width:131px; clear:both;}
+#StkSlider ul{width:131px; list-style:none; padding:0px; margin:0px; float:left;}
+#StkSlider li{width:120px; line-height:16px; margin:0px; padding:6px; float:left; display:inline-block; font-size:13px; background:#FFF; border-bottom:1px solid #e2e2e2;}
+#StkSlider a{color:#000;}
+#StkSlider a:hover{color:#666;}
+#StkSlider span{padding-left:15px; font-weight:bold;}
+#StkSlider .up1{background:url(../../common/images/arrow_up1_M.gif) 0px 1px no-repeat; color:#FF0000;}
+#StkSlider .up2{background:url(../../common/images/arrow_up2_M.gif) 0px 1px no-repeat; color:#009900;}
+#StkSlider .down1{background:url(../../common/images/arrow_down1_M.gif) 0px 1px no-repeat; color:#009900;}
+#StkSlider .down2{background:url(../../common/images/arrow_down2_M.gif) 0px 1px no-repeat; color:#FF0000;}
+
+#StkRSHdr{width:120px; height:30px; line-height:30px; float:left; padding:5px 0px 0px 6px; font-size:15px;}
+#StkRSMore{width:20px; margin-top:5px; height:11px; line-height:30px; float:right;}
+.StkRSStock{width:143px; padding:6px; border-bottom:1px solid #e2e2e2; font-size:15px; clear:both; word-spacing:3px; line-height:120%;}
+.StkRSStock a{color:#000;}
+.StkRSStock a:hover{color:#666;}
+.StkRSStock span{font-size:18px; font-weight:bold;}
+.StkRSStock .up1{padding-left:15px; background:url(../../common/images/arrow_up1_M.gif) 0px 4px no-repeat; color:#FF0000;}
+.StkRSStock .up2{padding-left:15px; background:url(../../common/images/arrow_up2_M.gif) 0px 4px no-repeat; color:#009900;}
+.StkRSStock .down1{padding-left:15px; background:url(../../common/images/arrow_down1_M.gif) 0px 4px no-repeat; color:#009900;}
+.StkRSStock .down2{padding-left:15px; background:url(../../common/images/arrow_down2_M.gif) 0px 4px no-repeat; color:#FF0000;}
+
+/* CSS for Detail Quote Only */
+#StkDetailRowA{width:655px; padding:4px 8px 4px 8px; background:#FFF; float:left; clear:both; position:relative; *margin-right:-3px;}
+#StkDetailRowB{width:655px; padding:0px 8px 4px 8px; background:#FFF; float:left; clear:both; position:relative; *margin-right:-3px;}
+#StkDetailMainBox{width:671px; clear:both; border-bottom:3px solid #e9e9e9;}
+#StkDetailMainBox table{width:100%; background:#dbf4f7; border:1px solid #e2e2e2; border-width:1px 0px 1px 0px; border-spacing:0px; padding:0px; border-collapse:collapse;}
+#StkDetailMainBox table td{padding:0px 6px;}
+#StkDetailMainBox .styleA{font-size:12px; line-height:140%; padding:5px; background:url(../images/realtime.gif) no-repeat right top; }
+#StkDetailMainBox .Price{padding:10px 25px; font-size:36px; font-weight:bold; display:block;}
+#StkDetailMainBox .styleA span.up1{background:url(../../common/images/arrow_up1_L.gif) no-repeat 0px 2px; color:#FF0000;}
+#StkDetailMainBox .styleA span.up2{background:url(../../common/images/arrow_up2_L.gif) no-repeat 0px 2px; color:#009900;}
+#StkDetailMainBox .styleA span.down1{background:url(../../common/images/arrow_down1_L.gif) no-repeat 0px 3px; color:#009900;}
+#StkDetailMainBox .styleA span.down2{background:url(../../common/images/arrow_down2_L.gif) no-repeat 0px 3px; color:#FF0000;}
+#StkDetailMainBox .styleA span.unchange1{color:#000; padding-left:0px;}
+#StkDetailMainBox .styleA span.unchange2{color:#000; padding-left:0px;}
+#StkDetailMainBox .Change{font-size:18px; font-weight:bold; word-spacing:3px; display:block;}
+#StkDetailMainBox .Portfolio{padding-top:8px; word-spacing:6px; display:block;}
+#StkDetailMainBox .styleB{font-size:12px; color:#666; line-height:140%; border:1px solid #e2e2e2; border-width:0px 0px 1px 1px;}
+#StkDetailMainBox .Number{font-size:18px; font-weight:bold; color:#000;}
+#StkDetailMainBox .styleB.up1{color:#FF0000; background:none;}
+#StkDetailMainBox .Number.up1{color:#FF0000; background:none;}
+#StkDetailMainBox .styleB.up2{color:#009900; background:none;}
+#StkDetailMainBox .Number.up2{color:#009900; background:none;}
+#StkDetailMainBox .styleB.down1{color:#009900; background:none;}
+#StkDetailMainBox .Number.down1{color:#009900; background:none;}
+#StkDetailMainBox .styleB.down2{color:#FF0000; background:none;}
+#StkDetailMainBox .Number.down2{color:#FF0000; background:none;}
+
+#StkDetailColA{width:290px; float:left; clear:both;}
+#StkDetailColB{width:380px; float:left; margin-left:1px; *margin-right:-3px;}
+#StkDetailChartNav{width:290px; height:40px; position:relative; background:#FFF;}
+#StkDetailChartNav div{position:absolute; top:0px; border:1px solid #e2e2e2; border-bottom:3px solid #e9e9e9; border-top:0px; height:33px; line-height:220%; padding-top:4px;}
+#StkDetailChartNav #Recent{width:175px; color:#FFF; left:0px; z-index:2; border-left:0px; text-indent:5px; cursor:pointer;}
+#StkDetailChartNav #Recent.open{background:url(../images/rs_open.gif) 157px 12px no-repeat #8051a2;}
+#StkDetailChartNav #Recent.close{background:url(../images/rs_close.gif) 157px 12px no-repeat #8051a2;}
+#StkDetailChartNav #SuperQuote{width:115px; border-bottom:0px; left:175px; text-align:center; z-index:2; color:#FFF; background-color:#da2128; background-image:-webkit-linear-gradient(top, #7f1116, #da2128); background-image:-moz-linear-gradient(top, #7f1116, #da2128); background-image:-ms-linear-gradient(top, #7f1116, #da2128); background-image:-o-linear-gradient(top, #7f1116, #da2128); background-image:linear-gradient(to bottom, #7f1116, #da2128); filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7f1116', endColorstr='#da2128'); -moz-box-shadow:0px 0px 5px 0px rgba(0,0,0,0.7); -webkit-box-shadow:0px 0px 5px 0px rgba(0,0,0,0.7); box-shadow:0px 0px 5px 0px rgba(0,0,0,0.7);}
+#StkDetailChartNav #SuperQuote a{color:#FFF;}
+#StkDetailChartNav #TabA{width:80px; left:0px; text-align:center; z-index:2;}
+#StkDetailChartNav #TabB{width:80px; left:80px; text-align:center; z-index:2; border-right:0px; }
+#StkDetailChartNav #TabC{left:160px; width:130px; text-align: center;z-index: 2; }
+#StkDetailChartNav #TabBg{width:290px; left:0px; border-width:0px 0px 3px 0px;}
+#StkDetailChartNav .Active{border-top:3px solid #00a1bd; border-bottom:0; margin:0px; line-height:180%; font-weight:bold; background:#FFF;}
+#StkDetailChartNav a{color:#999999;}
+#StkDetailChartNav a:hover{color:#00a1bd;}
+#StkDetailChartBox{width:290px; border-bottom:1px solid #e2e2e2; background:#FFF; text-align:center; overflow:hidden;}
+
+#StkDetailTime{width:364px; padding:8px; font-size:11px; font-size:10px\9; _font-size:9px; color:#666; clear:both;}
+#StkDetailSuperIco{width:155px; height:40px; background:url(../images/superquote_ico.gif) 0px -5px no-repeat; cursor:pointer; float:left;}
+
+/* CSS for Transaction Summary, ADDED ON 25 FEB */
+
+#StkTSTop{width:648px; padding-top:10px; margin:8px 8px 20px 8px; float:left; clear:both; border-radius:6px; background-color:#f6f6f6; background-image:-webkit-linear-gradient(top, #f0f0f0, #fff); background-image:-moz-linear-gradient(top, #f0f0f0, #fff); background-image:-ms-linear-gradient(top, #f0f0f0, #fff); background-image:-o-linear-gradient(top, #f0f0f0, #fff); background-image:linear-gradient(to bottom, #f0f0f0, #fff); filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f0f0f0', endColorstr='#ffffff'); _display:inline;}
+#StkTSTop ul{width:648px; list-style:none; padding:0px; margin:1px 0px; float:left; clear:both; display:block;}
+#StkTSTop li{height:22px; line-height:22px; font-size:13px; margin:0px; padding:0px; float:left; display:inline-block; text-align:center;}
+#StkTSTop .Title{width:80px;}
+#StkTSTop .Bar{width:448px; margin:0px 20px;}
+#StkTSTop .VWAP{width:80px;}
+#StkTSTop li div{float:left; font-size:11px; height:20px; line-height:20px; display:inline-block; border:1px solid #FFF; border-width:1px 0px; *margin-right:-1px;}
+#StkTSTop .BidAM{background:#c8f0fa;}
+#StkTSTop .BidPM{background:#7fc5de;}
+#StkTSTop .AskAM{background:#ffcade;}
+#StkTSTop .AskPM{background:#e1acc9;}
+#StkTSTop .ColorBox{width:12px; height:12px; display:inline-block; vertical-align:top; margin:1px 1px 0px 0px; font-size:0px;}
+@media screen and (-ms-high-contrast: active),(-ms-high-contrast: none){#StkTSTop .ColorBox{margin-top:3px;}}
+#StkTSTop .Text{margin-top:10px; padding:10px; width:628px; float:left; clear:both; word-spacing:15px; border-top:1px solid #e2e2e2; display:block;}
+#StkTSBottom{width:650px; margin:8px; font-weight:bold; float:left; clear:both; *display:inline;}
+#StkTSBChart{width:650px; padding:17px 8px; float:left; clear:both; }
+#StkTSBChart .Title{width:100px; font-size:12px; height:30px; line-height:30px; float:left;}
+#StkTSBChart .Pink{background:#e1aac8;}
+#StkTSBChart .Blue{background:#6496f0;}
+#StkTSBChart .Red{background:#e63264;}
+#StkTSBChart .DBlue{background:#00418c;}
+#StkTSBChart .ColorBox{width:12px; height:12px; display:inline-block; vertical-align:top; margin:1px; font-size:0px;}
+@media screen and (-ms-high-contrast: active),(-ms-high-contrast: none){#StkTSBChart .ColorBox{margin-top:3px;}}
+#StkTSBChart .Text{width:550px; height:20px; margin-top:6px; float:left; text-align:right; font-size:12px; word-spacing:8px;}
+#StkTSBChart .Chart{width:650px; font-size:11px; padding-top:10px; clear:both;}
+#StkTSBChart ul{list-style:none; padding:0px; margin:0px; float:left; clear:both; width:650px;}
+#StkTSBChart li{height:12px; line-height:12px; margin:6px 0px; *margin:12px 0px; _margin:10px 0px; float:left; display:inline-block;}
+#StkTSBChart .Legend{width:45px; border-right:1px solid #545454; text-align:right; margin:0px 2px 0px 0px; padding:5px; _padding:8px 5px;}
+#StkTSBChart .RedFont{color:#e63264;}
+#StkTSBChart .BlueFont{color:#00418c;}
+#StkTSBChart .Num{margin-left:5px;}
+#StkTSBTable{width:666px; clear:both; *display:inline;}
+#StkTSBTable table{width:100%;}
+#StkTSBTable table td{height:24px; padding:0px 3px;}
+
+/* LIP detail */
+.ETFTopQuote{width:45%; float:left; border-right:1px solid #e2e2e2; padding:10px 0px;}
+.ETFTopQuote ul{list-style:none; margin:0px; padding:0px;}
+.ETFTopQuote li{display:block; font-weight:normal;}
+.ETFTopQuote li.Nominal{text-indent:15px; font-size:22px; font-weight:bold;}
+.ETFTopQuote ul.up li.Nominal{color:#339900; background-image:url(/www/eng/common/images/arrow_up2.gif); background-repeat:no-repeat; background-position:left 5px;}
+.ETFTopQuote ul.down li.Nominal{color:#F00; background-image:url(/www/eng/common/images/arrow_down2.gif); background-repeat:no-repeat; background-position:left 5px;}
+.ETFTopQuote ul.unchange li.Nominal{color:#000000; text-indent:0px;}
+.ETFTopQuote li.Nominal span{font-size:13px; font-weight:normal; color:#000000;}
+.ETFTopQuote li.Chart img{width:250px; margin-top:6px; border:0px;}
+.ETFTopQuote li.Links a{font-size:15px; margin-right:12px; display:inline-block; *display:inline; *zoom:1;}
+.ETFTopQuote li.Links img{margin-left:2px; border:0px;}
+.ETFTopRel{width:50%; float:left; padding:10px 0px 0px 10px;}
+.ETFTopRel ul{list-style:none; margin:0px 0px 19px 0px; padding:0px;}
+.ETFTopRel li{display:inline-block; *display:inline; *zoom:1; font-size:13px; font-weight:normal; vertical-align:top;}
+.ETFTopRel li.Item{width:100px;}
+.ETFTopRel li.Item.Estimate span{display:inline-block; background-color:#FF9900; color:#FFF;}
+.ETFTopRel li.Data{width:220px;}
+.ETFTopRel li.Data span.Name{font-size:16px;}
+.ETFTopRel li.Data span.Nominal{text-indent:15px; font-size:22px; font-weight:bold; display:inline-block; *display:inline; *zoom:1;}
+.ETFTopRel ul.up li.Data span.Nominal{color:#339900; background-image:url(/www/eng/common/images/arrow_up2.gif); background-repeat:no-repeat; background-position:left 5px;}
+.ETFTopRel ul.down li.Data span.Nominal{color:#F00; background-image:url(/www/eng/common/images/arrow_down2.gif); background-repeat:no-repeat; background-position:left 5px;}
+.ETFTopRel ul.unchange li.Data span.Nominal{color:#000000; text-indent:0px;}
+
+/** stocks and ashare only **/
+.AshareStockConnectRemarkCurrent {color:#c03;}
+.AshareStockConnectRemarkExpired{color:#999;}
+.Error{color:red;}
+
+/* New CSS for Retina Device */
+@media only screen and (-webkit-min-device-pixel-ratio : 2), only screen and (min-device-pixel-ratio : 2) {
+#StkQuoteSearch .Submit{background:url(../images/quotesubmit_x2.gif); background-size:30px;}
+#StkQuoteSearch input{width:42px; height:20px; line-height:20px; }
+#StkQuoteRefresh{background:url(../images/quoterefresh_x2.gif); background-size:32px;}
+#StkBg{background:url(../images/stockbg_x2.gif) repeat-y 290px 0px; background-size:1px;}
+#StkDetailSuperIco{background:url(../images/superquote_ico_x2.gif); background-size:155px;}
+#StkList{background:url(../images/stockbg_x2.gif) repeat-y 189px 0px; background-size:1px;}
+#StkDetailMainBox .styleB{height:46px;}
+#StkDetailChartNav #Recent.open{background:url(../images/rs_open_x2.gif) 157px 12px no-repeat #8051a2; background-size:13px;}
+#StkDetailChartNav #Recent.close{background:url(../images/rs_close_x2.gif) 157px 12px no-repeat #8051a2; background-size:13px;}
+.StkBubble{background:url(../images/bubble_x2.png) no-repeat; background-size:180px;}
+#StkSlider #BigTag{background:url(../images/rs_bigtag_x2.gif); background-size:11px;}
+}
+    </style>
+    <script language="javascript" type="text/javascript" src="/www/eng/common/js/jquery.min.js"></script>
+    <script language="javascript" type="text/javascript" src="/www/eng/common/js/jquery.easing.min.js"></script>
+    <script language="javascript" type="text/javascript"
+            src="/www/eng/common/js/jquery.autocomplete.min.js?20141114"></script>
+    <script type="text/javascript">
+var CHINADOMAIN = "etnetchina.com";
+var CHINADOMAIN2 = "etnet.com.cn";
+var CHINALINK = 'http://images.etnet.com.hk/ox/www/delivery/ck.php?oaparams=2__bannerid=400__zoneid=0__oadest=http%3A%2F%2Fwww.etnet.com.cn%2F';
+var COOKIE_LOCALE = 'etnetlocale';
+
+/*-----  Function: cookies -----*/
+function setCookie(c_name,value,expiredays,use_subdomain) {
+	use_subdomain = (typeof use_subdomain === "undefined") ? true : use_subdomain;
+	var exdate=new Date();
+	//exdate.setDate(exdate.getDate()+expiredays);
+	exdate.setTime(exdate.getTime() + (expiredays * 86400000));
+	var domain = (use_subdomain)?"":"domain=.etnet.com.hk;";
+	document.cookie=c_name+ "=" +escape(value)+
+	((expiredays==null) ? "" : ";"+domain+"path=/;expires="+exdate.toGMTString());
+}
+function getCookie(c_name)
+{
+	if (document.cookie.length>0)
+	{
+		c_start=document.cookie.indexOf(c_name + "=");
+		if (c_start!=-1)
+		{
+			c_start=c_start + c_name.length+1;
+			c_end=document.cookie.indexOf(";",c_start);
+			if (c_end==-1) c_end=document.cookie.length;
+			return unescape(document.cookie.substring(c_start,c_end));
+		}
+	}
+	return "";
+}
+/*-----  Function: domain -----*/
+function getDomain(url)
+{
+	if (url==""||url==null) return "";
+	var url = url.replace(/http:\/\//, "");
+	var urlpath = url.indexOf("/");
+	url = (urlpath!=-1)?url.substring(0,urlpath):url;
+	return url;
+}
+/*-----  Function: automatically redirect Simplified Chinese browser to china site -----*/
+/*
+function LangRedirect()
+{
+	var referrerDomain = getDomain(document.referrer);
+	var userLang = (navigator.language)?navigator.language:navigator.userLanguage;		// IE:userLanguage/FF:language
+	userLang = userLang.toLowerCase();
+	// skip if locale isn't zh-cn
+	if (userLang!='zh'&&userLang!='zh-cn'&&userLang!='zh-chs')
+	{
+		return;
+	}
+	// if locale is zh-cn
+	if (referrerDomain.indexOf(CHINADOMAIN)!=-1 || referrerDomain.indexOf(CHINADOMAIN2)!=-1)
+	{
+		setCookie("siteloc", "etnetcomhk", 30);
+		return;
+	}
+	else
+	{
+		var siteloc = getCookie("siteloc");
+		if (siteloc=="")
+		{
+			top.location.href=CHINALINK;
+			return
+		}
+		if (siteloc=="etnetchina")
+		{
+			top.location.href=CHINALINK;
+			return;
+		}
+		if (siteloc=="etnetcomhk")
+		{
+			return;
+		}
+	}
+}
+*/
+/*-----  Function: go to china site -----*/
+function goChinaSite(channel)
+{
+	setCookie(COOKIE_LOCALE, 'etnetcomhk', -30);
+	if (channel == 'stocks') {
+		top.location.href='http://stocks.etnet.com.cn/www/sc/stocks/realtime/index.php';
+	} else if (channel == 'warrants') {
+		top.location.href='http://warrants.etnet.com.cn/www/sc/warrants/realtime/index.php';
+	} else if (channel == 'futures') {
+		top.location.href='http://futures.etnet.com.cn/www/sc/futures/index.php';
+	} else if (channel == 'etf') {
+		top.location.href='http://etf.etnet.com.cn/www/sc/etf/index.php';
+	} else {
+		top.location.href=CHINALINK;
+	}
+}
+/*-----  Function: set change color -----*/
+function setColor(cvalue)
+{
+	cvalue = (cvalue!='1' && cvalue!='2')? '2': cvalue;
+	setCookie('et_color', cvalue, 31536000);
+	window.location.reload();
+}
+/*-----  Function: show ads -----*/
+function is_ie6()
+{
+	return (document.all) && (navigator.appVersion.indexOf("MSIE 6.")!=-1);
+}
+function is_ie7()
+{
+	return (document.all) && (navigator.appVersion.indexOf("MSIE 7.")!=-1);
+}
+function is_ie8()
+{
+	return (document.all) && (navigator.appVersion.indexOf("MSIE 8.")!=-1);
+}
+function is_chrome()
+{
+	return (navigator.appVersion.indexOf("Chrome")!=-1);
+}
+function OA_show(name)
+{
+}
+function AdZone_SPC(cid, nosamecampaign, nosamebanner)
+{
+	var undefined;
+	if (nosamebanner === undefined)
+	{
+		nosamebanner = "&amp;block=1";
+	}
+	else
+	{
+		nosamebanner = "&amp;block=" + nosamebanner;
+	}
+	if (nosamecampaign === undefined)
+	{
+		nosamecampaign = "";
+	}
+	else
+	{
+		nosamecampaign = "&amp;blockcampaign=" + nosamecampaign;
+	}
+	document.write ("<" + "script type='text/javascript' src='http://images.etnet.com.hk/ox/www/delivery/spcjs.php?id=");
+	document.write (cid + nosamebanner + nosamecampaign);
+	document.write ("'><" + "/script>");
+}
+function AdZone_New(zid) {
+   var m3_u = (location.protocol=='https:'?'https://images.etnet.com.hk/ox/www/delivery/ajs.php':'http://images.etnet.com.hk/ox/www/delivery/ajs.php');
+   var m3_r = Math.floor(Math.random()*99999999999);
+   if (!document.MAX_used) document.MAX_used = ',';
+   document.write ("<scr"+"ipt type='text/javascript' src='"+m3_u);
+   document.write ("?zoneid="+zid+"&amp;block=1");
+   document.write ('&amp;cb=' + m3_r);
+   if (document.MAX_used != ',') document.write ("&amp;exclude=" + document.MAX_used);
+   document.write (document.charset ? '&amp;charset='+document.charset : (document.characterSet ? '&amp;charset='+document.characterSet : ''));
+   document.write ("&amp;loc=" + escape(window.location));
+   if (document.referrer) document.write ("&amp;referer=" + escape(document.referrer));
+   if (document.context) document.write ("&context=" + escape(document.context));
+   if (document.mmm_fo) document.write ("&amp;mmm_fo=1");
+   document.write ("'><\/scr"+"ipt>");
+}
+Array.prototype.shuffle = function ()
+{
+	var i = this.length, j, temp;
+	if ( i == 0 ) return;
+	while ( --i ) {
+		j = Math.floor( Math.random() * ( i + 1 ) );
+		temp = this[i];
+		this[i] = this[j];
+		this[j] = temp;
+	}
+};
+/*-----  Function: Login IQ -----*/
+var iqWin = null;
+function ScreenWidth(){
+	if ((screen.width >= 1024) && (screen.height >= 768))
+	{
+		//990*690
+		setOpenWindow(690,990);
+	}
+	else
+	{
+		setOpenWindow(520,780);
+	}
+}
+
+function setOpenWindow(height,width){
+	iqwin = "";
+	if (iqwin=="" || iqwin.closed)
+	{
+		iqWin = window.open("http://iq6.etnet.com.hk/HttpServer/jsp/IQ_Web/Login.jsp?lang=tc&UIstyle=full&demo=false",
+		"iqWin",
+		'height='+height+', width='+width+', toolbar=no, menubar=no, scrollbars=auto, resizable=yes, location=no, status=no');
+	}
+	else
+	{
+		iqWin.document.location.replace("http://iq6.etnet.com.hk/HttpServer/jsp/IQ_Web/Login.jsp?lang=tc&UIstyle=full&demo=false");
+	}
+}
+
+function iqLogin()
+{
+	ScreenWidth();
+	iqwin.focus();
+}
+
+/*-----  Function: form validation -----*/
+function isPositiveInteger(x)
+{
+	result = (isNaN(x) || x < 1 || x.toString().indexOf(".") != -1)? false: true;
+	return result;
+}
+function isPositiveNumber(x)
+{
+	result = (isNaN(x) || x < 0)? false: true;
+	return result;
+}
+function trim(x)
+{
+	return (x.replace(/^\s+|\s+$/g, ''));
+}
+function alertError(type, field)
+{
+	errormessage =new Array(' correct Code.', 'keywords.');
+	if (type > 0)
+	{
+		alert('Please input' + errormessage[type - 1]);
+		document.getElementById(field).select();
+		document.getElementById(field).focus();
+	}
+}
+function validateCommonSearch()
+{
+	commoninput = trim(document.getElementById('globalsearch').value);
+	commonselect = document.getElementById('globalsearchlink').value;
+	if (commoninput == '') commoninput = 1;
+	if (commonselect == '') commonselect = '/www/eng/stocks/realtime/quote.php';
+	if (isPositiveInteger(commoninput))
+	{
+		var link = commonselect + '?code=' + commoninput;
+
+		window.location = link;
+		return false;
+	}
+	else
+	{
+		error = 1;
+		alertError(error, 'globalsearch');
+	}
+	return false;
+}
+
+/*-----  Function: Get Broswer Width -----*/
+function GetWidth(){
+	var _intWindowWidth = 0;
+
+	if (self.innerWidth) _intWindowWidth = self.innerWidth;
+	else if (document.documentElement && document.documentElement.clientWidth) _intWindowWidth = document.documentElement.clientWidth;
+	else if (document.body) _intWindowWidth = document.body.clientWidth;
+
+	return _intWindowWidth;
+}
+
+/*-----  Function: Set Homepage -----*/
+function setHome(strUrl) {
+	if (document.all){
+		document.body.style.behavior = 'url(#default#homepage)';
+		document.body.setHomePage(strUrl);
+	}else if (window.sidebar){
+		if(window.netscape){
+			try{
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+			}catch(e){
+				alert("抱歉！你的瀏覽器不支持直接設定首頁．您可以通過瀏覽器\n工具->選項->使用當前頁->確定\n完成設定首頁．");
+			}
+		}
+		var prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components. interfaces.nsIPrefBranch);
+		prefs.setCharPref('browser.startup.homepage', strUrl);
+	}
+}
+
+/*-----  Function: refresh realtime quote page -----*/
+function reloadpage(url) {
+	setTimeout("refreshpage('" + url + "')", 500);
+}
+function refreshpage(url) {
+	window.location = "quote.php?code=" + url;
+}
+
+/*-----  Function: refresh realtime quote page for mobile -----*/
+function refreshpagem(url){
+	//window.location = url
+	window.location = "quote_m.php?code=" + url
+}
+
+function reloadpagem(url){
+	setTimeout("refreshpagem('" + url + "')", 500);
+}
+
+/*-----  Function: refresh realtime quote page for mobile -----*/
+function refreshgeneral(url){
+	window.location = url
+}
+
+function reloadgeneral(url){
+	setTimeout("refreshgeneral('" + url + "')", 500);
+}
+
+/*-----  Function: layer control -----*/
+function hiddenLayers(hides, show)
+{
+	document.getElementById(show).style.display = "block";
+	hide = hides.split(',');
+	for (i=0; i<hide.length; i++)
+	{
+		document.getElementById(hide[i]).style.display = "none";
+	}
+}
+
+function iframeSrc(objID, srcParh)
+{
+	var obj = document.getElementById(objID);
+	if (obj.src.indexOf(window.location) > -1 || obj.src == "#" || obj.src == "about:blank")
+	{
+		obj.src = srcParh;
+	}
+}
+
+/*-----  Function: portfolio control -----*/
+function toggleDiv(element) {
+	var el = $('#'+element);
+	if (el.css('display') != 'block') {
+		el.show();
+		$('#expand').hide();
+		$('#collapse').show();
+	} else {
+		$('#expand').show();
+		$('#collapse').hide();
+		el.hide();
+	}
+}
+
+/*-----  Function: open super quote -----*/
+function openSuperQuote(code) {
+	var commoninput = '';
+	if (code === undefined) {
+		if (document.getElementById('globalsearch').length != 6)
+		{
+			commoninput = trim(document.getElementById('globalsearch').value);
+		}
+		else
+		{
+			commoninput = document.getElementById('globalsearch').value;
+		}
+	} else {
+		commoninput = code;
+	}
+	if (commoninput == '') commoninput = 1;
+	if (isPositiveInteger(commoninput)) {
+		var url = '/www/eng/stocks/realtime/quote_super.php?code='+commoninput;
+		var newwindow = window.open(url,'superquote','height=950,width=324,location=no,menubar=no,scrollbars=no,toolbar=no,top=0,left=0,resizable=no');
+		if ($.browser.msie) {
+			if ($('#referForIE').length == 0) {
+				$('body').append('<a id="referForIE" href="javascript:void(0);" target="superquote" style="visibility:hidden;position:absolute;"></a>');
+			}
+			$('#referForIE').attr('href', url);
+			$('#referForIE')[0].click();
+		}
+		if (window.focus) newwindow.focus();
+	} else {
+		error = 1;
+		alertError(error, 'globalsearch');
+	}
+	return false;
+}
+
+/*-----  Function: Get Element Position -----*/
+function GetOffset (object, offset) {
+	if (!object) return;
+	offset.x += object.offsetLeft;
+	offset.y += object.offsetTop;
+	GetOffset (object.offsetParent, offset);
+}
+function GetTopLeft (param) {
+	var div = document.getElementById(param);
+	var offset = {x : 0, y : 0};
+	GetOffset (div, offset);
+	var scrolled = {x : 0, y : 0};
+	var posX = offset.x - scrolled.x;
+	var posY = offset.y - scrolled.y;
+	return[posX,posY];
+}
+
+/*---- Function: Get Corpan Files ----*/
+function get_corpan(type, elementObj) {
+	var corpan_window = window.open('');
+	var filepath = elementObj.data('filepath');
+	if(type == 'prospectus') {
+		var code = elementObj.data('code');
+		var lang = 'ENG';		
+		param = {type: 'prospectus', code: code, filepath: filepath, lang: lang};
+	} else {
+		var newsid = elementObj.data('newsid');
+		var numofattachment = elementObj.data('numofattachment');
+		param = {newsid: newsid, filepath: filepath, numofattachment: numofattachment};
+	}
+	
+	$.post('/www/eng/../../ajax/get_corpan_files.php', param)
+		.done(function(url) {
+			if (url != '') {
+				corpan_window.location.href = url;
+			} else {
+				corpan_window.close();
+				alert("File does not exist");
+			}
+		});	
+}// JavaScript Document
+
+$(document).ready(function() {
+	autoCompleteDiv();
+	if (window.location.href.indexOf("#") < 0) {
+		globalInput();
+		//$("#globalsearch").focus();
+		//$("#globalsearch").select();
+	}
+});
+
+jQuery.fn.extend({
+  forceRedraw: function() {
+    jQuery(this).each(function() {
+      this.className = this.className;
+    });
+  }
+});
+
+tabControl = function(tabControlDiv,tabsDiv,activeClass,activeIndex){
+		//Set the initial state: highlight the selected button...
+		$(tabControlDiv).find('div:eq('+activeIndex+')').addClass(activeClass);
+
+		//and hide all slides except the selected one
+		$(tabsDiv+' > div').hide();
+		$('#DivDisclaimerBlock').forceRedraw();
+		$(tabsDiv).find('> div:eq('+activeIndex+')').show();
+		//$(tabControlDiv+' > div').contents().wrap('<a href="javascript:void(0);" style="display:block;" />');
+		$(tabControlDiv+' > div').each(function () {
+			if ($(this).children('a').length == 0) {
+				$(this).contents().wrapAll('<a href="javascript:void(0);" style="display:block;" />');
+			}
+		});
+		$(tabControlDiv).find('> div:eq('+activeIndex+')').children().contents().unwrap();
+
+		//actions that apply on click of any of the buttons
+		$(tabControlDiv+' div').click( function(event) {
+			//turn off the link so it doesn't try to jump down the page
+			event.preventDefault();
+			//un-highlight the buttons
+			$(tabControlDiv+' div').removeClass(activeClass);
+			$(tabControlDiv+' > div').each(function () {
+				if ($(this).children('a').length == 0) {
+					$(this).contents().wrapAll('<a href="javascript:void(0);" style="display:block;" />');
+				}
+			});
+			//hide all the slides
+			$(tabsDiv+' > div').hide();
+			$('#DivDisclaimerBlock').forceRedraw();
+			//highlight the current button
+			$(this).addClass(activeClass);
+			$(this).children().contents().unwrap();
+			//get the index of the current button...
+			var index = $(tabControlDiv+' div').index(this);
+			//and use that index to show the corresponding slide
+			$(tabsDiv+' > div:eq('+index+')').show();
+		});
+}
+
+callAjax = function(url, dataString, type, dataType) {
+	if (typeof type === 'undefined') {
+		type = 'POST';
+	}
+	if (typeof dataType === 'undefined') {
+		dataType = 'html';
+	}
+	var result = 'fail';
+	$.ajax ({
+		type: type,
+		async: false,
+		url: url,
+		dataType: dataType,
+		data: dataString,
+		cache: false,
+		success: function(html) {
+			result = html;
+		}
+	});
+	return result;
+}
+
+/*-----  Function: global search control -----*/
+globalInput = function(){
+	$("#globalsearch").focus(function () {
+         $("#DivGlobalSearch").addClass("inputfocus");
+    });
+	$("#globalsearch").blur(function () {
+         $("#DivGlobalSearch").removeClass("inputfocus");
+    });
+}
+
+globalSearch = function(type) {
+	var othertype = 'quote';
+	if (type == 'quote') {
+		othertype = 'fullsite';
+		othertype_id = 'fullsite';
+		type_id = 'quote';
+		attachAutoComplete('web');
+	} else {
+		othertype_id = 'quote';
+		type_id = 'fullsite';
+		detachAutoComplete();
+	}
+	$('#globalsearch_'+type_id).unwrap();
+	$('#globalsearch_'+othertype_id).wrap('<a href="javascript:void(0);" onclick="globalSearch('+"'"+othertype+"'"+');" class="ThemeColor">');
+	$('#globalsearchtype').val(type);
+	if (window.location.href.indexOf("#") < 0) {
+		$("#DivGlobalSearch").addClass("inputfocus");
+		$("#globalsearch").focus();
+		$("#globalsearch").select();
+	}
+	return false;
+}
+
+/*-----  Function: attach / detach auto complete -----*/
+autoCompleteDiv = function(){
+	$("#DivMaster").prepend('<div id="autoCompDIV"></div>');
+	if ($("#quotesearch").length > 0) {
+		$("#quotesearch").parent().parent().append('<div id="quoteAutoCompDIV"></div>');
+	}
+}
+
+attachAutoComplete = function(pagetype) {
+	// lang = TC / SC / en
+	if (typeof pagetype === 'undefined') pagetype = 'web';
+	var top = 90;
+	var left = $("#DivChannelMenua").width() + 20;
+	var searchboxDIVid = 'globalsearch';
+	var autoCompDIVid = 'autoCompDIV';
+	var exchangeType = 'ALL';
+	var stockMoreLink = "http://www.etnet.com.hk/www/eng/stocks/company_search.php";
+	var ashareMoreLink = "http://www.etnet.com.hk/www/eng/ashares/search.php";
+	var asid = 'AS2';
+
+	switch (pagetype) {
+		case 'superquote':
+			top = 138;
+			left = 1;
+			break;
+		case 'quote':
+			top = 30;
+			left = 0
+			searchboxDIVid = 'quotesearch';
+			autoCompDIVid = 'quoteAutoCompDIV';
+			break;
+	}
+	$("#"+searchboxDIVid).autocomplete("http://auto.etnet.com.hk/AutoComplete/AutoComplete?lang=en&&jsonCallback=?", {
+		minChars: 1,
+		width: 320,
+		max:10,
+		scroll:false,
+		delay:100,
+		selectFirst:true,
+		dataType: 'json',
+		matchSubset:false,
+		top: top,
+		left: left,
+		acDIVid: autoCompDIVid,
+		extype: exchangeType,
+		asid: asid,
+		stockMoreLink: stockMoreLink,
+		ashareMoreLink: ashareMoreLink,
+		parse: function(data) {
+			var rows = [];
+			for(var i=0; i<data.length; i++){
+				rows[rows.length] = {
+					data:"<table width=320 border=0 cellpadding=0 cellspacing=0><tr style='line-height:20px'><td width=15% align=left>"+data[i].code+"</td><td width=34% align=left>" + data[i].namech + "</td><td width=40% align=left style='font-size:11px'>" + data[i].nameen + "</td><td width=11% align=left>"+data[i].market+"</td></tr></table>",
+					result:data[i].code
+				};
+			}
+		return rows;
+		},
+		formatItem: function(row, i, max) {
+			return row;
+		},
+		formatMatch: function(row, i, max) {
+			return row;
+		},
+		formatResult: function(row) {
+			return row;
+		}
+	});
+}
+
+detachAutoComplete = function() {
+	$("#globalsearch").unautocomplete();
+}
+
+/*-----  Function: show/hide popup bubble -----*/
+var bubbleID;
+var popup=false;
+hideBubble = function (typeName){
+	$('#'+typeName).hide();
+	popup=false;
+}
+showBubble = function (id,imgName){
+	var topBannerHeight = 0;
+	var positionA=GetTopLeft(imgName);
+	var positionB=GetTopLeft('DivContent');
+	$('#'+id).click(function() {
+		hideBubble(id);
+	});
+	if (sliderstatus && screen.width < 1280){
+		var leftPos = 131;
+	}
+	else{
+		var leftPos = 0;
+	}
+	$('#'+id).css('left', positionA[0]-positionB[0]-90+leftPos);
+	if ($('#topbanner').length){
+		topBannerHeight = $('#topbanner').height();
+	}
+	$('#'+id).css('top', positionA[1]-positionB[1]-5+topBannerHeight);
+	$('#'+id).show();
+}
+toggleBubble = function (id,imgName){
+	if(popup==true){
+		hideBubble(bubbleID);
+		bubbleID=id;
+		showBubble(id,imgName);
+	}else{
+		bubbleID=id;
+		showBubble(id,imgName);
+	}
+	popup=true;
+}
+
+// jquery-browser-plugin
+var matched, browser;
+jQuery.uaMatch = function( ua ) {
+	ua = ua.toLowerCase();
+	var match = /(opr)[\/]([\w.]+)/.exec( ua ) ||
+		/(chrome)[ \/]([\w.]+)/.exec( ua ) ||
+		/(version)[ \/]([\w.]+).*(safari)[ \/]([\w.]+)/.exec(ua) ||
+		/(webkit)[ \/]([\w.]+)/.exec( ua ) ||
+		/(opera)(?:.*version|)[ \/]([\w.]+)/.exec( ua ) ||
+		/(msie) ([\w.]+)/.exec( ua ) ||
+		ua.indexOf("trident") >= 0 && /(rv)(?::| )([\w.]+)/.exec( ua ) ||
+		ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec( ua ) ||
+		[];
+	var platform_match = /(ipad)/.exec( ua ) ||
+		/(iphone)/.exec( ua ) ||
+		/(android)/.exec( ua ) ||
+		/(windows phone)/.exec(ua) ||
+		/(win)/.exec( ua ) ||
+		/(mac)/.exec( ua ) ||
+		/(linux)/.exec( ua ) ||
+		[];
+	return {
+		browser: match[ 3 ] || match[ 1 ] || "",
+		version: match[ 2 ] || "0",
+		platform: platform_match[0] || ""
+	};
+};
+matched = jQuery.uaMatch( window.navigator.userAgent );
+browser = {};
+if ( matched.browser ) {
+	browser[ matched.browser ] = true;
+	browser.version = matched.version;
+	browser.versionNumber = parseFloat(matched.version, 10);
+}
+if ( matched.platform ) {
+	browser[ matched.platform ] = true;
+}
+// Chrome, Opera 15+ and Safari are webkit based browsers
+if ( browser.chrome || browser.opr || browser.safari ) {
+	browser.webkit = true;
+}
+// IE11 has a new token so we will assign it msie to avoid breaking changes
+if ( browser.rv ) {
+	var ie = 'msie';
+
+	matched.browser = ie;
+	browser[ie] = true;
+}
+// Opera 15+ are identified as opr
+if ( browser.opr ) {
+	var opera = 'opera';
+
+	matched.browser = opera;
+	browser[opera] = true;
+}
+// Assign the name and platform variable
+browser.name = matched.browser;
+browser.platform = matched.platform;
+jQuery.browser = browser;if(screen.width >= 1280 && $.browser.platform == 'android')
+{
+	viewport = document.querySelector("meta[name=viewport]");
+	viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=2');
+}
+
+    </script>
+    <script type='text/javascript'>
+// Google Analytics
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-40595331-1', 'etnet.com.hk');
+ga('require', 'linkid', 'linkid.js');
+ga('require', 'displayfeatures');
+ga('send', 'pageview');
+
+// Google DFP
+(function() {
+var useSSL = 'https:' == document.location.protocol;
+var src = (useSSL ? 'https:' : 'http:') +
+'//www.googletagservices.com/tag/js/gpt.js';
+document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
+})();
+
+    </script>
+
+    <script type="text/javascript" src="/www/eng/stocks/ads/stocks_ad_content.js?v=1"></script>
+    <!--script type="text/javascript" src="/www/eng/stocks/ads/stocks_ad_content_functions.js"></script-->
+    <script type="text/javascript" src="/www/eng/common/ads/common_ad_functions.js"></script>
+    <script type="text/javascript">
+if (typeof showDFP !== 'function') {
+	ga('send', 'event', 'adblock', 'block', 'web|eng');
+}
+
+    </script>
+</head>
+<body>
+<div id="DivMaster">
+    <!-- Begin Top Menu -->
+    <div id="DivHeader" class="shadow">
+        <script>//LangRedirect();</script>
+        <!--script type="text/javascript" src="/www/eng/common/ads/common_ad_functions.js"></script-->
+        <!-- Ad Template-->
+        <!--[if IE]>
+        <div id="topbanner" style="display: none;">
+            <script>callDFP('topbanner', 'template');</script>
+        </div>
+        <div id="rightrect1" style="display: none;">
+            <script>callDFP('rightrect1', 'template');</script>
+        </div>
+        <div id="rightrect2" style="display: none;">
+            <script>callDFP('rightrect2', 'template');</script>
+        </div>
+        <div id="rightrect3" style="display: none;">
+            <script>callDFP('rightrect3', 'template');</script>
+        </div>
+        <![endif]-->
+        <!-- Ad Template-->
+        <div id="DivSiteLink"><a name="top"></a>
+            <div id="DivSiteLinkRight" class="whiteTxt"><a href="/www/eng/../tc/stocks/realtime/index.php" target="_top"
+                                                           class="whiteTxt">繁體版</a>／<a href="javascript:void(0);"
+                                                                                       onclick="goChinaSite('stocks'); return false;"
+                                                                                       class="whiteTxt">简体版</a> | <a
+                    href="javascript:void(0);"
+                    onclick="setHome('http://www.etnet.com.hk/www/eng/stocks/realtime/index.php');" class="whiteTxt">Set
+                Homepage</a> | <a href="javascript:void(0);" onclick="setColor(1);" style="color:#ff0000;">Switch
+                Color<img src="/www/eng/common/images/arrow_up1.gif" width="11" height="11" border="0"/></a></div>
+        </div>
+        <div id="DivChannelMenu">
+            <a href="/www/eng/stocks/realtime/index.php" target="_top">
+                <div id="DivChannelMenua">
+                    <!--a href="/www/eng/stocks/realtime/index.php" target="_top"><img src="/www/eng/common/images/toplogo.gif" alt="etnet經濟通" title="etnet經濟通" width="136" height="65" border="0" /></a--></div>
+            </a>
+            <div id="DivChannelMenub">
+                <form name="commonsearchform" id="commonsearchform" method="post" action=""
+                      onsubmit="return validateCommonSearch();">
+                    <div id="DivChannelMenubText">Quote<span style="color:#999; font-weight:normal;"> | </span><a
+                            href="javascript:void(0);" class="ThemeColor" onclick="openSuperQuote();">Super Quote</a>
+                        <!--span style="color:#999; font-weight:normal;"> | </span><a href="#">全站</a><span style="color:#999; font-weight:normal;"> | </span><a href="#">生活副刊</a-->
+                    </div>
+                    <div id="DivGlobalSearch" class="inputnormal">
+                        <div id="DivGlobalSearchField">
+                            <input name="globalsearch" id="globalsearch" type="text" value="Code/Chi/Eng" maxlength="10"
+                                   onClick="this.value='';" style="color:#999;"/>
+                            <script>
+						attachAutoComplete('web');
+						
+						var needFocus = true;
+												if ($.browser.platform == 'android' || $.browser.platform == 'windows phone') needFocus = false;
+												
+						if (needFocus) {
+							if (document.getElementById("globalsearch")) {
+								if (window.location.href.indexOf("#") < 0) {
+									$("#DivGlobalSearch").addClass("inputfocus");
+									$("#globalsearch").focus();
+									$("#globalsearch").select();
+								}
+							}
+						}
+
+                            </script>
+                            <input name="globalsearchlink" id="globalsearchlink" type="hidden" value=""/>
+                        </div>
+                        <div id="DivGlobalSubmit">
+                            <label>
+                                <input type="image" name="Search" src="/www/eng/common/images/sitesearchbtn.gif"
+                                       border="0" alt="Search 搜尋" title="Search 搜尋"/>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div id="DivChannelMenuc">
+                <a href="/www/eng/stocks/realtime/index.php" target="_top" class="ThemeColor"><span
+                        style='word-spacing: 0px'>Stocks</span></a> <a href="/www/eng/futures/index.php" target="_top">Futures</a>
+                <a href="/www/eng/warrants/realtime/index.php" target="_top"><span style='word-spacing: 0px'>Warrants / CBBC</span></a>
+                <a href="/www/eng/etf/index.php" target="_top">ETF</a></div>
+        </div>
+        <div id="DivColorBar" class="ThemeBgColor"></div>
+        <div id="ChannelMenuBar">
+            <div id="SubMenuContainer">
+                <div id="ChannelIco"><a href="/www/eng/stocks/realtime/index.php"><img
+                        src="/www/eng/stocks/images/channelico.jpg" alt="Stocks股票" title="Stocks股票" width="135"
+                        height="44" border="0"></a></div>
+                <div id="SubMenuBar">
+                    <div class="SubMenuBlock">
+                        <div><a href="/www/eng/stocks/realtime/index.php">Home</a></div>
+                    </div>
+
+                    <div class="SubMenuBlock">
+                        <div>|</div>
+                    </div>
+                    <div class="SubMenuBlock">
+                        <div><a href="/www/eng/stocks/realtime/quote.php?code=1">RT Quote</a></div>
+                    </div>
+
+                    <div class="SubMenuBlock">
+                        <div>|</div>
+                    </div>
+                    <div class="SubMenuBlock ThemeBgColor SubmenuHightlight">
+                        <div><a class="whiteTxt" href="/www/eng/stocks/indexes_main.php">Indices</a></div>
+                    </div>
+
+                    <div class="SubMenuBlock">
+                        <div>|</div>
+                    </div>
+                    <div class="SubMenuBlock">
+                        <div><a href="/www/eng/stocks/industry.php">Industry</a></div>
+                    </div>
+
+                    <div class="SubMenuBlock">
+                        <div>|</div>
+                    </div>
+                    <div class="SubMenuBlock">
+                        <div><a href="/www/eng/stocks/realtime/top20.php">Top 20</a></div>
+                    </div>
+
+                    <div class="SubMenuBlock">
+                        <div>|</div>
+                    </div>
+                    <div class="SubMenuBlock">
+                        <div><a href="/www/eng/stocks/breakrecord.php">Record High</a></div>
+                    </div>
+
+                    <div class="SubMenuBlock">
+                        <div>|</div>
+                    </div>
+                    <div class="SubMenuBlock">
+                        <div><a href="/www/eng/stocks/ci_act_sell.php">Short Sell</a></div>
+                    </div>
+
+                    <div class="SubMenuBlock">
+                        <div>|</div>
+                    </div>
+                    <div class="SubMenuBlock">
+                        <div><a href="/www/eng/stocks/sector_hot.php">Hot Sector</a></div>
+                    </div>
+
+                    <div class="SubMenuBlock">
+                        <div>|</div>
+                    </div>
+                    <div class="SubMenuBlock">
+                        <div><a href="/www/eng/stocks/ah.php">AH</a></div>
+                    </div>
+
+                    <div class="SubMenuBlock">
+                        <div>|</div>
+                    </div>
+                    <div class="SubMenuBlock">
+                        <div><a href="/www/eng/stocks/ci_ipo.php">IPO</a></div>
+                    </div>
+
+                    <div class="SubMenuBlock">
+                        <div>|</div>
+                    </div>
+                    <div class="SubMenuBlock">
+                        <div><a href="/www/eng/stocks/ci_database.php">Company Info</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Top Menu -->
+    <!-- Begin Topbanner AD Zone -->
+    <div id="DivTopBanner">
+        <script type='text/javascript'>showDFP('topbanner');</script>
+    </div>
+    <!-- End Topbanner AD Zone -->
+    <!-- Content -->
+    <div id="DivContent">
+        <!-- Begin DivLeft -->
+        <div id="DivContentLeft">
+            <div id="SectionMenu">
+                <a href="/www/eng/stocks/indexes_main.php" style="font-size:12px;">Local Indices</a><span
+                    class="SectionMenu"><span> &nbsp;&nbsp;|&nbsp;&nbsp; </span></span><a
+                    href="/www/eng/stocks/indexes_china.php" style="font-size:12px;">China Indices</a><span
+                    class="SectionMenu"><span> &nbsp;&nbsp;|&nbsp;&nbsp; </span></span><a
+                    href="/www/eng/stocks/indexes_global.php" style="font-size:12px;">Global Indices</a><span
+                    class="SectionMenu"><span> &nbsp;&nbsp;|&nbsp;&nbsp; </span></span><a class="SectionMenu ThemeColor"
+                                                                                          href="/www/eng/stocks/indexes_detail.php?subtype=hsi"
+                                                                                          style="font-weight:bold; font-size:12px;">Blue
+                Chips</a><span class="SectionMenu"><span> &nbsp;&nbsp;|&nbsp;&nbsp; </span></span><a
+                    href="/www/eng/stocks/indexes_detail.php?subtype=cei" style="font-size:12px;">H Shares</a><span
+                    class="SectionMenu"><span> &nbsp;&nbsp;|&nbsp;&nbsp; </span></span><a
+                    href="/www/eng/stocks/indexes_detail.php?subtype=cci" style="font-size:12px;">Red Chips</a><span
+                    class="SectionMenu"><span> &nbsp;&nbsp;|&nbsp;&nbsp; </span></span><a
+                    href="/www/eng/stocks/indexes_detail.php?subtype=mlh" style="font-size:12px;">HS ML 100</a><span
+                    class="SectionMenu"><span> &nbsp;&nbsp;|&nbsp;&nbsp; </span></span><a
+                    href="/www/eng/stocks/indexes_detail.php?subtype=m25" style="font-size:12px;">China ML 25</a><span
+                    class="SectionMenu"><span> &nbsp;&nbsp;|&nbsp;&nbsp; </span></span><a
+                    href="/www/eng/stocks/indexes_detail.php?subtype=h35" style="font-size:12px;">HS HK 35</a><span
+                    class="SectionMenu"><span> &nbsp;&nbsp;|&nbsp;&nbsp; </span></span><a
+                    href="/www/eng/stocks/indexes_detail.php?subtype=hfi" style="font-size:12px;">HFI</a><span
+                    class="SectionMenu"><span> &nbsp;&nbsp;|&nbsp;&nbsp; </span></span><a
+                    href="/www/eng/stocks/indexes_detail.php?subtype=cesa80" style="font-size:12px;">CESA80</a><span
+                    class="SectionMenu"><span> &nbsp;&nbsp;|&nbsp;&nbsp; </span></span><a
+                    href="/www/eng/stocks/indexes_detail.php?subtype=hcl" style="font-size:12px;">HCL</a><span
+                    class="SectionMenu"><span> &nbsp;&nbsp;|&nbsp;&nbsp; </span></span><a
+                    href="/www/eng/stocks/indexes_detail.php?subtype=hcm" style="font-size:12px;">HCM</a><span
+                    class="SectionMenu"><span> &nbsp;&nbsp;|&nbsp;&nbsp; </span></span><a
+                    href="/www/eng/stocks/indexes_detail.php?subtype=gem" style="font-size:12px;">GEM </a><span
+                    class="SectionMenu"><span> &nbsp;&nbsp;|&nbsp;&nbsp; </span></span><a
+                    href="/www/eng/stocks/indexes_chart_interactive.php?subtype=HSI" style="font-size:12px;">Real-Time
+                Interactive Chart</a><span class="SectionMenu"><span> &nbsp;&nbsp;|&nbsp;&nbsp; </span></span><a
+                    href="/www/eng/stocks/indexes_chart.php?subtype=hsi" style="font-size:12px;">Real-Time Chart</a>
+            </div>
+            <div class="DivFigureBox shadow" style="width:673px;">
+                <div class="DivFigureContent">
+                    <div class="StkIndexesTop">
+                        <div class="StkIndexesLeft StkSpBg shadow">
+                            <div style="width:325px; float:left;">
+                                <div class="DivTemplateAHdr ThemeBgColor StkIndexesName shadow">Hang Seng Index</div>
+                            </div>
+                            <div class="StkIndexesNorminal up"><img src="../common/images/arrow_up2.gif" width="26"
+                                                                    height="26" class="WarrantQuoteFigureArrow">22,019.69
+                            </div>
+                            <div class="StkIndexesChange">
+                                <div style="text-align:right; " class="HeaderTxt">+137.21</div>
+                                <div class="HeaderTxt">+0.63%</div>
+                            </div>
+                            <div class="StkIndexesChange" style="border-bottom:1px solid #FFF; padding-bottom:15px;">
+                                <div style="text-align:right; width:160px">Index Constituent Turnover</div>
+                                <div class="boldTxt" style="width:140px">6.901 B</div>
+                            </div>
+                            <div class="StkIndexesOther">
+                                <div style="border-right:1px solid #FFF;">
+                                    <table width="100%" cellspacing="0" cellpadding="2">
+                                        <tr>
+                                            <td style="font-size:13px">Prv Cls</td>
+                                            <td style="font-size:13px">21,882.48</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-size:13px">Open</td>
+                                            <td style="font-size:13px">21,971.97</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div>
+                                    <table width="100%" cellspacing="0" cellpadding="2">
+                                        <tr>
+                                            <td style="font-size:13px">High</td>
+                                            <td style="font-size:13px">22,026.30</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-size:13px">Low</td>
+                                            <td style="font-size:13px">21,913.16</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="StkIndexesright">
+                            <div style="text-align:right; width:290px;"><a
+                                    href="indexes_chart_interactive.php?subtype=HSI" class="ThemeColor">Index Chart</a>
+                            </div>
+                            <div><a href="indexes_chart_interactive.php?subtype=HSI"><img
+                                    src="../common/chart_oneminute.php?type=detail&amp;code=HSI" width="290"
+                                    height="200" border="0" alt="Hang Seng IndexChartHSI"></a></div>
+                        </div>
+                    </div>
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="figureTable"
+                           style="margin-top:15px;">
+                        <tr class="greyTxt" valign="bottom" align="right">
+                            <td width="39" align="left"><a href="indexes_detail.php?subtype=HSI&amp;column=-1"
+                                                           class="greyTxt" style="font-size:11px;">Code<img
+                                    src="images/sort_up.gif" border="0" alt="Sequence"></a></td>
+                            <td width="" align="left"><a href="indexes_detail.php?subtype=HSI&amp;column=2"
+                                                         class="greyTxt" style="font-size:11px;">Name</a></td>
+                            <td width="5" align="right"><a href="indexes_detail.php?subtype=HSI&amp;column=3"
+                                                           class="greyTxt" style="font-size:11px;"></a></td>
+                            <td width="48" align="right"><a href="indexes_detail.php?subtype=HSI&amp;column=4"
+                                                            class="greyTxt" style="font-size:11px;">Nominal</a></td>
+                            <td width="48" align="right"><a href="indexes_detail.php?subtype=HSI&amp;column=5"
+                                                            class="greyTxt" style="font-size:11px;">Change</a></td>
+                            <td width="58" align="right"><a href="indexes_detail.php?subtype=HSI&amp;column=6"
+                                                            class="greyTxt" style="font-size:11px;">%Change</a></td>
+                            <td width="60" align="right"><a href="indexes_detail.php?subtype=HSI&amp;column=7"
+                                                            class="greyTxt" style="font-size:11px;">Turnover</a></td>
+                            <td width="30" align="center" class="greyTxt" style="font-size:11px;">Currency</td>
+                            <td width="70" align="left" class="greyTxt" style="font-size:11px;">Latest News</td>
+                            <td width="25" align="right" class="greyTxt" style="font-size:11px;">Related<br>News</td>
+                        </tr>
+                        <tr valign="middle" class="evenRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='evenRow'">
+                            <td><a href="realtime/quote.php?code=00001">00001</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=00001">CKH HOLDINGS</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">88.700</td>
+                            <td align="right">+1.150</td>
+                            <td align="right">+1.314%</td>
+                            <td align="right">169.997M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=00001&amp;newsid=ETE260707143">[I-bank
+                                focus]CKH Holdings seen closer to Italian matrimony</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=00001"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="oddRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='oddRow'">
+                            <td><a href="realtime/quote.php?code=00002">00002</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=00002">CLP HOLDINGS</a></td>
+                            <td align="right"><img src="../common/images/arrow_down2.gif" width="11" height="11"
+                                                   alt="down"></td>
+                            <td align="right" class="down">81.050</td>
+                            <td align="right">-0.150</td>
+                            <td align="right">-0.185%</td>
+                            <td align="right">33.538M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=00002&amp;newsid=ETE260622146">[I-bank
+                                focus]HSBC raises CLP Holdings (00002) to HK$80</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=00002"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="evenRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='evenRow'">
+                            <td><a href="realtime/quote.php?code=00003">00003</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=00003">HK & CHINA GAS</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">14.360</td>
+                            <td align="right">+0.020</td>
+                            <td align="right">+0.139%</td>
+                            <td align="right">19.445M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=00003&amp;newsid=ETE260607223">[I-bank
+                                focus]JP Morgan cuts HK & China Gas to HK$13.5</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=00003"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="oddRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='oddRow'">
+                            <td><a href="realtime/quote.php?code=00004">00004</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=00004">WHARF HOLDINGS</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">53.050</td>
+                            <td align="right">+0.700</td>
+                            <td align="right">+1.337%</td>
+                            <td align="right">111.651M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=00004&amp;newsid=ETE260715142">[I-bank
+                                focus]Correction in home prices just halfway through</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=00004"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="evenRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='evenRow'">
+                            <td><a href="realtime/quote.php?code=00005">00005</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=00005">HSBC HOLDINGS</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">50.400</td>
+                            <td align="right">+0.150</td>
+                            <td align="right">+0.299%</td>
+                            <td align="right">314.695M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=00005&amp;newsid=ETE260718144">[I-bank
+                                focus]HSBC's (00005) revenue outlook remains mixed</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=00005"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="oddRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='oddRow'">
+                            <td><a href="realtime/quote.php?code=00006">00006</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=00006">POWER ASSETS</a></td>
+                            <td align="right"><img src="../common/images/arrow_unchange2.gif" width="11" height="11"
+                                                   alt="unchange"></td>
+                            <td align="right" class="unchange">73.300</td>
+                            <td align="right">0.000</td>
+                            <td align="right">0.000%</td>
+                            <td align="right">34.844M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=00006&amp;newsid=ETE260715135">[I-bank
+                                focus]Daiwa raises HK Electric-SS (02638) to HK$7.25</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=00006"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="evenRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='evenRow'">
+                            <td><a href="realtime/quote.php?code=00011">00011</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=00011">HANG SENG BANK</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">136.900</td>
+                            <td align="right">+0.500</td>
+                            <td align="right">+0.367%</td>
+                            <td align="right">25.102M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=00011&amp;newsid=ETE260719135">[I-bank
+                                focus]Macquarie cuts Hang Seng Bank to HK$105.86</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=00011"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="oddRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='oddRow'">
+                            <td><a href="realtime/quote.php?code=00012">00012</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=00012">HENDERSON LAND</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">46.750</td>
+                            <td align="right">+0.500</td>
+                            <td align="right">+1.081%</td>
+                            <td align="right">42.885M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=00012&amp;newsid=ETE260715144">[I-bank
+                                focus]DBS lifts Henderson Land (01113) to HK$47.45</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=00012"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="evenRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='evenRow'">
+                            <td><a href="realtime/quote.php?code=00016">00016</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=00016">SHK PPT</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">110.500</td>
+                            <td align="right">+1.500</td>
+                            <td align="right">+1.376%</td>
+                            <td align="right">144.374M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=00016&amp;newsid=ETE260715150">[I-bank
+                                focus]DBS raises SHKP (00016) to HK$117.6</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=00016"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="oddRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='oddRow'">
+                            <td><a href="realtime/quote.php?code=00017">00017</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=00017">NEW WORLD DEV</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">8.870</td>
+                            <td align="right">+0.150</td>
+                            <td align="right">+1.720%</td>
+                            <td align="right">77.310M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=00017&amp;newsid=ETE260715148">[I-bank
+                                focus]DBS ups New World Dev (00017) to HK$9.6</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=00017"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="evenRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='evenRow'">
+                            <td><a href="realtime/quote.php?code=00019">00019</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=00019">SWIRE PACIFIC A</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">92.550</td>
+                            <td align="right">+0.550</td>
+                            <td align="right">+0.598%</td>
+                            <td align="right">15.157M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=00019&amp;newsid=ETE260715142">[I-bank
+                                focus]Correction in home prices just halfway through</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=00019"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="oddRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='oddRow'">
+                            <td><a href="realtime/quote.php?code=00023">00023</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=00023">BANK OF E ASIA</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">31.400</td>
+                            <td align="right">+0.050</td>
+                            <td align="right">+0.159%</td>
+                            <td align="right">6.373M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=00023&amp;newsid=ETE260719132">[I-bank
+                                focus]MacQ downgrades Bank of East Asia to "neutral"</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=00023"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="evenRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='evenRow'">
+                            <td><a href="realtime/quote.php?code=00027">00027</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=00027">GALAXY ENT</a></td>
+                            <td align="right"><img src="../common/images/arrow_unchange2.gif" width="11" height="11"
+                                                   alt="unchange"></td>
+                            <td align="right" class="unchange">24.200</td>
+                            <td align="right">0.000</td>
+                            <td align="right">0.000%</td>
+                            <td align="right">22.806M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=00027&amp;newsid=ETE260719156">[I-bank
+                                focus]Macau names running ahead of fundamentals - CS</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=00027"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="oddRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='oddRow'">
+                            <td><a href="realtime/quote.php?code=00066">00066</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=00066">MTR CORPORATION</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">43.100</td>
+                            <td align="right">+0.050</td>
+                            <td align="right">+0.116%</td>
+                            <td align="right">40.801M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=00066&amp;newsid=ETE260715147">[I-bank
+                                focus]DBS downgrades MTR Corp (00066) to "hold"</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=00066"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="evenRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='evenRow'">
+                            <td><a href="realtime/quote.php?code=00083">00083</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=00083">SINO LAND</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">14.020</td>
+                            <td align="right">+0.040</td>
+                            <td align="right">+0.286%</td>
+                            <td align="right">7.582M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=00083&amp;newsid=ETE260715149">[I-bank
+                                focus]DBS raises Sino Land (00083) to HK$14.1</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=00083"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="oddRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='oddRow'">
+                            <td><a href="realtime/quote.php?code=00101">00101</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=00101">HANG LUNG PPT</a></td>
+                            <td align="right"><img src="../common/images/arrow_unchange2.gif" width="11" height="11"
+                                                   alt="unchange"></td>
+                            <td align="right" class="unchange">16.600</td>
+                            <td align="right">0.000</td>
+                            <td align="right">0.000%</td>
+                            <td align="right">10.163M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=00101&amp;newsid=ETE260615137">[I-bank
+                                focus]Lower US yield positive for developers - DB</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=00101"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="evenRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='evenRow'">
+                            <td><a href="realtime/quote.php?code=00135">00135</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=00135">KUNLUN ENERGY</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">5.910</td>
+                            <td align="right">+0.080</td>
+                            <td align="right">+1.372%</td>
+                            <td align="right">29.087M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=00135&amp;newsid=ETE260719142">Asian
+                                oil & gas firms to show mixed results in 2Q - Moody's</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=00135"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="oddRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='oddRow'">
+                            <td><a href="realtime/quote.php?code=00144">00144</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=00144">CHINA MER HOLD</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">22.000</td>
+                            <td align="right">+0.100</td>
+                            <td align="right">+0.457%</td>
+                            <td align="right">9.010M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=00144&amp;newsid=ETE260715153">CMHI's
+                                profit warning credit negative, ratings unaffected</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=00144"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="evenRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='evenRow'">
+                            <td><a href="realtime/quote.php?code=00151">00151</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=00151">WANT WANT CHINA</a></td>
+                            <td align="right"><img src="../common/images/arrow_down2.gif" width="11" height="11"
+                                                   alt="down"></td>
+                            <td align="right" class="down">5.070</td>
+                            <td align="right">-0.100</td>
+                            <td align="right">-1.934%</td>
+                            <td align="right">30.403M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=00151&amp;newsid=ETE260706134">CMS
+                                downgrades Want Want China (00151) to "neutral"</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=00151"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="oddRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='oddRow'">
+                            <td><a href="realtime/quote.php?code=00267">00267</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=00267">CITIC</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">11.800</td>
+                            <td align="right">+0.020</td>
+                            <td align="right">+0.170%</td>
+                            <td align="right">6.741M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=00267&amp;newsid=ETE260713142">[I-bank
+                                focus]CS starts COLI (00688) at "outperform" & HK$30</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=00267"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="evenRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='evenRow'">
+                            <td><a href="realtime/quote.php?code=00293">00293</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=00293">CATHAY PAC AIR</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">12.320</td>
+                            <td align="right">+0.020</td>
+                            <td align="right">+0.163%</td>
+                            <td align="right">12.925M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=00293&amp;newsid=ETE260718225">Cathay
+                                Pacific (00293) passenger traffic up 2.1% in June</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=00293"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="oddRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='oddRow'">
+                            <td><a href="realtime/quote.php?code=00322">00322</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=00322">TINGYI</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">7.030</td>
+                            <td align="right">+0.040</td>
+                            <td align="right">+0.572%</td>
+                            <td align="right">6.449M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=00322&amp;newsid=ETE260704148">[I-bank
+                                focus]HSBC lowers Tingyi (00322) to HK$5.5</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=00322"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="evenRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='evenRow'">
+                            <td><a href="realtime/quote.php?code=00386">00386</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=00386">SINOPEC CORP</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">5.760</td>
+                            <td align="right">+0.030</td>
+                            <td align="right">+0.524%</td>
+                            <td align="right">49.423M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=00386&amp;newsid=ETE260721205">Sinopec
+                                (00386) 1H oil & gas output down 6%</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=00386"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="oddRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='oddRow'">
+                            <td><a href="realtime/quote.php?code=00388">00388</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=00388">HKEX</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">193.200</td>
+                            <td align="right">+1.300</td>
+                            <td align="right">+0.677%</td>
+                            <td align="right">210.953M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=00388&amp;newsid=ETE260707228">SFC
+                                approves HKEx's SEHK & HKFE Chief Executive appointment</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=00388"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="evenRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='evenRow'">
+                            <td><a href="realtime/quote.php?code=00494">00494</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=00494">LI & FUNG</a></td>
+                            <td align="right"><img src="../common/images/arrow_unchange2.gif" width="11" height="11"
+                                                   alt="unchange"></td>
+                            <td align="right" class="unchange">3.850</td>
+                            <td align="right">0.000</td>
+                            <td align="right">0.000%</td>
+                            <td align="right">9.257M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=00494&amp;newsid=ETE260712140">[I-bank
+                                focus]UBS cuts end-2016 HSI target to 19,910</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=00494"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="oddRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='oddRow'">
+                            <td><a href="realtime/quote.php?code=00688">00688</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=00688">CHINA OVERSEAS</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">25.950</td>
+                            <td align="right">+0.300</td>
+                            <td align="right">+1.170%</td>
+                            <td align="right">83.401M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=00688&amp;newsid=ETE260713228">COLI
+                                (00688) contracted sales up 3.5% to HK$23.12bn in June</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=00688"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="evenRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='evenRow'">
+                            <td><a href="realtime/quote.php?code=00700">00700</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=00700">TENCENT</a></td>
+                            <td align="right"><img src="../common/images/arrow_down2.gif" width="11" height="11"
+                                                   alt="down"></td>
+                            <td align="right" class="down">185.000</td>
+                            <td align="right">-0.600</td>
+                            <td align="right">-0.323%</td>
+                            <td align="right">983.278M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=00700&amp;newsid=ETE260719146">[I-bank
+                                focus]DBS see great synergies between CMC & QQ Music</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=00700"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="oddRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='oddRow'">
+                            <td><a href="realtime/quote.php?code=00762">00762</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=00762">CHINA UNICOM</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">7.880</td>
+                            <td align="right">+0.020</td>
+                            <td align="right">+0.254%</td>
+                            <td align="right">83.965M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=00762&amp;newsid=ETE260719230">China
+                                Unicom (00762) 4G net adds slow to 4.24m in June</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=00762"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="evenRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='evenRow'">
+                            <td><a href="realtime/quote.php?code=00823">00823</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=00823">LINK REIT</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">56.950</td>
+                            <td align="right">+0.150</td>
+                            <td align="right">+0.264%</td>
+                            <td align="right">81.108M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=00823&amp;newsid=ETE260715142">[I-bank
+                                focus]Correction in home prices just halfway through</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=00823"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="oddRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='oddRow'">
+                            <td><a href="realtime/quote.php?code=00836">00836</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=00836">CHINA RES POWER</a></td>
+                            <td align="right"><img src="../common/images/arrow_down2.gif" width="11" height="11"
+                                                   alt="down"></td>
+                            <td align="right" class="down">11.920</td>
+                            <td align="right">-0.080</td>
+                            <td align="right">-0.667%</td>
+                            <td align="right">104.258M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=00836&amp;newsid=ETE260719151">[I-bank
+                                focus]JP Morgan slashes CR Power (00836) to HK$11.5</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=00836"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="evenRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='evenRow'">
+                            <td><a href="realtime/quote.php?code=00857">00857</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=00857">PETROCHINA</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">5.450</td>
+                            <td align="right">+0.050</td>
+                            <td align="right">+0.926%</td>
+                            <td align="right">56.226M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=00857&amp;newsid=ETE260719142">Asian
+                                oil & gas firms to show mixed results in 2Q - Moody's</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=00857"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="oddRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='oddRow'">
+                            <td><a href="realtime/quote.php?code=00883">00883</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=00883">CNOOC</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">10.020</td>
+                            <td align="right">+0.070</td>
+                            <td align="right">+0.704%</td>
+                            <td align="right">137.200M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=00883&amp;newsid=ETE260719142">Asian
+                                oil & gas firms to show mixed results in 2Q - Moody's</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=00883"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="evenRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='evenRow'">
+                            <td><a href="realtime/quote.php?code=00939">00939</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=00939">CCB</a></td>
+                            <td align="right"><img src="../common/images/arrow_unchange2.gif" width="11" height="11"
+                                                   alt="unchange"></td>
+                            <td align="right" class="unchange">5.420</td>
+                            <td align="right">0.000</td>
+                            <td align="right">0.000%</td>
+                            <td align="right">399.899M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=00939&amp;newsid=ETE260629145">Deteriorating
+                                conditions weigh on HK's banking system</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=00939"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="oddRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='oddRow'">
+                            <td><a href="realtime/quote.php?code=00941">00941</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=00941">CHINA MOBILE</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">95.900</td>
+                            <td align="right">+1.500</td>
+                            <td align="right">+1.589%</td>
+                            <td align="right">668.808M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=00941&amp;newsid=ETE260719408">{BLOCK
+                                TRADE}China Mobile (00941): 2m shrs for HK$187m</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=00941"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="evenRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='evenRow'">
+                            <td><a href="realtime/quote.php?code=00992">00992</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=00992">LENOVO GROUP</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">5.340</td>
+                            <td align="right">+0.130</td>
+                            <td align="right">+2.495%</td>
+                            <td align="right">240.644M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=00992&amp;newsid=ETE260721133">[I-bank
+                                focus]MacQ keeps faith in Lenovo's AR smartphone</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=00992"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="oddRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='oddRow'">
+                            <td><a href="realtime/quote.php?code=01038">01038</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=01038">CKI HOLDINGS</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">68.350</td>
+                            <td align="right">+0.150</td>
+                            <td align="right">+0.220%</td>
+                            <td align="right">39.669M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=01038&amp;newsid=ETE260705156">[I-bank
+                                focus]Goldman cuts CKI Holdings (01038) to HK$61</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=01038"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="evenRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='evenRow'">
+                            <td><a href="realtime/quote.php?code=01044">01044</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=01044">HENGAN INT'L</a></td>
+                            <td align="right"><img src="../common/images/arrow_down2.gif" width="11" height="11"
+                                                   alt="down"></td>
+                            <td align="right" class="down">66.350</td>
+                            <td align="right">-1.200</td>
+                            <td align="right">-1.776%</td>
+                            <td align="right">109.904M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=01044&amp;newsid=ETE260621134">[I-bank
+                                focus]UOBKH restarts Hengan Int'l (01044) at HK$76</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=01044"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="oddRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='oddRow'">
+                            <td><a href="realtime/quote.php?code=01088">01088</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=01088">CHINA SHENHUA</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">14.860</td>
+                            <td align="right">+0.120</td>
+                            <td align="right">+0.814%</td>
+                            <td align="right">60.040M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=01088&amp;newsid=ETE260708144">[I-bank
+                                focus]CLSA ups China Shenhua (01088) to HK$15.5</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=01088"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="evenRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='evenRow'">
+                            <td><a href="realtime/quote.php?code=01109">01109</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=01109">CHINA RES LAND</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">19.440</td>
+                            <td align="right">+0.320</td>
+                            <td align="right">+1.674%</td>
+                            <td align="right">45.342M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=01109&amp;newsid=ETE260713141">[I-bank
+                                focus]CS starts CR Land (01109) at HK$24.4</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=01109"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="oddRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='oddRow'">
+                            <td><a href="realtime/quote.php?code=01113">01113</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=01113">CK PROPERTY</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">54.400</td>
+                            <td align="right">+0.800</td>
+                            <td align="right">+1.493%</td>
+                            <td align="right">65.660M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=01113&amp;newsid=ETE260715143">[I-bank
+                                focus]DBS tweaks CK Property (01113) to HK$56.9</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=01113"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="evenRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='evenRow'">
+                            <td><a href="realtime/quote.php?code=01299">01299</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=01299">AIA</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">49.500</td>
+                            <td align="right">+0.300</td>
+                            <td align="right">+0.610%</td>
+                            <td align="right">241.380M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=01299&amp;newsid=ETE260720144">[I-bank
+                                focus]DB raises AIA Group (01299) to HK$57.1</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=01299"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="oddRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='oddRow'">
+                            <td><a href="realtime/quote.php?code=01398">01398</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=01398">ICBC</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">4.390</td>
+                            <td align="right">+0.030</td>
+                            <td align="right">+0.688%</td>
+                            <td align="right">266.357M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=01398&amp;newsid=ETE260628154">[I-bank
+                                focus]Chinese TARP key positive catalyst for banks</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=01398"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="evenRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='evenRow'">
+                            <td><a href="realtime/quote.php?code=01880">01880</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=01880">BELLE INT'L</a></td>
+                            <td align="right"><img src="../common/images/arrow_down2.gif" width="11" height="11"
+                                                   alt="down"></td>
+                            <td align="right" class="down">4.580</td>
+                            <td align="right">-0.010</td>
+                            <td align="right">-0.218%</td>
+                            <td align="right">10.531M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=01880&amp;newsid=ETE260622153">[I-bank
+                                focus]CS restarts Belle Int'l (01880) at HK$3.5</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=01880"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="oddRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='oddRow'">
+                            <td><a href="realtime/quote.php?code=01928">01928</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=01928">SANDS CHINA LTD</a></td>
+                            <td align="right"><img src="../common/images/arrow_unchange2.gif" width="11" height="11"
+                                                   alt="unchange"></td>
+                            <td align="right" class="unchange">27.850</td>
+                            <td align="right">0.000</td>
+                            <td align="right">0.000%</td>
+                            <td align="right">84.007M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=01928&amp;newsid=ETE260719156">[I-bank
+                                focus]Macau names running ahead of fundamentals - CS</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=01928"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="evenRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='evenRow'">
+                            <td><a href="realtime/quote.php?code=02318">02318</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=02318">PING AN</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">36.700</td>
+                            <td align="right">+0.200</td>
+                            <td align="right">+0.548%</td>
+                            <td align="right">184.177M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=02318&amp;newsid=ETE260715137">[I-bank
+                                focus]Daiwa raises China Life (02628) to HK$18.5</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=02318"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="oddRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='oddRow'">
+                            <td><a href="realtime/quote.php?code=02319">02319</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=02319">MENGNIU DAIRY</a></td>
+                            <td align="right"><img src="../common/images/arrow_down2.gif" width="11" height="11"
+                                                   alt="down"></td>
+                            <td align="right" class="down">13.300</td>
+                            <td align="right">-0.060</td>
+                            <td align="right">-0.449%</td>
+                            <td align="right">36.036M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=02319&amp;newsid=ETE260707144">[I-bank
+                                focus]DB lifts Mengniu Dairy (02319) to HK$14.5</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=02319"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="evenRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='evenRow'">
+                            <td><a href="realtime/quote.php?code=02388">02388</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=02388">BOC HONG KONG</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">25.100</td>
+                            <td align="right">+0.100</td>
+                            <td align="right">+0.400%</td>
+                            <td align="right">88.448M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=02388&amp;newsid=ETE260719130">[I-bank
+                                focus]Macquarie cuts BOCHK (02388) to HK$25.13</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=02388"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="oddRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='oddRow'">
+                            <td><a href="realtime/quote.php?code=02628">02628</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=02628">CHINA LIFE</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">17.820</td>
+                            <td align="right">+0.120</td>
+                            <td align="right">+0.678%</td>
+                            <td align="right">210.613M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=02628&amp;newsid=ETE260715151">[I-bank
+                                focus]DBS raises Wheelock & Co (00020) to HK$39.2</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=02628"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="evenRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='evenRow'">
+                            <td><a href="realtime/quote.php?code=03328">03328</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=03328">BANKCOMM</a></td>
+                            <td align="right"><img src="../common/images/arrow_unchange2.gif" width="11" height="11"
+                                                   alt="unchange"></td>
+                            <td align="right" class="unchange">5.170</td>
+                            <td align="right">0.000</td>
+                            <td align="right">0.000%</td>
+                            <td align="right">24.597M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=03328&amp;newsid=ETE260628154">[I-bank
+                                focus]Chinese TARP key positive catalyst for banks</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=03328"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                        <tr valign="middle" class="oddRow" onMouseOver="this.className='StkMouseOver'"
+                            onMouseOut="this.className='oddRow'">
+                            <td><a href="realtime/quote.php?code=03988">03988</a></td>
+                            <td class="TextEng"><a href="realtime/quote.php?code=03988">BANK OF CHINA</a></td>
+                            <td align="right"><img src="../common/images/arrow_up2.gif" width="11" height="11" alt="up">
+                            </td>
+                            <td align="right" class="up">3.200</td>
+                            <td align="right">+0.010</td>
+                            <td align="right">+0.313%</td>
+                            <td align="right">227.851M</td>
+                            <td align="center">HKD</td>
+                            <td width="180" style="padding:5px;"><a
+                                    href="realtime/quote_news_detail.php?section=related&code=03988&amp;newsid=ETE260704144">[I-bank
+                                focus]BOCHK enters early phase of regionalization</a></td>
+                            <td align="right"><a href="realtime/quote_news.php?code=03988"><img
+                                    src="../common/images/icon-news.gif" border="0" alt="News"></a></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <!-- Begin Remark -->
+            <div class="DivBoxStyleD" style="width:673px;">
+                <div style="width:673px; float:left; margin-top:0px; clear:both; text-align:right; *display:inline;">
+                    <a href="#top" class="ThemeColor">Top</a>
+                </div>
+                <table border="0" cellspacing="0" cellpadding="0" class="remark">
+                    <tr>
+                        <td width="10%">Remark:&nbsp;</td>
+                        <td>Indices is updated on
+                            21/07/2016 10:45
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>Stock Quote is delayed at least 15 mins, the updated time is
+                            21/07/2016 10:28
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <!-- End Remark -->
+        </div>
+        <!-- End DivLeft -->
+        <!-- Begin DivRight -->
+        <div id="DivContentRight" style="padding-top:10px;">
+            <div class="DivBoxStyleE" style="margin-bottom:0px; *margin-bottom:15px;">
+                <script type='text/javascript'>showDFP('rightrect_content');</script>
+            </div>
+        </div>
+        <!-- End DivRight -->
+    </div>
+    <!-- End Content -->
+    <div id="DivFooter" class="shadow">
+        <!-- Begin Disclaimer -->
+        <div id="Disclaimer">
+            <div id="DivDisclaimerBlock">
+                <div id="DivDisclaimerChild1">A Member of HKET Holdings</div>
+                <div style="float:left;">
+                    <div id="DivDisclaimerChild2a" class="ThemeBgColor whiteTxt">Customer Service Hotline:(852) 2880
+                        7004&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Customer Service Email:<a href="mailto:cs@etnet.com.hk"
+                                                                                    class="whiteTxt">cs@etnet.com.hk</a>
+                    </div>
+                    <div id="DivDisclaimerChild2b">&nbsp;</div>
+                </div>
+                <div id="DivDisclaimerChild3">Copyright 2012 ET Net Limited. http://www.etnet.com.hk
+                    ET Net Limited, HKEx Information Services Limited, its Holding Companies and/or any Subsidiaries of
+                    such holding companies, and Third Party Information Providers endeavour to ensure the availability,
+                    completeness, timeliness, accuracy and reliability of the information provided but do not guarantee
+                    its availability, completeness, timeliness, accuracy or reliability and accept no liability (whether
+                    in tort or contract or otherwise) any loss or damage arising directly or indirectly from any
+                    inaccuracies, interruption, incompleteness, delay, omissions, or any decision made or action taken
+                    by you or any third party in reliance upon the information provided. The quotes, charts,
+                    commentaries and buy/sell ratings on this website should be used as references only with your own
+                    discretion. ET Net Limited is not soliciting any subscriber or site visitor to execute any trade.
+                    Any trades executed following the commentaries and buy/sell ratings on this website are taken at
+                    your own risk for your own account.
+                </div>
+            </div>
+        </div>
+        <!-- End Disclaimer -->
+    </div>
+
+    <!-- Floating Ads -->
+    <script type="text/javascript">showDFP('floating');</script>
+
+
+    <!-- Begin Top Sitemap -->
+    <!-- End Top Sitemap --></div>
+<!-- Begin comScore Tag -->
+<script>
+		var _comscore = _comscore || [];
+		_comscore.push({ c1: "2", c2: "7576977" });
+		(function() {
+			var s = document.createElement("script"), el = document.getElementsByTagName("script")[0]; s.async = true;
+			s.src = (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js";
+			el.parentNode.insertBefore(s, el);
+		})();
+
+</script>
+<noscript>
+    <img src="http://b.scorecardresearch.com/p?c1=2&c2=7576977&cv=2.0&cj=1"/>
+</noscript>
+<!-- End comScore Tag -->
+<!-- Start Alexa Certify Javascript -->
+<script type="text/javascript">
+	_atrk_opts = { atrk_acct:"6iMwi1asyr00gP", domain:"etnet.com.hk",dynamic: true};
+	(function() { var as = document.createElement('script'); as.type = 'text/javascript'; as.async = true; as.src = "https://d31qbv1cthcecs.cloudfront.net/atrk.js"; var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(as, s); })();
+
+</script>
+<noscript><img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=6iMwi1asyr00gP" style="display:none"
+               height="1" width="1" alt=""/></noscript>
+<!-- End Alexa Certify Javascript -->
+<!-- 18 -->
+</body>
+</html>
+<!-- StkIndexLocal_MCY_NDATA5_CONY_DATY_NDATA5_CONY_DATY_CHINAIDX1_CONY_DATY_211045_0, StkIndexConstituent_MCY_WAR1_CONY_DATY_211043_300, NewsList_MCY_NEWS6_CONY_DATY_211027_1800, WarSortWar_MCY_WAR1_CONY_DATY_211045_300, ColumnsData_MCY_COLUMNS2_CONY_DATY_211044_14400 -->
+

@@ -9,10 +9,9 @@
 import os
 import random
 
-import numpy as np
 import openpyxl
 
-from DisertationHandler.util import *
+from DissertationHandler.util import *
 from ForFun.test_char import test_char
 
 sheet_name_dict = {'Artificial_Neural_Network'.lower(): "ANN",
@@ -65,6 +64,7 @@ def find_ith_number(data_list, size):
     else:
         return tmp
 
+
 class PicturePlot(object):
     def __init__(self, xlsx_path, save_path):
         self.wb_path = xlsx_path
@@ -115,43 +115,99 @@ class PicturePlot(object):
         import matplotlib.pyplot as plt
         test_path = self.wb_path.split('/')[:-1]
         test_path = os.path.join('/', '/'.join(test_path))
-        method_dict = {}
+        mape_method_dict = {}
+        cdc_method_dict = {}
         number_dict = {}
         ticks = range(1, 13)
         jump_set = {'0845.HK', '0872.HK', '1181.HK', '1230.HK', '1314.HK', '3777.HK', '8050.HK'}
+        fig = plt.figure()
         for path, dirs, files in os.walk(test_path):
             if "predict_result.csv" in files:
-                fig = plt.figure()
                 method = path.split('/')[-2]
                 symbol = path.split('/')[-1]
                 if '{}.HK'.format(symbol) in jump_set:
                     continue
-                if method not in method_dict:
-                    method_dict[method] = np.zeros(12)
+                if method not in mape_method_dict:
+                    mape_method_dict[method] = np.zeros(12)
+
+                if method not in cdc_method_dict:
+                    cdc_method_dict[method] = np.zeros(12)
                 if method not in number_dict:
                     number_dict[method] = 0
                 save_path = os.path.join(self.save_path, "{}_{}.png".format(short_name_dict[method.lower()], symbol))
-                mapes = get_monthly_mape(os.path.join(path, "predict_result.csv"), start_date=start_date)
-                method_dict[method] += mapes
+                mapes = get_monthly_mape(os.path.join(path, "predict_result.csv"))
+                cdcs = get_monthly_cdc(os.path.join(path, "predict_result.csv"))
+                mape_method_dict[method] += mapes
+                cdc_method_dict[method] += cdcs
                 number_dict[method] += 1
                 mapes = map(lambda x: x * 100, mapes)
-                plt.plot(ticks, mapes)
-                plt.ylabel("MAPE (%)")
-                plt.grid(True)
-                plt.title('Stock {}.HK monthly MAPE method {}'.format(symbol, sheet_name_dict[method.lower()]))
-                plt.savefig(save_path)
+                cdcs = map(lambda x: x * 100, cdcs)
 
-                plt.close()
+                # plt.plot(ticks, mapes)
+                # plt.ylabel("MAPE (%)")
+                # plt.grid(True)
+                # plt.title('Stock {}.HK monthly MAPE method {}'.format(symbol, sheet_name_dict[method.lower()]))
+                # save_path = os.path.join(self.save_path,
+                #                          "{}_{}_MAPE.png".format(short_name_dict[method.lower()], symbol))
+                # plt.savefig(save_path)
+                # plt.clf()
+                #
+                # plt.plot(ticks, cdcs)
+                # plt.ylabel("CDC (%)")
+                # plt.grid(True)
+                # plt.title('Stock {}.HK monthly CDC method {}'.format(symbol, sheet_name_dict[method.lower()]))
+                # save_path = os.path.join(self.save_path,
+                #                          "{}_{}_CDC.png".format(short_name_dict[method.lower()], symbol))
+                # plt.savefig(save_path)
+                # plt.clf()
 
-        for method in method_dict:
-            fig = plt.figure()
-            save_path = os.path.join(self.save_path, "{}_AVG_MAPE.png".format(short_name_dict[method.lower()]))
-            plt.plot(ticks, method_dict[method] / number_dict[method] * 100)
-            plt.ylabel("MAPE (%)")
-            plt.grid(True)
-            plt.title('{} {} stocks monthly MAPE'.format(sheet_name_dict[method.lower()], number_dict[method]))
-            plt.savefig(save_path)
-            plt.close()
+        wb_path = os.path.join(self.save_path, 'monthly_data.xlsx')
+        if os.path.isfile(wb_path):
+            wb = openpyxl.load_workbook(wb_path)
+        else:
+            wb = openpyxl.Workbook()
+
+        if 'MAPE' in wb.get_sheet_names():
+            wb.remove_sheet(wb.get_sheet_by_name('MAPE'))
+
+        if 'CDC' in wb.get_sheet_names():
+            wb.remove_sheet(wb.get_sheet_by_name('CDC'))
+        mape_ws = wb.create_sheet('MAPE')
+        cdc_ws = wb.create_sheet('CDC')
+        headers = ['Method']
+        headers.extend(range(1, 13))
+
+        method_list = mape_method_dict.keys()
+        mape_ws.append(headers)
+        cdc_ws.append(headers)
+        for method in method_list:
+            cdc_row = [get_new_name(method)]
+            mape_row = [get_new_name(method)]
+            cdc_method_dict[method] /= number_dict[method]
+            mape_method_dict[method] /= number_dict[method]
+            cdc_row.extend(cdc_method_dict[method])
+            mape_row.extend(mape_method_dict[method])
+            mape_ws.append(mape_row)
+            cdc_ws.append(cdc_row)
+
+        wb.save(wb_path)
+
+        # for method in mape_method_dict:
+        # save_path = os.path.join(self.save_path, "{}_AVG_MAPE.png".format(short_name_dict[method.lower()]))
+        # plt.plot(ticks, mape_method_dict[method] / number_dict[method] * 100)
+        # plt.ylabel("MAPE (%)")
+        # plt.grid(True)
+        # plt.title('{} {} stocks monthly MAPE'.format(sheet_name_dict[method.lower()], number_dict[method]))
+        # plt.savefig(save_path)
+        # plt.clf()
+        #
+        # save_path = os.path.join(self.save_path, "{}_AVG_CDC.png".format(short_name_dict[method.lower()]))
+        # plt.plot(ticks, cdc_method_dict[method] / number_dict[method] * 100)
+        # plt.ylabel("CDC (%)")
+        # plt.grid(True)
+        # plt.title('{} {} stocks monthly CDC'.format(sheet_name_dict[method.lower()], number_dict[method]))
+        # plt.savefig(save_path)
+        # plt.clf()
 
     def get_picture(self):
         import matplotlib.pyplot as plt
@@ -200,8 +256,8 @@ class PicturePlot(object):
 
 if __name__ == '__main__':
     test = PicturePlot(
-        xlsx_path='/Users/warn/Documents/Projects/stock_price/adj_close/output_1_2_2013_2016/all_info.xlsx',
-        save_path='/Users/warn/Documents/Projects/Dissertation/graduate-thesis/Figures/AdjClose/20132016/Monthly')
+        xlsx_path='/Users/warn/Documents/Projects/StockPrice/AdjClose/output_1_2_2013_2016/all_info.xlsx',
+        save_path='/Users/warn/Documents/Projects/DissertationReport/graduate-thesis/Figures/AdjClose/20132016/Monthly')
 
     test.get_monthly_data(start_date='2015-01-06')
     # test.get_picture()

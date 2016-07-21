@@ -9,7 +9,7 @@
 import os
 import re
 
-from DisertationHandler.picture_plot.picture_plot import PicturePlot
+from DissertationHandler.picture_plot.picture_plot import PicturePlot
 
 output_path = '/Users/warn/Documents/Projects/Dissertation/graduate-thesis/Figures/AdjClose'
 data_path = '/Users/warn/Documents/Projects/stock_price/adj_close'
