@@ -9,6 +9,7 @@
 import os
 import smtplib
 import time
+import urllib2
 from email import MIMEMultipart
 from email import MIMEText
 
@@ -37,9 +38,23 @@ def get_ip_address(ifname):
     return ipv4
 
 
+def internet_on():
+    try:
+        response = urllib2.urlopen('http://74.125.204.105', timeout=1)
+        return True
+    except urllib2.URLError as err:
+        pass
+    return False
+
+
 ip = get_ip_address('eth0')
+print ip
 while not ip.startswith('147'):
     time.sleep(5)
     ip = get_ip_address('eth0')
+    print ip
 
+while not internet_on():
+    time.sleep(5)
+    
 send_email_through_gmail(subject="ip address of {}".format(os.uname()[1]), msg_body=ip)
