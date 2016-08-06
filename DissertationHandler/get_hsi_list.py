@@ -11,7 +11,7 @@ from BeautifulSoup import BeautifulSoup
 
 soup = None
 
-with open('test.htm') as f:
+with open('hsi_stock_list.htm') as f:
     soup = BeautifulSoup(f.read())
 
 if soup is None:

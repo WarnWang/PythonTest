@@ -13,7 +13,7 @@ import openpyxl
 
 from util import *
 
-dir_path = '/Users/warn/Documents/Projects/StockPrice'
+dir_path = '/Users/warn/Documents/Projects/StockPrice/AdjClose/output_1_3_2012_2016'
 
 for path, dirs, files in os.walk(dir_path):
     if 'stock_info.csv' in files:

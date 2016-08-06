@@ -11,7 +11,7 @@ import os
 
 import openpyxl
 
-folder_path = '/Users/warn/Documents/Projects/stock_price/adj_close/output_1_2_2013_2016/'
+folder_path = '/Users/warn/Documents/Projects/stock_price/adj_close/output_1_3_2012_2016/'
 
 already_formatted = {'0033.HK', '0069.HK', '0076.HK', '0078.HK', '0083.HK', '0101.HK', '0116.HK'}
 
@@ -118,4 +118,4 @@ def add_mape_cdc_mad_mse_data(path):
 
 
 if __name__ == '__main__':
-    add_mape_cdc_mad_mse_data('/Users/warn/Documents/Projects/StockPrice/AdjClose/output_1_2_2013_2016/all_info.xlsx')
+    add_mape_cdc_mad_mse_data('/Users/warn/Documents/Projects/StockPrice/AdjClose/output_1_3_2012_2016/all_info.xlsx')
