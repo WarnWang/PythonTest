@@ -9,7 +9,7 @@
 import random
 
 total = range(1, 32, 1)
-uncover = [1, 3, 6, 7, 8, 9, 11, 12, 16, 18, 25, 27, 28, 30]
+uncover = [3, 6, 7, 8, 9, 11, 12, 16, 18, 25, 27, 28, 30]
 
 covered = set(total).difference(set(uncover))
 print covered
