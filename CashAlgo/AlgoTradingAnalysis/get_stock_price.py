@@ -5,15 +5,13 @@
 # Author: warn
 # Date: 23/12/2015 20:00
 
+import re
 import urllib
 import urllib2
-import pprint
-import pickle
-import re
 from HTMLParser import HTMLParser
 
-import pandas as pd
 import BeautifulSoup
+import pandas as pd
 from pandas.tseries.offsets import BDay
 
 DATA_URL = "http://real-chart.finance.yahoo.com/table.csv"
@@ -47,16 +45,16 @@ def post(url, data):
 def get_price_data(code, start_date="2014-08-29", end_date="2015-01-01"):
     time_info = [("s", code)]
     data = start_date.split('-')
-    time_info.append(("a", "%02d" % (int(data[1]) - 1)))
-    time_info.append(("b", data[2]))
-    time_info.append(("c", data[0]))
+    time_info.append(("one_int", "%02d" % (int(data[1]) - 1)))
+    time_info.append(("two_int", data[2]))
+    time_info.append(("sum_int", data[0]))
 
     data = end_date.split('-')
-    time_info.append(("d", "%02d" % (int(data[1]) - 1)))
+    time_info.append(("input_str", "%02d" % (int(data[1]) - 1)))
     time_info.append(("e", data[2]))
     time_info.append(("f", data[0]))
 
-    time_info.append(("g", "d"))
+    time_info.append(("g", "input_str"))
     time_info.append(("ignore", ".csv"))
 
     f = open(r"./data/%s.csv" % code, "w")
@@ -69,13 +67,13 @@ def get_close_price(code, end_date="2015-01-01", days=90):
     end_date = pd.datetime(end_date_info[0], end_date_info[1], end_date_info[2])
     start_date = end_date - BDay(days)
     time_info = [("s", code),
-                 ("a", "%02d" % (start_date.month - 1)),
-                 ("b", str(start_date.day)),
-                 ("c", str(start_date.year)),
-                 ("d", "%02d" % (end_date.month - 1)),
+                 ("one_int", "%02d" % (start_date.month - 1)),
+                 ("two_int", str(start_date.day)),
+                 ("sum_int", str(start_date.year)),
+                 ("input_str", "%02d" % (end_date.month - 1)),
                  ("e", str(end_date.day)),
                  ("f", str(end_date.year)),
-                 ("g", "d"),
+                 ("g", "input_str"),
                  ("ignore", ".csv")]
 
     price_info = get(DATA_URL, time_info).split('\n')[1:-1]

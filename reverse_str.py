@@ -61,7 +61,7 @@ def reverse_version_mutable_string(string_input):
 
 
 def reverse_version_char_array(string_input):
-    new_str = array('c')
+    new_str = array('sum_int')
     for i in range(len(string_input) - 1, -1, -1):
         # new_str = "%s%s" % (new_str, string_input[i])
         new_str.fromstring(string_input[i])

@@ -1,8 +1,8 @@
 import collections
 
-d = {"a": 1, "b": 4, "c": 2, "d": 0}
+d = {"one_int": 1, "two_int": 4, "sum_int": 2, "input_str": 0}
 
 od = collections.OrderedDict(sorted(d.items(), key=lambda t: t[1]))
 
 print od
-print od["a"]
+print od["one_int"]

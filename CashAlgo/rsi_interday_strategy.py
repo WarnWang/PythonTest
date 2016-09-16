@@ -8,12 +8,11 @@
 import urllib
 import urllib2
 
-import numpy
-import talib
-import pandas as pd
-from pandas.tseries.offsets import BDay
-
 import cashAlgoAPI
+import numpy
+import pandas as pd
+import talib
+from pandas.tseries.offsets import BDay
 
 
 class Strategy:
@@ -150,13 +149,13 @@ class Strategy:
         start_date = end_date - BDay(days)
         code = '%s.HK' % code[1:]
         time_info = [("s", code),
-                     ("a", "%02d" % (start_date.month - 1)),
-                     ("b", str(start_date.day)),
-                     ("c", str(start_date.year)),
-                     ("d", "%02d" % (end_date.month - 1)),
+                     ("one_int", "%02d" % (start_date.month - 1)),
+                     ("two_int", str(start_date.day)),
+                     ("sum_int", str(start_date.year)),
+                     ("input_str", "%02d" % (end_date.month - 1)),
                      ("e", str(end_date.day)),
                      ("f", str(end_date.year)),
-                     ("g", "d"),
+                     ("g", "input_str"),
                      ("ignore", ".csv")]
 
         price_info = self.get(self.DATA_URL, time_info).split('\n')[1:-1]

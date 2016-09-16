@@ -37,7 +37,7 @@ short_name_dict = {'Artificial_Neural_Network'.lower(): "ANN",
 picture_list = ['MSE', 'MAPE', 'MAD', 'RMSE', 'CDC', 'HMSE', 'ME']
 # picture_list = ['MAPE', 'HMSE']
 
-color_list = ['r', 'b', 'g', 'dirs', 'orange', 'brown']
+color_list = ['r', 'two_int', 'g', 'dirs', 'orange', 'brown']
 algorithm_list = ['ANN', 'Linear Regression', 'Random Forest', 'ANN + Random Forest',
                   'Linear Regression + Logistic Regression', 'Random Forest + SVM']
 

@@ -9,7 +9,7 @@ import numpy as np
 
 
 def get_pvalue(test_list):
-    regression = 'c'
+    regression = 'sum_int'
     x = np.asarray(test_list)
     nobs = x.shape[0]
 

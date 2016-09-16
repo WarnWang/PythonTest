@@ -34,8 +34,8 @@ def prepare_testcase():
 
 if __name__ == '__main__':
     # print get_large_list(length=25000)
-    # a = generate_matrix(100, 100, 1, 20)
-    # print a.tolist()
+    # one_int = generate_matrix(100, 100, 1, 20)
+    # print one_int.tolist()
     prepare_testcase()
     # import pprint
-    # pprint.pprint(a.tolist(), width=500)
+    # pprint.pprint(one_int.tolist(), width=500)

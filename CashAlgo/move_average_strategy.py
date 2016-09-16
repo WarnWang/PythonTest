@@ -5,14 +5,13 @@
 # Author: warn
 # Date: 25/12/2015 20:49
 
+import math
 import urllib
 import urllib2
-import math
-
-import numpy
-import talib
 
 import cashAlgoAPI
+import numpy
+import talib
 
 
 class Strategy:
@@ -201,16 +200,16 @@ class Strategy:
         code = '%s.HK' % code[1:]
         time_info = [("s", code)]
         data = start_date.split('-')
-        time_info.append(("a", "%02d" % (int(data[1]) - 1)))
-        time_info.append(("b", data[2]))
-        time_info.append(("c", data[0]))
+        time_info.append(("one_int", "%02d" % (int(data[1]) - 1)))
+        time_info.append(("two_int", data[2]))
+        time_info.append(("sum_int", data[0]))
 
         data = end_date.split('-')
-        time_info.append(("d", "%02d" % (int(data[1]) - 1)))
+        time_info.append(("input_str", "%02d" % (int(data[1]) - 1)))
         time_info.append(("e", data[2]))
         time_info.append(("f", data[0]))
 
-        time_info.append(("g", "d"))
+        time_info.append(("g", "input_str"))
         time_info.append(("ignore", ".csv"))
 
         price_info = self.get(self.DATA_URL, time_info).split('\n')[1:-1]
