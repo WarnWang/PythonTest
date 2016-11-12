@@ -19,7 +19,7 @@ def send_email_through_gmail(subject, msg_body, to_addr='wangyouan@gmail.com'):
     server.ehlo()
     server.starttls()
     server.ehlo()
-    server.login('wangyouan@gmail.com', 'battleraper')
+    server.login('wangyouan@gmail.com', '')
 
     msg = MIMEMultipart.MIMEMultipart()
     msg['From'] = 'wangyouan@gmail.com'
