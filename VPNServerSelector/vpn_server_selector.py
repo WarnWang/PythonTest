@@ -7,15 +7,6 @@
 # @Email: wangyouan@gmial.com
 
 from __future__ import print_function
-from __future__ import print_function
-from __future__ import print_function
-from __future__ import print_function
-from __future__ import print_function
-from __future__ import print_function
-from __future__ import print_function
-from __future__ import print_function
-from __future__ import print_function
-from __future__ import print_function
 
 import pandas as pd
 import pyping
